@@ -1,0 +1,15 @@
+Client
+	New client
+	client view
+	payment
+	pending list
+	
+Report
+	Total income
+	total cost
+	bandwidth usage
+	
+Expences
+	New expence
+	view expences
+	
