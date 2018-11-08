@@ -8,7 +8,7 @@
                     {{csrf_field()}}
                     <button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;" disabled="disabled"></button>
                     <div class="panel-body">
-                        <div class="row mb">
+                        <div class="row ">
                             <div class="form-group has-error">
                                 <label class="col-xs-3 control-label">Employee name</label>
                                 <div class="col-xs-5">
@@ -46,6 +46,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="form-group has-error">
+                                    <label class="col-xs-3 control-label">Phone</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" name="phone" data-bv-field="phone">
+                                        <small class="help-block" data-bv-validator="notEmpty" data-bv-for="phone" data-bv-result="INVALID" style="">The Phone is required</small>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="row">
                                 <div class="form-group has-error">
                                     <label class="col-xs-3 control-label">Address</label>
