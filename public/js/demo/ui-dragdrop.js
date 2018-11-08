@@ -1,1 +1,0 @@
-$(document).ready(function(){$(".grid").sortable({tolerance:"pointer",revert:"invalid",handle:".panel-heading",connectWith:".row > [class*=col]",placeholder:"well placeholder tile",forceHelperSize:!0})});
