@@ -17,10 +17,10 @@
     <link href="{{url('public/css/icons.css')}}" rel="stylesheet" type="text/css">
     <link href="{{url('public/css/style.css')}}" rel="stylesheet" type="text/css">
     {{--Datatables--}}
-    <link href="{{url('public/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{url('public/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">
-    <!-- Responsive datatable examples -->
-    <link href="{{url('public/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">
+    {{--<link href="{{url('public/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">--}}
+    {{--<link href="{{url('public/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">--}}
+    {{--<!-- Responsive datatable examples -->--}}
+    {{--<link href="{{url('public/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">--}}
     @yield('css')
 </head>
 
@@ -54,6 +54,11 @@
                     <li>
                         <a href="{{route('employee.show')}}" class="waves-effect">
                             <i class="dripicons-meter"></i> <span>Employee</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('client.show')}}" class="waves-effect">
+                            <i class="dripicons-meter"></i> <span>Client</span>
                         </a>
                     </li>
 

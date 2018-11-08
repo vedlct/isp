@@ -3,7 +3,10 @@
     <!-- DataTables -->
 
 
-
+    <link href="{{url('assets/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{url('assets/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="{{url('assets/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
     @endsection
 @section('content')
 
@@ -117,7 +120,7 @@
     <!-- end row -->
 
         {{--DElete Modal --}}
-
+    </div>
     @endsection
 
 
@@ -141,4 +144,5 @@
                 $('.empform').parsley();
             });
         </script>
+
     @endsection
