@@ -30,6 +30,8 @@
     <link href="{{url('public/css/demo/jquery-steps.min.css')}}" rel="stylesheet">
     <!--Demo [ DEMONSTRATION ]-->
     <link href="{{url('public/css/demo/jasmine.css')}}" rel="stylesheet">
+
+    @yield('css')
     <!--SCRIPT-->
     <!--=================================================-->
     <!--Page Load Progress Bar [ OPTIONAL ]-->
@@ -43,10 +45,10 @@
         <!--Brand logo & name-->
         <!--================================-->
         <div class="navbar-header">
-            <a href="index-2.html" class="navbar-brand">
+            <a href="{{route('index')}}" class="navbar-brand">
                 <i class="fa fa-cube brand-icon"></i>
                 <div class="brand-title">
-                    <span class="brand-text">Rayan</span>
+                    <span class="brand-text">ISP</span>
                 </div>
             </a>
         </div>
@@ -58,6 +60,7 @@
             <ul class="nav navbar-top-links pull-left">
                 <!--Navigation toogle button-->
                 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
                 <li class="tgl-menu-btn">
                     <a class="mainnav-toggle" href="#"> <i class="fa fa-navicon fa-lg"></i> </a>
                 </li>
@@ -429,23 +432,14 @@
                             <li class="list-header">Components</li>
                             <!--Menu list item-->
                             <li>
-                                <a href="#">
+                                <a href="{{route('employee.show')}}">
                                     <i class="fa fa-th"></i>
                                     <span class="menu-title">
-                                               Layouts
+                                               Employee
                                             </span>
-                                    <i class="arrow"></i>
+
                                 </a>
                                 <!--Submenu-->
-                                <ul class="collapse">
-                                    <li><a href="layout-blank.html"><i class="fa fa-caret-right"></i> Blank Page </a></li>
-                                    <li><a href="layout-boxed.html"><i class="fa fa-caret-right"></i> Boxed Version </a></li>
-                                    <li><a href="layout-collapsed-sidebar.html"><i class="fa fa-caret-right"></i> Collapsed Sidebar </a></li>
-                                    <li><a href="layout-push-menu.html"><i class="fa fa-caret-right"></i> Push Menu </a></li>
-                                    <li><a href="layout-slide-menu.html"><i class="fa fa-caret-right"></i> Slide Menu </a></li>
-                                    <li><a href="layout-horizontal-menu.html"><i class="fa fa-caret-right"></i> Horizontal Menu </a></li>
-                                    <li><a href="layout-horizontal-menu-boxed.html"><i class="fa fa-caret-right"></i> Boxed Horizontal </a></li>
-                                </ul>
                             </li>
                             <!--Menu list item-->
                             <li>

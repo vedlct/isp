@@ -84,6 +84,7 @@
 <script src="{{url('public/js/demo/wizard.js')}}"></script>
 <!--Form Wizard [ SAMPLE ]-->
 <script src="{{url('public/js/demo/form-wizard.js')}}"></script>
+@yield('foot-js')
 </body>
 
 <!-- Mirrored from www.designbudy.com/rayan/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Nov 2018 10:38:05 GMT -->
