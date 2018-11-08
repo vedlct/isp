@@ -1,1 +1,0 @@
-$(document).ready(function(){$("#demo-chosen-select").chosen(),$("#demo-cs-multiselect").chosen({width:"100%"}),$("#jquery-tagIt-white").tagit({}),$("#demo-summernote").summernote({height:250})});

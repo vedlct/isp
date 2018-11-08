@@ -1,5 +1,5 @@
-@extends('layout.mainLayout')
+@extends('layouts.mainLayout')
 
 @section('content')
-    This Is The Homepage
+
     @endsection

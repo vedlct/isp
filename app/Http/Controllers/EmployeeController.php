@@ -22,6 +22,7 @@ class EmployeeController extends Controller
         $emp->phone = $r->phone;
         $emp->email = $r->email;
         $emp->address = $r->address;
+        $emp->status = '1';
         $emp->save();
         session()->flash('success', 'Employee Added Successfully');
         return redirect()->route('employee.show');
@@ -35,6 +36,7 @@ class EmployeeController extends Controller
         $emp->phone=$r->phone;
         $emp->email=$r->email;
         $emp->address=$r->address;
+        $emp->status='1';
         $emp->update();
         session()->flash('success', 'Employee updated Successfully');
         return redirect()->route('employee.show');
