@@ -9,7 +9,7 @@
                     <button type="submit" class="bv-hidden-submit" style="display: none; width: 0px; height: 0px;" disabled="disabled"></button>
                     <div class="panel-body">
                         <div class="row ">
-                            <div class="form-group has-error">
+                            <div class="form-group ">
                                 <label class="col-xs-3 control-label">Employee name</label>
                                 <div class="col-xs-5">
                                     <input type="text" class="form-control" name="employeeName" placeholder="Employee name" data-bv-field="employeeName">
@@ -17,7 +17,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group has-error">
+                                <div class="form-group ">
                                     <label class="col-xs-3 control-label">Designation</label>
                                     <div class="col-xs-5">
                                         <input type="text" class="form-control" name="degisnation" data-bv-field="degisnation">
@@ -28,7 +28,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group has-error">
+                                <div class="form-group ">
                                     <label class="col-xs-3 control-label">Salary</label>
                                     <div class="col-xs-5">
                                         <input type="text" class="form-control" name="salary" data-bv-field="salary">
@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group has-error">
+                                <div class="form-group ">
                                     <label class="col-xs-3 control-label">Email</label>
                                     <div class="col-xs-5">
                                         <input type="email" class="form-control" name="email" data-bv-field="email">
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group has-error">
+                                <div class="form-group ">
                                     <label class="col-xs-3 control-label">Phone</label>
                                     <div class="col-xs-5">
                                         <input type="text" class="form-control" name="phone" data-bv-field="phone">
@@ -58,7 +58,7 @@
 
 
                             <div class="row">
-                                <div class="form-group has-error">
+                                <div class="form-group ">
                                     <label class="col-xs-3 control-label">Address</label>
                                     <div class="col-xs-5">
                                         <input type="text" class="form-control" name="address" data-bv-field="address">
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group has-error">
+                                <div class="form-group ">
                                     <div class="col-xs-6 col-xs-offset-3">
                                         <div class="checkbox">
                                             <label class="form-checkbox form-icon form-text">
