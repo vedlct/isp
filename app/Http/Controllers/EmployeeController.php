@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Employee;
+use Illuminate\Http\Request;
+
+class EmployeeController extends Controller
+{
+    public function showEmployee(){
+       $employee = Employee::all();
+       return view('User.Employee.showEmployee')->with('employees',$employee);
+    }
+    public function createEmployee(){
+        return view('User.Employee.createEmployee');
+    }
+    public function storeEmployee(Request $r){
+        $emp = new Employee();
+        $emp->employeeName = $r->employeeName;
+        $emp->degisnation = $r->degisnation;
+        $emp->salary = $r->salary;
+        $emp->phone = $r->phone;
+        $emp->email = $r->email;
+        $emp->address = $r->address;
+        $emp->save();
+        session()->flash('success', 'Employee Added Successfully');
+        return redirect()->route('employee.show');
+    }
+
+    public function deleteEmployee(Request $r)
+    {
+        return $r;
+        $emp = Employee::findOrFail($r->id)->delete();
+        return redirect()->route('employee.show');
+    }
+}

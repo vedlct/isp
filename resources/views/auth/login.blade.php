@@ -38,7 +38,7 @@
     <div class="lock-wrapper">
         <div class="panel lock-box">
             <div class="center"> <img alt="" src="{{url('public/img/user.png')}}" class="img-circle"/> </div>
-            <h4> Hello User !</h4>
+            <h4>ISP LOGIN</h4>
             <p class="text-center">Please login to Access your Account</p>
             <div class="row">
                 <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
