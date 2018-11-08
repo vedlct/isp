@@ -27,10 +27,25 @@ class EmployeeController extends Controller
         return redirect()->route('employee.show');
     }
 
-    public function deleteEmployee(Request $r)
-    {
-        return $r;
-        $emp = Employee::findOrFail($r->id)->delete();
+    public function updateEmployee(Request $r){
+        $emp = Employee::findOrfail($r->editid);
+        $emp->employeeName=$r->employeeName;
+        $emp->degisnation=$r->degisnation;
+        $emp->salary=$r->salary;
+        $emp->phone=$r->phone;
+        $emp->email=$r->email;
+        $emp->address=$r->address;
+        $emp->update();
+        session()->flash('success', 'Employee updated Successfully');
         return redirect()->route('employee.show');
     }
+
+    public function deleteEmployee(Request $r)
+    {
+//        return $r;
+        $emp = Employee::findOrFail($r->deleteId)->delete();
+        return redirect()->route('employee.show');
+    }
+
+
 }
