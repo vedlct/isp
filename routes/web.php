@@ -3,7 +3,7 @@
 
 Route::get('/', function () {
     return view('index');
-})->middleware('auth')->name('index');
+})->name('index');
 
 Auth::routes();
 
