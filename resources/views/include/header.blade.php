@@ -16,11 +16,6 @@
     <link href="{{url('public/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{url('public/css/icons.css')}}" rel="stylesheet" type="text/css">
     <link href="{{url('public/css/style.css')}}" rel="stylesheet" type="text/css">
-    {{--Datatables--}}
-    {{--<link href="{{url('public/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">--}}
-    {{--<link href="{{url('public/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">--}}
-    {{--<!-- Responsive datatable examples -->--}}
-    {{--<link href="{{url('public/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css">--}}
     @yield('css')
 </head>
 
@@ -299,8 +294,5 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-                    <!-- end row -->
+             <!-- end row -->
 @yield('content')
