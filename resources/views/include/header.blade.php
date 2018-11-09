@@ -21,11 +21,11 @@
 
 <body class="fixed-left">
 <!-- Loader -->
-<div id="preloader">
-    <div id="status">
-        <div class="spinner"></div>
-    </div>
-</div>
+{{--<div id="preloader">--}}
+    {{--<div id="status">--}}
+        {{--<div class="spinner"></div>--}}
+    {{--</div>--}}
+{{--</div>--}}
 <!-- Begin page -->
 <div id="wrapper">
     <!-- ========== Left Sidebar Start ========== -->
@@ -45,17 +45,22 @@
                             <i class="dripicons-blog"></i> <span>Dashboard </span>
                         </a>
                     </li>
-
+                    <li>
+                        <a href="{{route('package.show')}}" class="waves-effect">
+                            <i class="dripicons-meter"></i> <span>Package</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="{{route('employee.show')}}" class="waves-effect">
-                            <i class="dripicons-user"></i> <span>Employee</span>
+                            <i class="fa fa-empire"></i> <span>Employee</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{route('client.show')}}" class="waves-effect">
-                            <i class="dripicons-meter"></i> <span>Client</span>
+                            <i class="fa fa-user"></i> <span>Client</span>
                         </a>
                     </li>
+
                     <li>
                         <a href="#" class="waves-effect">
                             <i class="fa fa-money"></i> <span>Bill</span>
@@ -309,4 +314,8 @@
                 </div>
             </div>
              <!-- end row -->
+
+            @if(Session::has('message'))
+                <p class="alert alert-info">{{ Session::get('message') }}</p>
+            @endif
 @yield('content')
