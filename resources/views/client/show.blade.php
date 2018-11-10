@@ -46,19 +46,19 @@
                                 <input type="text" name="phone" placeholder="phone" class="form-control" >
                             </div>
                             <div class="form-group col-md-12">
+                                <label>Package</label>
+                                <input type="text" name="phone" placeholder="phone" class="form-control" >
+                            </div>
+                            <div class="form-group col-md-12">
                                 <label>ip</label>
                                 <input type="text" name="ip" placeholder="ip" class="form-control" >
                             </div>
                             <div class="form-group col-md-12">
-                                <label>Price</label>
+                                <label>bandWide</label>
                                 <input type="text" name="price" placeholder="price" class="form-control" >
                             </div>
                             <div class="form-group col-md-12">
-                                <label>Price</label>
-                                <input type="text" name="price" placeholder="price" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Price</label>
+                                <label>address</label>
                                 <input type="text" name="price" placeholder="price" class="form-control" >
                             </div>
                             <div class="form-group col-md-12">
