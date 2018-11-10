@@ -1,5 +1,5 @@
 <!-- content -->
-<footer class="footer">© 2018 <b>Drixo</b> <span class="d-none d-sm-inline-block">- Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign.</span></footer>
+<footer class="footer">© 2018 <b>TechCloud Ltd</b> </footer>
 </div>
 <!-- End Right content here -->
 </div>
@@ -26,6 +26,8 @@
 {{--<script src="{{url('public/pages/dashboard.js')}}"></script>--}}
 <!-- App js -->
 <script src="{{url('public/js/app.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
 
 
 @yield('js')

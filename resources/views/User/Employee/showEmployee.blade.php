@@ -28,28 +28,6 @@
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    @foreach($employees as $employee)
-                        <tr>
-                            <td>{{$employee->employeeName}}</td>
-                            <td>{{$employee->degisnation}}</td>
-                            <td>{{$employee->salary}}</td>
-                            <td>{{$employee->phone}}</td>
-                            <td>{{$employee->email}}</td>
-                            <td>{{$employee->address}}</td>
-                            @if($employee->status=='1')
-                            <td><p><i class="badge badge-success">Active</i></p></td>
-                            @else
-                                <td><p><i class="badge badge-danger">InActive</i></p></td>
-                            @endif
-                            <td>
-                                <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-edit"></i></button>
-                                {{--<button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>--}}
-                            </td>
-
-                        </tr>
-                    @endforeach
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -116,65 +94,22 @@
             </div>
             <!-- /.modal-content -->
         </div>
+    </div>
     <!-- end row -->
 
-        {{--DElete Modal --}}
-        <div class="modal fade bs-example-modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title mt-0" id="myLargeModalLabel">Add Employee</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="empform" action="{{route('employee.store')}}" novalidate="" method="post">
-                            {{csrf_field()}}
-                            <input type="hidden" id="editId">
-                            <div class="form-group">
-                                <label>Employee Name</label>
-                                <input type="text" class="form-control" name="employeeName" required="" placeholder="Enter Employee Name">
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <div>
-                                    <input type="email" class="form-control" name="email" required="" parsley-type="email" placeholder="Enter a valid e-mail">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Designation</label>
-                                <div>
-                                    <input parsley-type="text" type="text" name="degisnation" class="form-control" required="" placeholder="Enter Designation">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>salary</label>
-                                <div>
-                                    <input data-parsley-type="digits" name="salary" type="text" class="form-control" required="" placeholder="Enter Salary Amount">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <div>
-                                    <input data-parsley-type="number" name="phone" type="text" class="form-control" required="" placeholder="Enter Phone numbers">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Address</label>
-                                <div>
-                                    <textarea required="" name="address" class="form-control" rows="5"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div>
-                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Add Employee</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+        {{--edit Modal--}}
+    <div class="modal fade bs-example-modal-lg" id="editEmp" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Add Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <!-- /.modal-content -->
+                <div class="modal-body" id="editEmpBody">
+
+                </div>
             </div>
+            <!-- /.modal-content -->
         </div>
     </div>
     @endsection
@@ -184,21 +119,66 @@
     <!-- Required datatable js -->
         <script src="{{url('public/plugins/parsleyjs/parsley.min.js')}}"></script>
     <!-- Datatable init js -->
-    <script>
-        $(document).ready(function () {
-            $(".datapass").click(function () {
-                $('#deleteId').val($(this).data('id'));
-            });
-        });
-
-        $(".editmodal").click(function () {
-            $('#editid').val($(this).data('id'));
-        });
-    </script>
         <script>
             $(document).ready(function() {
                 $('.empform').parsley();
             });
+        </script>
+
+        <script>
+            $(document).ready( function () {
+
+                $('#datatable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    Filter: true,
+                    stateSave: true,
+                    type:"POST",
+                    "ajax":{
+                        "url": "{!! route('employee.getData') !!}",
+                        "type": "POST",
+                        "data":{ _token: "{{csrf_token()}}"},
+                    },
+                    columns: [
+                        { data: 'employeeName', name: 'employeeName' },
+                        { data: 'degisnation', name: 'degisnation' },
+                        { data: 'salary', name: 'salary'},
+                        { data: 'phone', name: 'phone'},
+                        { data: 'email', name: 'email'},
+                        { data: 'address', name: 'address'},
+                        { "data": function(data){
+                               if(data.status=='1'){
+                                   return "<span class=\"badge badge-success\">Active</span>"
+                               }
+                               else {
+                                   return "<span class=\"badge badge-danger\">InActive</span>"
+                               }
+                               },
+                            "orderable": false, "searchable":false, "name":"selected_rows" },
+                        { "data": function(data){
+
+                                return '<a class="btn btn-default btn-sm" data-panel-id="'+data.employeeId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>'
+                                    ;},
+                            "orderable": false, "searchable":false, "name":"selected_rows" },
+                    ]
+                });
+            } );
+            function editClient(x) {
+                var id=$(x).data('panel-id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{!! route('employee.edit') !!}",
+                    cache: false,
+                    data: {_token: "{{csrf_token()}}",'id': id},
+                    success: function (data) {
+                        $("#editEmpBody").html(data);
+                        $('#editEmp').modal();
+                        // console.log(data);
+                    }
+                });
+
+            }
         </script>
     {{--DataTables--}}
     <script src="{{url('public/plugins/datatables/jquery.dataTables.min.js')}}"></script>

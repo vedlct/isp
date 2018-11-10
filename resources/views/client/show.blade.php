@@ -141,7 +141,7 @@
                 },
                 columns: [
                     { data: 'clientFirstName', name: 'clientFirstName' },
-                    { data: 'clientFirstName', name: 'clientFirstName' },
+                    { data: 'clientLastName', name: 'clientLastName' },
                     { data: 'email', name: 'email'},
                     { data: 'phone', name: 'phone'},
                     { data: 'ip', name: 'ip'},
