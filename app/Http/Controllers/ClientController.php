@@ -26,7 +26,9 @@ class ClientController extends Controller
     }
 
     public function getData(Request $r){
-        $client = Client::get();
+        $client = Client::select('client.*', 'packageName')
+            ->leftjoin('package','fkpackageId','packageId')
+        ->get();
         $datatables = Datatables::of($client);
         return $datatables->make(true);
     }

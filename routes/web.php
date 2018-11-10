@@ -22,7 +22,10 @@ Route::post('/employee-update','EmployeeController@updateEmployee')->name('emplo
  */
 Route::get('/Client','ClientController@show')->name('client.show');
 Route::post('/Client-getData','ClientController@getData')->name('client.getdata');
-Route::get('/Client-edit','ClientController@edit')->name('client.edit');
+Route::post('/Client-insert','ClientController@insert')->name('client.insert');
+Route::post('/Client-edit','ClientController@edit')->name('client.edit');
+Route::post('/Client-update','ClientController@update')->name('client.update');
+
 
 /*
  * Package Routes

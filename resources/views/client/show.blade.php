@@ -13,7 +13,73 @@
 @section('content')
 
     <!-- end page title end breadcrumb -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Client</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form method="post" action="{{route('package.insert')}}">
+                        {{csrf_field()}}
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label>First Name</label>
+                                <input type="text" name="clientFirstName" placeholder="First Name" class="form-control" >
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Last Name</label>
+                                <input type="text" name="clientLastName" placeholder="Last Name" class="form-control" >
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>email</label>
+                                <input type="email" name="email" placeholder="Email" class="form-control" >
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>phone</label>
+                                <input type="text" name="phone" placeholder="phone" class="form-control" >
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>ip</label>
+                                <input type="text" name="ip" placeholder="ip" class="form-control" >
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Price</label>
+                                <input type="text" name="price" placeholder="price" class="form-control" >
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Price</label>
+                                <input type="text" name="price" placeholder="price" class="form-control" >
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Price</label>
+                                <input type="text" name="price" placeholder="price" class="form-control" >
+                            </div>
+                            <div class="form-group col-md-12">
+                                <button class="btn btn-success pull-right">Update</button>
+                            </div>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
     <div class="row">
 
         <div class="col-12">
@@ -30,6 +96,7 @@
                             <th>Email</th>
                             <th>Phone Number</th>
                             <th>IP</th>
+                            <th>Package Name</th>
                             <th>BandWide</th>
                             <th>Price</th>
                             <th>Address</th>
@@ -78,6 +145,7 @@
                     { data: 'email', name: 'email'},
                     { data: 'phone', name: 'phone'},
                     { data: 'ip', name: 'ip'},
+                    { data: 'packageName', name: 'packageName'},
                     { data: 'bandWide', name: 'bandWide'},
                     { data: 'price', name: 'price'},
                     { data: 'address', name: 'address'},
