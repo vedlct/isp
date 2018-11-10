@@ -175,6 +175,8 @@
                 </div>
                 <!-- /.modal-content -->
             </div>
+        </div>
+    </div>
     @endsection
 
 
