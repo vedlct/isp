@@ -55,4 +55,11 @@ class PackageController extends Controller
         $datatables = Datatables::of($package);
         return $datatables->make(true);
     }
+
+    public function getpackage(Request $r ){
+        $package = Package::select('bandwidth', 'price')
+        ->where('packageId' , $r->id)
+        ->first();
+        return $package;
+    }
 }

@@ -51,16 +51,14 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <label>Package</label>
-                               <select class="form-control" id="package" onchange="getpackage()" name="package">
-                                   <option>Select a Package</option>
-                                   @foreach($package as  $p)
-                                       <option value="{{$p->packageId}}">{{$p->packageName}}</option>
-                                       @endforeach
-                               </select>
+                                <select class="form-control" id="package" onchange="getpackage()">
+                                    <option>Select a Package</option>
+                                    @foreach($package as  $p)
+                                        <option value="{{$p->packageId}}">{{$p->packageName}}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
-
-                            {{--@if($package->where('packageName', 'testd')->first()){{'YES'}}@endif--}}
                             <div class="form-group col-md-12">
                                 <label>bandWidth</label>
                                 <input type="text" name="bandwidth" id="bandwidth" placeholder="bandwidth" class="form-control" >
@@ -141,7 +139,6 @@
                             <th>BandWide</th>
                             <th>Price</th>
                             <th>Address</th>
-
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -193,7 +190,7 @@
                     { data: 'address', name: 'address'},
                     { "data": function(data){
 
-                            return '<a class="btn btn-default btn-sm"  data-panel-id="'+data.clientId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>'
+                            return '<a class="btn btn-default btn-sm" data-panel-id="'+data.clientId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>'
                                 ;},
                         "orderable": false, "searchable":false, "name":"selected_rows" },
                 ]
@@ -230,8 +227,8 @@
                     // $("#editModalBody").html(data);
                     // $('#editModal').modal();
                     // console.log(data);
-                 //   $('bandwidth').val(data.bandwidth);
-                  //  $('price').val(data.price);
+                    //   $('bandwidth').val(data.bandwidth);
+                    //  $('price').val(data.price);
 
                     document.getElementById('bandwidth').value = data.bandwidth;
                     document.getElementById('price').value = data.price;

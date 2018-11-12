@@ -33,7 +33,10 @@ Route::post('/expense-delete','ExpenseController@deleteExpense')->name('expense.
  */
 Route::get('/Client','ClientController@show')->name('client.show');
 Route::post('/Client-getData','ClientController@getData')->name('client.getdata');
-Route::get('/Client-edit','ClientController@edit')->name('client.edit');
+Route::post('/Client-insert','ClientController@insert')->name('client.insert');
+Route::post('/Client-edit','ClientController@edit')->name('client.edit');
+Route::post('/Client-update/{id}','ClientController@update')->name('client.update');
+
 
 /*
  * Package Routes
@@ -43,3 +46,4 @@ Route::post('/Package-getData','PackageController@getData')->name('package.getda
 Route::post('/Package-insert','PackageController@insert')->name('package.insert');
 Route::post('/Package-edit','PackageController@edit')->name('package.edit');
 Route::post('/Package-update/{id}','PackageController@update')->name('package.update');
+Route::post('/Package-getpackage','PackageController@getpackage')->name('package.getpackage');
