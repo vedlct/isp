@@ -53,6 +53,7 @@ public function expenseEdit(Request $r){
 
     public function deleteExpense(Request $r){
         $expense = Expense::findOrFail($r->expenseId)->delete();
+        $report = Report::where('tabelId',$r->expenseId)->delete();
         session()->flash('success', 'Expense Deleted Successfully');
         return back();
     }

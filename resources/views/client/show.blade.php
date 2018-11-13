@@ -60,7 +60,7 @@
                             </div>
 
 
-                            {{--@if($package->where('packageName', 'testd')->first()){{'YES'}}@endif--}}
+                            @if($package->where('packageName', 'test')->first()){{$package->where('packageName', 'test')->first()->packageName}}@endif
                             <div class="form-group col-md-12">
                                 <label>bandWidth</label>
                                 <input type="text" name="bandwidth" id="bandwidth" placeholder="bandwidth" class="form-control" >

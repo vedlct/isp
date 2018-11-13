@@ -17,6 +17,7 @@
     <link href="{{url('public/css/icons.css')}}" rel="stylesheet" type="text/css">
     <link href="{{url('public/css/style.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.standalone.min.css" />
 
     @yield('css')
 </head>
@@ -57,6 +58,12 @@
                             <i class="fa fa-empire"></i> <span>Employee</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{route('employee.getSalary')}}" class="waves-effect">
+                            <i class="fa fa-empire"></i> <span>Employee Salary</span>
+                        </a>
+                    </li>
+
                     <li>
                         <a href="{{route('client.show')}}" class="waves-effect">
                             <i class="fa fa-user"></i> <span>Client</span>
