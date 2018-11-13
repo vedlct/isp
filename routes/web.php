@@ -18,6 +18,12 @@ Route::post('/employee-update','EmployeeController@updateEmployee')->name('emplo
 Route::post('/employee-get-data','EmployeeController@getEmpData')->name('employee.getData');
 
 /*
+ * Employee Salary
+ */
+Route::get('/employee-salary','EmployeeController@getSalary')->name('employee.getSalary');
+Route::post('/employee-salary','EmployeeController@salaryStore')->name('employee.salaryStore');
+
+/*
  * Expense Route
  */
 Route::post('/expense-getData','ExpenseController@getExpenseData')->name('expense.getData');

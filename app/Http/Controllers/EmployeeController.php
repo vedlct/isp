@@ -55,7 +55,11 @@ class EmployeeController extends Controller
         session()->flash('success', 'Employee updated Successfully');
         return redirect()->route('employee.show');
     }
-
-
+public function getSalary(){
+     return view('User.Employee.getSalary');
+}
+public function salaryStore(Request $r){
+        return $r;
+}
 
 }
