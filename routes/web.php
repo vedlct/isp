@@ -56,6 +56,7 @@ Route::post('/Package-getpackage','PackageController@getpackage')->name('package
 
 
 /*
+<<<<<<< HEAD
  * Report Routes
  */
 Route::get('/Report-Debit','ReportController@showDebit')->name('report.showDebit');
@@ -65,3 +66,15 @@ Route::post('/Report-Debit-Sum','ReportController@getTotalDebitSum')->name('repo
 //Route::post('/Package-edit','PackageController@edit')->name('package.edit');
 //Route::post('/Package-update/{id}','PackageController@update')->name('package.update');
 //Route::post('/Package-getpackage','PackageController@getpackage')->name('package.getpackage');
+=======
+ * Company Info
+ */
+Route::get('company-info','CompanyController@index')->name('company');
+Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
+
+/*
+ * Bill Info
+ */
+
+Route::get('test','BillController@generatePdf');
+>>>>>>> 0d0297648d3d9b84c779fd4ddf35c2cd0fa23cac
