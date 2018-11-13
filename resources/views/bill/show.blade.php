@@ -12,119 +12,115 @@
 
 @section('content')
 
-    <!-- end page title end breadcrumb -->
-    <div class="modal" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    {{--<!-- end page title end breadcrumb -->--}}
+    {{--<div class="modal" id="myModal">--}}
+        {{--<div class="modal-dialog">--}}
+            {{--<div class="modal-content">--}}
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Add Client</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
+                {{--<!-- Modal Header -->--}}
+                {{--<div class="modal-header">--}}
+                    {{--<h4 class="modal-title">Add Client</h4>--}}
+                    {{--<button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+                {{--</div>--}}
 
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <form method="post" action="{{route('client.insert')}}">
-                        {{csrf_field()}}
+                {{--<!-- Modal body -->--}}
+                {{--<div class="modal-body">--}}
+                    {{--<form method="post" action="{{route('client.insert')}}">--}}
+                        {{--{{csrf_field()}}--}}
 
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label>First Name</label>
-                                <input type="text" name="clientFirstName" placeholder="First Name" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Last Name</label>
-                                <input type="text" name="clientLastName" placeholder="Last Name" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>email</label>
-                                <input type="email" name="email" placeholder="Email" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>phone</label>
-                                <input type="text" name="phone" placeholder="phone" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>ip</label>
-                                <input type="text" name="ip" placeholder="ip" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Package</label>
-                                <select class="form-control" id="package" onchange="getpackage()">
-                                    <option>Select a Package</option>
-                                    @foreach($package as  $p)
-                                        <option value="{{$p->packageId}}">{{$p->packageName}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        {{--<div class="row">--}}
+                            {{--<div class="form-group col-md-12">--}}
+                                {{--<label>First Name</label>--}}
+                                {{--<input type="text" name="clientFirstName" placeholder="First Name" class="form-control" >--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group col-md-12">--}}
+                                {{--<label>Last Name</label>--}}
+                                {{--<input type="text" name="clientLastName" placeholder="Last Name" class="form-control" >--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group col-md-12">--}}
+                                {{--<label>email</label>--}}
+                                {{--<input type="email" name="email" placeholder="Email" class="form-control" >--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group col-md-12">--}}
+                                {{--<label>phone</label>--}}
+                                {{--<input type="text" name="phone" placeholder="phone" class="form-control" >--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group col-md-12">--}}
+                                {{--<label>ip</label>--}}
+                                {{--<input type="text" name="ip" placeholder="ip" class="form-control" >--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group col-md-12">--}}
+                                {{--<label>Package</label>--}}
+                                {{--<select class="form-control" id="package" onchange="getpackage()">--}}
+                                    {{--<option>Select a Package</option>--}}
+                                    {{--@foreach($package as  $p)--}}
+                                        {{--<option value="{{$p->packageId}}">{{$p->packageName}}</option>--}}
+                                    {{--@endforeach--}}
+                                {{--</select>--}}
+                            {{--</div>--}}
 
-                            <div class="form-group col-md-12">
-                                <label>bandWidth</label>
-                                <input type="text" name="bandwidth" id="bandwidth" placeholder="bandwidth" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Price</label>
-                                <input type="text" name="price" id="price" placeholder="price" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>address</label>
-                                <input type="text" name="address"  placeholder="address" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <button class="btn btn-success pull-right">submit</button>
-                            </div>
+                            {{--<div class="form-group col-md-12">--}}
+                                {{--<label>bandWidth</label>--}}
+                                {{--<input type="text" name="bandwidth" id="bandwidth" placeholder="bandwidth" class="form-control" >--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group col-md-12">--}}
+                                {{--<label>Price</label>--}}
+                                {{--<input type="text" name="price" id="price" placeholder="price" class="form-control" >--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group col-md-12">--}}
+                                {{--<label>address</label>--}}
+                                {{--<input type="text" name="address"  placeholder="address" class="form-control" >--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group col-md-12">--}}
+                                {{--<button class="btn btn-success pull-right">submit</button>--}}
+                            {{--</div>--}}
 
-                        </div>
+                        {{--</div>--}}
 
 
-                    </form>
+                    {{--</form>--}}
 
-                </div>
+                {{--</div>--}}
 
-                <!-- Modal footer -->
-                <div class="modal-footer">
+                {{--<!-- Modal footer -->--}}
+                {{--<div class="modal-footer">--}}
 
-                </div>
+                {{--</div>--}}
 
-            </div>
-        </div>
-    </div>
-    <!-- The Edit Modal -->
-    <div class="modal" id="editModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+    {{--<!-- The Edit Modal -->--}}
+    {{--<div class="modal" id="editModal">--}}
+        {{--<div class="modal-dialog">--}}
+            {{--<div class="modal-content">--}}
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Update Package</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
+                {{--<!-- Modal Header -->--}}
+                {{--<div class="modal-header">--}}
+                    {{--<h4 class="modal-title">Update Package</h4>--}}
+                    {{--<button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+                {{--</div>--}}
 
-                <!-- Modal body -->
-                <div class="modal-body" id="editModalBody">
+                {{--<!-- Modal body -->--}}
+                {{--<div class="modal-body" id="editModalBody">--}}
 
-                </div>
+                {{--</div>--}}
 
-                <!-- Modal footer -->
-                <div class="modal-footer">
+                {{--<!-- Modal footer -->--}}
+                {{--<div class="modal-footer">--}}
 
-                </div>
+                {{--</div>--}}
 
-            </div>
-        </div>
-    </div>
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 
     <div class="row">
 
         <div class="col-12">
             <div class="card m-b-30">
                 <div class="card-body">
-                    <div class="text-right mb-2 mr-2">
-                        <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#myModal">
-                            Add Client
-                        </button>
-                    </div>
+
                     <h4 class="mt-0 header-title">All Bill</h4>
 
                     <table id="datatable" class="table table-bordered  dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -143,8 +139,38 @@
                         </tr>
                         </thead>
 
-
                         <tbody>
+                        @foreach($client as $c)
+                        <tr>
+                            <td>{{$c->clientFirstName}}</td>
+                            <td>{{$c->clientLastName}}</td>
+                            <td>{{$c->email}}</td>
+                            <td>{{$c->phone}}</td>
+                            <td>{{$c->ip}}</td>
+                            <td>{{$c->fkpackageId}}</td>
+                            <td>{{$c->bandWide}}</td>
+                            <td>{{$c->price}}</td>
+                            <td>{{$c->address}}</td>
+                            <td>
+
+
+                                <select class="form-control" id="billtype" data-panel-id='{{$c->clientId}}' onchange="changebillstatus(this)">
+                                    <option  value="paid" @if($bill->where('fkclientId', $c->clientId)->first() == true) selected @else @endif>Paid</option>
+                                    <option value="due" @if($bill->where('fkclientId', $c->clientId)->first() == false) selected   @endif>Due</option>
+                                </select>
+                            </td>
+
+
+
+
+                        </tr>
+                            @endforeach
+                        </tbody>
+
+
+
+
+
 
                     </table>
 
@@ -165,77 +191,78 @@
     <!-- Buttons examples -->
     <script src="{{url('public/assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
     <script>
+
         $(document).ready( function () {
-
-            $('#datatable').DataTable({
-                processing: true,
-                serverSide: true,
-                Filter: true,
-                stateSave: true,
-                type:"POST",
-                "ajax":{
-                    "url": "{!! route('client.getdata') !!}",
-                    "type": "POST",
-                    "data":{ _token: "{{csrf_token()}}"},
-                },
-                columns: [
-                    { data: 'clientFirstName', name: 'clientFirstName' },
-                    { data: 'clientLastName', name: 'clientLastName' },
-                    { data: 'email', name: 'email'},
-                    { data: 'phone', name: 'phone'},
-                    { data: 'ip', name: 'ip'},
-                    { data: 'packageName', name: 'packageName'},
-                    { data: 'bandWide', name: 'bandWide'},
-                    { data: 'price', name: 'price'},
-                    { data: 'address', name: 'address'},
-                    { "data": function(data){
-
-                            return '<select class="form-control" ><option style="background-color: green" @if($bill->where('fkclientId' ,'')->first() == true)@endif>paid</option><option style="background-color: red" selected>Due</option></select>'
-                                ;},
-                        "orderable": false, "searchable":false, "name":"selected_rows" },
-                ]
-            });
+            $('#datatable').DataTable();
         } );
 
+        function changebillstatus(x) {
+            var id = $(x).data('panel-id');
+            var billtype = document.getElementById('billtype').value;
 
-        function editClient(x) {
-            var id=$(x).data('panel-id');
+            if (billtype == 'paid') {
 
-            $.ajax({
-                type: 'POST',
-                url: "{!! route('client.edit') !!}",
-                cache: false,
-                data: {_token: "{{csrf_token()}}",'id': id},
-                success: function (data) {
-                    $("#editModalBody").html(data);
-                    $('#editModal').modal();
-                    // console.log(data);
-                }
-            });
+                $.ajax({
+                    type: 'POST',
+                    url: "{!! route('bill.paid') !!}",
+                    cache: false,
+                    data: {_token: "{{csrf_token()}}", 'id': id},
+                    success: function (data) {
+                      //  $("#datatable").reload();
+
+                        alert(data);
+                        // console.log(data);
+                    }
+                });
+            }
+            else {
+
+
+            }
         }
 
 
-        function getpackage() {
-            var id=document.getElementById('package').value;
+            function editClient(x) {
+                var id = $(x).data('panel-id');
 
-            $.ajax({
-                type: 'POST',
-                url: "{!! route('package.getpackage') !!}",
-                cache: false,
-                data: {_token: "{{csrf_token()}}",'id': id},
-                success: function (data) {
-                    // $("#editModalBody").html(data);
-                    // $('#editModal').modal();
-                    // console.log(data);
-                    //   $('bandwidth').val(data.bandwidth);
-                    //  $('price').val(data.price);
+                $.ajax({
+                    type: 'POST',
+                    url: "{!! route('client.edit') !!}",
+                    cache: false,
+                    data: {_token: "{{csrf_token()}}", 'id': id},
+                    success: function (data) {
+                        $("#editModalBody").html(data);
+                        $('#editModal').modal();
+                        // console.log(data);
+                    }
+                });
+            }
 
-                    document.getElementById('bandwidth').value = data.bandwidth;
-                    document.getElementById('price').value = data.price;
 
-                }
-            });
-        }
+            function getpackage() {
+                var id = document.getElementById('package').value;
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{!! route('package.getpackage') !!}",
+                    cache: false,
+                    data: {_token: "{{csrf_token()}}", 'id': id},
+                    success: function (data) {
+                        // $("#editModalBody").html(data);
+                        // $('#editModal').modal();
+                        // console.log(data);
+                        //   $('bandwidth').val(data.bandwidth);
+                        //  $('price').val(data.price);
+
+                        document.getElementById('bandwidth').value = data.bandwidth;
+                        document.getElementById('price').value = data.price;
+
+                    }
+                });
+            }
+
+
+
     </script>
 
 @endsection
