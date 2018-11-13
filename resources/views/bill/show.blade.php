@@ -125,7 +125,7 @@
                             Add Client
                         </button>
                     </div>
-                    <h4 class="mt-0 header-title">All Clients</h4>
+                    <h4 class="mt-0 header-title">All Bill</h4>
 
                     <table id="datatable" class="table table-bordered  dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
@@ -190,7 +190,7 @@
                     { data: 'address', name: 'address'},
                     { "data": function(data){
 
-                            return '<a class="btn btn-default btn-sm" data-panel-id="'+data.clientId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>'
+                            return '<select class="form-control" ><option style="background-color: green" @if($bill->where('fkclientId' ,'')->first() == true)@endif>paid</option><option style="background-color: red" selected>Due</option></select>'
                                 ;},
                         "orderable": false, "searchable":false, "name":"selected_rows" },
                 ]

@@ -71,7 +71,7 @@
                     </li>
 
                     <li>
-                        <a href="#" class="waves-effect">
+                        <a href="{{route('bill.show')}}" class="waves-effect">
                             <i class="fa fa-money"></i> <span>Bill</span>
                         </a>
                     </li>

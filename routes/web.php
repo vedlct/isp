@@ -53,3 +53,14 @@ Route::post('/Package-insert','PackageController@insert')->name('package.insert'
 Route::post('/Package-edit','PackageController@edit')->name('package.edit');
 Route::post('/Package-update/{id}','PackageController@update')->name('package.update');
 Route::post('/Package-getpackage','PackageController@getpackage')->name('package.getpackage');
+
+
+/*
+ * Bill Routes
+ */
+Route::get('/Bill','BillController@show')->name('bill.show');
+//Route::post('/Package-getData','PackageController@getData')->name('package.getdata');
+//Route::post('/Package-insert','PackageController@insert')->name('package.insert');
+//Route::post('/Package-edit','PackageController@edit')->name('package.edit');
+//Route::post('/Package-update/{id}','PackageController@update')->name('package.update');
+//Route::post('/Package-getpackage','PackageController@getpackage')->name('package.getpackage');
