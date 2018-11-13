@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class EmployeeController extends Controller
 {
@@ -12,12 +13,20 @@ class EmployeeController extends Controller
         $this->middleware('auth');
     }
     public function showEmployee(){
-       $employee = Employee::all();
-       return view('User.Employee.showEmployee')->with('employees',$employee);
+       return view('User.Employee.showEmployee');
     }
-    public function createEmployee(){
-        return view('User.Employee.createEmployee');
+    public function getEmpData(Request $r){
+        $employee = Employee::all();
+        $datatables = DataTables::of($employee);
+        return $datatables->make(true);
     }
+    public function edit(Request $r){
+
+        $employee=Employee::findOrFail($r->id);
+
+        return view('User.Employee.editEmployee',compact('employee'));
+    }
+
     public function storeEmployee(Request $r){
         $emp = new Employee();
         $emp->employeeName = $r->employeeName;
@@ -33,25 +42,20 @@ class EmployeeController extends Controller
     }
 
     public function updateEmployee(Request $r){
-        $emp = Employee::findOrfail($r->editid);
-        $emp->employeeName=$r->employeeName;
-        $emp->degisnation=$r->degisnation;
-        $emp->salary=$r->salary;
-        $emp->phone=$r->phone;
-        $emp->email=$r->email;
-        $emp->address=$r->address;
-        $emp->status='1';
-        $emp->update();
+//        return $r->empId;
+        $employee = Employee::findOrFail($r->empId);
+        $employee->employeeName=$r->employeeName;
+        $employee->degisnation=$r->degisnation;
+        $employee->salary=$r->salary;
+        $employee->phone=$r->phone;
+        $employee->email=$r->email;
+        $employee->address=$r->address;
+        $employee->status=$r->status;
+        $employee->save();
         session()->flash('success', 'Employee updated Successfully');
         return redirect()->route('employee.show');
     }
 
-    public function deleteEmployee(Request $r)
-    {
-//        return $r;
-        $emp = Employee::findOrFail($r->deleteId)->delete();
-        return redirect()->route('employee.show');
-    }
 
 
 }

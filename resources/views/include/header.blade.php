@@ -16,6 +16,8 @@
     <link href="{{url('public/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{url('public/css/icons.css')}}" rel="stylesheet" type="text/css">
     <link href="{{url('public/css/style.css')}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
     @yield('css')
 </head>
 
@@ -67,7 +69,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="waves-effect">
+                        <a href="{{route('expense.show')}}" class="waves-effect">
                             <i class="fa fa-shopping-basket"></i> <span>Expanse</span>
                         </a>
                     </li>
