@@ -47,3 +47,16 @@ Route::post('/Package-insert','PackageController@insert')->name('package.insert'
 Route::post('/Package-edit','PackageController@edit')->name('package.edit');
 Route::post('/Package-update/{id}','PackageController@update')->name('package.update');
 Route::post('/Package-getpackage','PackageController@getpackage')->name('package.getpackage');
+
+
+/*
+ * Company Info
+ */
+Route::get('company-info','CompanyController@index')->name('company');
+Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
+
+/*
+ * Bill Info
+ */
+
+Route::get('test','BillController@generatePdf');
