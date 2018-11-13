@@ -56,11 +56,35 @@ Route::post('/Package-getpackage','PackageController@getpackage')->name('package
 
 
 /*
+<<<<<<< HEAD
  * Bill Routes
  */
 Route::get('/Bill','BillController@show')->name('bill.show');
 //Route::post('/Package-getData','PackageController@getData')->name('package.getdata');
+=======
+<<<<<<< HEAD
+ * Report Routes
+ */
+Route::get('/Report-Debit','ReportController@showDebit')->name('report.showDebit');
+Route::post('/Report-Debit','ReportController@getDebitData')->name('report.getDebitData');
+Route::post('/Report-Debit-Sum','ReportController@getTotalDebitSum')->name('report.getTotalDebit');
+>>>>>>> 419db01becb24ab42b666153a9e8507a7fbe99bb
 //Route::post('/Package-insert','PackageController@insert')->name('package.insert');
 //Route::post('/Package-edit','PackageController@edit')->name('package.edit');
 //Route::post('/Package-update/{id}','PackageController@update')->name('package.update');
 //Route::post('/Package-getpackage','PackageController@getpackage')->name('package.getpackage');
+<<<<<<< HEAD
+=======
+=======
+ * Company Info
+ */
+Route::get('company-info','CompanyController@index')->name('company');
+Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
+
+/*
+ * Bill Info
+ */
+
+Route::get('test','BillController@generatePdf');
+>>>>>>> 0d0297648d3d9b84c779fd4ddf35c2cd0fa23cac
+>>>>>>> 419db01becb24ab42b666153a9e8507a7fbe99bb

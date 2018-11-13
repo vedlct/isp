@@ -80,13 +80,24 @@
                             <i class="fa fa-shopping-basket"></i> <span>Expanse</span>
                         </a>
                     </li>
+                    {{--<li>--}}
+                        {{--<a href="#" class="waves-effect">--}}
+                            {{--<i class="fa fa-bar-chart"></i> <span>Report</span>--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
+                    <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-briefcase"></i> <span>Report </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('report.showDebit')}}" class="waves-effect">Debit</a></li>
+                            <li><a href="#" class="waves-effect">Credit</a></li>
+                        </ul>
+                    </li>
                     <li>
-                        <a href="#" class="waves-effect">
-                            <i class="fa fa-bar-chart"></i> <span>Report</span>
+                        <a href="{{route('company')}}" class="waves-effect">
+                            <i class="fa fa-bar-chart"></i> <span>Company Info</span>
                         </a>
                     </li>
 
-                    {{--<li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-briefcase"></i> <span>Elements </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>--}}
+                    {{--<li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-briefcase"></i> <span>Report </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>--}}
                         {{--<ul class="list-unstyled">--}}
                             {{--<li><a href="ui-alerts.html">Alerts</a></li>--}}
                             {{--<li><a href="ui-buttons.html">Buttons</a></li>--}}
