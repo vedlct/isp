@@ -53,3 +53,15 @@ Route::post('/Package-insert','PackageController@insert')->name('package.insert'
 Route::post('/Package-edit','PackageController@edit')->name('package.edit');
 Route::post('/Package-update/{id}','PackageController@update')->name('package.update');
 Route::post('/Package-getpackage','PackageController@getpackage')->name('package.getpackage');
+
+
+/*
+ * Report Routes
+ */
+Route::get('/Report-Debit','ReportController@showDebit')->name('report.showDebit');
+Route::post('/Report-Debit','ReportController@getDebitData')->name('report.getDebitData');
+Route::post('/Report-Debit-Sum','ReportController@getTotalDebitSum')->name('report.getTotalDebit');
+//Route::post('/Package-insert','PackageController@insert')->name('package.insert');
+//Route::post('/Package-edit','PackageController@edit')->name('package.edit');
+//Route::post('/Package-update/{id}','PackageController@update')->name('package.update');
+//Route::post('/Package-getpackage','PackageController@getpackage')->name('package.getpackage');
