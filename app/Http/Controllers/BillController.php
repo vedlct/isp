@@ -25,7 +25,10 @@ class BillController extends Controller
     }
 
     public function show(){
-        $client = Client::get();
+
+        $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice', 'address', 'packageName')
+            ->leftjoin('package','packageId','fkpackageId')
+        ->get();
         $bill = Bill::get();
         $package = Package::get();
         return view('bill.show', compact('client', 'bill', 'package'));
@@ -34,21 +37,33 @@ class BillController extends Controller
 
         $client = Client::findOrFail($r->id);
 
-
-
         $bill = new Bill();
         $bill->price =  $client->first()->price;
         $bill->fkclientId =  $r->id;
         $bill->save();
 
-
-
         $report = new Report();
-        $report->status = ACCOUNT_STATUS[0];
+        $report->status = ACCOUNT_STATUS['Credit'];
         $report->price = $client->first()->price;
         $report->tabelId = $bill->billId;
         $report->tableName = 'bill';
         $report->save();
+
+        return  $report;
+
+
+
+    }
+    public function due(Request $r){
+
+        $client = Client::findOrFail($r->id);
+
+        $bill = Bill::where('fkclientId' , $client->first()->clientId);
+        $bill->delete();
+
+        $report = Report::where('tabelId' , $bill->first()->billId)
+        ->where('tableName', 'bill');
+        $report->delete();
 
         return  ;
 
