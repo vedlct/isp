@@ -128,8 +128,6 @@
                         <tr>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
                             <th>IP</th>
                             <th>Package Name</th>
                             <th>BandWide</th>
@@ -144,12 +142,10 @@
                         <tr>
                             <td>{{$c->clientFirstName}}</td>
                             <td>{{$c->clientLastName}}</td>
-                            <td>{{$c->email}}</td>
-                            <td>{{$c->phone}}</td>
                             <td>{{$c->ip}}</td>
-                            <td>{{$c->fkpackageId}}</td>
+                            <td>{{$c->packageName}}</td>
                             <td>{{$c->bandWide}}</td>
-                            <td>{{$c->price}}</td>
+                            <td>{{$c->cprice}}</td>
                             <td>{{$c->address}}</td>
                             <td>
 
@@ -193,7 +189,10 @@
     <script>
 
         $(document).ready( function () {
-            $('#datatable').DataTable();
+            $('#datatable').DataTable({
+                    responsive: true
+            }
+            );
         } );
 
         function changebillstatus(x) {
@@ -210,13 +209,24 @@
                     success: function (data) {
                       //  $("#datatable").reload();
 
-                        alert(data);
+                       // alert(data);
                         // console.log(data);
                     }
                 });
             }
             else {
+                $.ajax({
+                    type: 'POST',
+                    url: "{!! route('bill.due') !!}",
+                    cache: false,
+                    data: {_token: "{{csrf_token()}}", 'id': id},
+                    success: function (data) {
+                        //  $("#datatable").reload();
 
+                        // alert(data);
+                        // console.log(data);
+                    }
+                });
 
             }
         }

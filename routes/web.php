@@ -61,6 +61,7 @@ Route::post('/Package-getpackage','PackageController@getpackage')->name('package
  */
 Route::get('/Bill','BillController@show')->name('bill.show');
 Route::post('/Bill-paid','BillController@paid')->name('bill.paid');
+Route::post('/Bill-due','BillController@due')->name('bill.due');
 
  /* Report Routes
  */
@@ -83,4 +84,8 @@ Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
  * Bill Info
  */
 
-Route::get('test','EmployeeController@testEmployee');
+
+Route::post('test','BillController@generatePdf');
+Route::get('settings/account','AccountController@index')->name('account.index');
+Route::post('settings/account','AccountController@changePassword')->name('account.changePassword');
+
