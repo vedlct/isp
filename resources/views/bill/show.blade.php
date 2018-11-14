@@ -208,9 +208,9 @@
                     cache: false,
                     data: {_token: "{{csrf_token()}}", 'id': id},
                     success: function (data) {
-                      //  $("#datatable").reload();
+                        $("#datatable").reload();
 
-                        alert(data);
+                       // alert(data);
                         // console.log(data);
                     }
                 });

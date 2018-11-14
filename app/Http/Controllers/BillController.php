@@ -25,6 +25,7 @@ class BillController extends Controller
     }
 
     public function show(){
+
         $client = Client::get();
         $bill = Bill::get();
         $package = Package::get();
@@ -34,14 +35,10 @@ class BillController extends Controller
 
         $client = Client::findOrFail($r->id);
 
-
-
         $bill = new Bill();
         $bill->price =  $client->first()->price;
         $bill->fkclientId =  $r->id;
         $bill->save();
-
-
 
         $report = new Report();
         $report->status = ACCOUNT_STATUS[0];
