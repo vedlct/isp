@@ -27,7 +27,7 @@
                 <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                     <tr>
-                        <th>Employee Name1</th>
+                        <th>Employee Name</th>
                         <th>Employee Salary</th>
                         <th>Date</th>
                         <th>Salary Status</th>
