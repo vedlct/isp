@@ -183,7 +183,7 @@
                 <td style="text-align: center;" colspan=""><b>Total</b></td>
             </tr>
             <tr style="">
-                <td style="text-align: center;" colspan=""><b>{{date('y-m-d')}}</b></td>
+                <td style="text-align: center;" colspan=""><b>{{$date}}</b></td>
                 <td style="text-align: center;" colspan=""><b>{{$client->packageName}}</b></td>
                 <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
                 <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
