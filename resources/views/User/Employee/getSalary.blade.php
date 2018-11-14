@@ -133,7 +133,7 @@
             $('.empform').parsley();
 
             $('.datepicker').datepicker({
-                format: 'yyyy/mm/dd',
+                format: 'yyyy-mm-dd',
                 autoclose:true,
                 minViewMode: 1,
 
@@ -152,7 +152,7 @@
                             alert("No Data Found In This Month ")
                         }
                         else{
-
+                           console.log(data)
                         }
 
 
