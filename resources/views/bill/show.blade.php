@@ -122,6 +122,11 @@
                 <div class="card-body">
 
                     <h4 class="mt-0 header-title">All Bill</h4>
+                    <div class="form-group col-md-3">
+                        <label>Select Month</label>
+                        <input type="text" class="form-control datepicker" @if(isset($date)) value="{{$date}}" @endif name="selectMonth" onchange="changeDate(this)">
+                    </div>
+
 
                     <table id="datatable" class="table table-bordered  dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
@@ -186,14 +191,32 @@
     <script src="{{url('public/plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
     <!-- Buttons examples -->
     <script src="{{url('public/assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
     <script>
 
         $(document).ready( function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose:true,
+                minViewMode: 1,
+
+            });
+
             $('#datatable').DataTable({
                     responsive: true
             }
             );
         } );
+
+        function changeDate(x) {
+            var date=$(x).val();
+
+            // alert(date);
+            let url = "{{ route('bill.show.date', ':date') }}";
+            url = url.replace(':date', date);
+            document.location.href=url;
+
+        }
 
         function changebillstatus(x) {
             var id = $(x).data('panel-id');

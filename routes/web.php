@@ -60,6 +60,7 @@ Route::post('/Package-getpackage','PackageController@getpackage')->name('package
  * Bill Routes
  */
 Route::get('/Bill','BillController@show')->name('bill.show');
+Route::get('/Bill/{date}','BillController@showDate')->name('bill.show.date');
 Route::post('/Bill-paid','BillController@paid')->name('bill.paid');
 Route::post('/Bill-due','BillController@due')->name('bill.due');
 
