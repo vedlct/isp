@@ -190,7 +190,9 @@
 
         $(document).ready( function () {
             $('#datatable').DataTable({
-                    responsive: true
+                    responsive: true,
+                    deferRender: true,
+
             }
             );
         } );
@@ -207,10 +209,7 @@
                     cache: false,
                     data: {_token: "{{csrf_token()}}", 'id': id},
                     success: function (data) {
-                      //  $("#datatable").reload();
 
-                       // alert(data);
-                        // console.log(data);
                     }
                 });
             }
@@ -221,10 +220,7 @@
                     cache: false,
                     data: {_token: "{{csrf_token()}}", 'id': id},
                     success: function (data) {
-                        //  $("#datatable").reload();
-
-                        // alert(data);
-                        // console.log(data);
+                        alert(data);
                     }
                 });
 

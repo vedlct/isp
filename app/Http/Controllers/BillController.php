@@ -61,11 +61,11 @@ class BillController extends Controller
         $bill = Bill::where('fkclientId' , $client->first()->clientId);
         $bill->delete();
 
-        $report = Report::where('tabelId' , $bill->first()->billId)
-        ->where('tableName', 'bill');
-        $report->delete();
+//        $report = Report::where('tabelId' , $bill->first()->billId)
+//        ->where('tableName', 'bill');
+//        $report->delete();
 
-        return  ;
+        return  0;
 
 
 
