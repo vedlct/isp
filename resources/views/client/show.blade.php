@@ -182,15 +182,15 @@
                     "data":{ _token: "{{csrf_token()}}"},
                 },
                 columns: [
-                    { data: 'clientFirstName', name: 'clientFirstName' },
-                    { data: 'clientLastName', name: 'clientLastName' },
-                    { data: 'email', name: 'email'},
-                    { data: 'phone', name: 'phone'},
-                    { data: 'ip', name: 'ip'},
-                    { data: 'packageName', name: 'packageName'},
-                    { data: 'bandWide', name: 'bandWide'},
-                    { data: 'price', name: 'price'},
-                    { data: 'address', name: 'address'},
+                    { data: 'clientFirstName', name: 'client.clientFirstName' },
+                    { data: 'clientLastName', name: 'client.clientLastName' },
+                    { data: 'email', name: 'client.email'},
+                    { data: 'phone', name: 'client.phone'},
+                    { data: 'ip', name: 'client.ip'},
+                    { data: 'packageName', name: 'package.packageName'},
+                    { data: 'bandWide', name: 'client.bandWide'},
+                    { data: 'price', name: 'client.price'},
+                    { data: 'address', name: 'client.address'},
                     { "data": function(data){
 
                             return '<a class="btn btn-default btn-sm"  data-panel-id="'+data.clientId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>'

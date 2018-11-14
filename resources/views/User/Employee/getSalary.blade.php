@@ -20,7 +20,11 @@
             <div class="card-body">
                 <div class="text-left mb-2 mr-2">
                     <label for="datepicket">Start Date </label>
-                    <input class="form-group datepicker" type="text"></div>
+                    <form action="#" method="POST">
+                        @csrf
+                    <input class="form-group datepicker" name="chooseMonth" id="dataChange" type="text">
+                    </form>
+                </div>
                 <div class="text-right mb-2 mr-2">
                     <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#addEmp">Add Expense</button>
                 </div>
@@ -29,10 +33,26 @@
                     <tr>
                         <th>Employee Name</th>
                         <th>Employee Salary</th>
-                        <th>Date</th>
-                        <th>Salary Status</th>
+                        <th>Status</th>
                     </tr>
                     </thead>
+                    <tbody>
+                    @foreach($employees as $employee)
+                    <tr>
+                        <td>{{$employee->employeeName}}</td>
+                        <td>{{$employee->salary}}</td>
+                        <td>
+                            @if($report->where('tabelId', $employee->employeeId)->first() == true)
+                                <div class="btn btn-info">Done</div>
+
+                                @else
+                            <button class="btn btn-success">Pay  </button>
+                                @endif
+                        </td>
+                    </tr>
+@endforeach
+                    </tbody>
+
                 </table>
             </div>
         </div>
@@ -118,82 +138,31 @@
                 minViewMode: 1,
 
             });
+
+            $('#dataChange').on('change',function () {
+                currMonth = $('#dataChange').val();
+                $.ajax({
+                    type: 'POST',
+                    url: "{!! route('employee.salaryByMonth') !!}",
+                    cache: false,
+                    data: {_token: "{{csrf_token()}}",'chooseMonth':currMonth},
+                    success: function (data) {
+
+                        if(data.length==0){
+                            alert("No Data Found In This Month ")
+                        }
+                        else{
+
+                        }
+
+
+                    }
+                });
+            })
         });
     </script>
 
-    <script>
-        $(document).ready( function () {
 
-            datatable =  $('#datatable').DataTable({
-                processing: true,
-                serverSide: true,
-                Filter: true,
-                stateSave: true,
-                type:"POST",
-                "ajax":{
-                    "url": "{!! route('expense.getData') !!}",
-                    "type": "POST",
-                    "data":{ _token: "{{csrf_token()}}"},
-                },
-                columns: [
-                    { data: 'amount', name: 'amount' },
-                    { data: 'price', name: 'price' },
-                    { data: 'cause', name: 'cause'},
-                    { "data": function(data){
-
-                            return '<a class="btn btn-info btn-sm" data-panel-id="'+data.expenseId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>' +
-                                '<a class="btn btn-danger btn-sm ml-3" data-panel-id="'+data.expenseId+'" onclick="deleteExpense(this)"><i class="fa fa-trash"></i></a>'
-                                ;},
-                        "orderable": false, "searchable":false, "name":"selected_rows" },
-
-                ]
-            });
-        } );
-        function editClient(x) {
-            var id=$(x).data('panel-id');
-
-            $.ajax({
-                type: 'POST',
-                url: "{!! route('expense.edit') !!}",
-                cache: false,
-                data: {_token: "{{csrf_token()}}",'id': id},
-                success: function (data) {
-                    $("#editEmpBody").html(data);
-                    $('#editEmp').modal();
-                    // console.log(data);
-                }
-            });
-
-        }
-        function deleteExpense(x) {
-            var id=$(x).data('panel-id');
-            $.confirm({
-                title: 'Confirm!',
-                content: 'Simple confirm!',
-                buttons: {
-                    confirm: function () {
-                        $.ajax({
-                            type: 'POST',
-                            url: "{!! route('expense.deleteExpense') !!}",
-                            cache: false,
-                            data: {_token: "{{csrf_token()}}",'expenseId': id},
-                            success: function (data) {
-                                $.alert('Expense Deleted Successfully');
-                                datatable.ajax.reload();
-                            }
-                        });
-                    },
-                    cancel: function () {
-                        $.alert('Canceled!');
-                    }
-                }
-            });
-
-
-
-        }
-
-    </script>
     {{--DataTables--}}
     <script src="{{url('public/plugins/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{url('public/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
