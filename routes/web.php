@@ -1,9 +1,7 @@
 <?php
 
 
-Route::get('/', function () {
-    return view('index');
-})->middleware('auth')->name('index');
+Route::get('/','DashBoardController@index')->middleware('auth')->name('index');
 
 Auth::routes();
 
@@ -56,18 +54,22 @@ Route::post('/Package-getpackage','PackageController@getpackage')->name('package
 
 
 /*
-<<<<<<< HEAD
- * Report Routes
+* Report Routes
  */
 Route::get('/Report-Debit','ReportController@showDebit')->name('report.showDebit');
 Route::post('/Report-Debit','ReportController@getDebitData')->name('report.getDebitData');
 Route::post('/Report-Debit-Sum','ReportController@getTotalDebitSum')->name('report.getTotalDebit');
-//Route::post('/Package-insert','PackageController@insert')->name('package.insert');
-//Route::post('/Package-edit','PackageController@edit')->name('package.edit');
-//Route::post('/Package-update/{id}','PackageController@update')->name('package.update');
-//Route::post('/Package-getpackage','PackageController@getpackage')->name('package.getpackage');
-=======
- * Company Info
+
+Route::get('/Report-Credit','ReportController@showCredit')->name('report.showCredit');
+
+Route::post('/Report-Credit','ReportController@getCreditData')->name('report.getCreditData');
+Route::post('/Report-Credit-Sum','ReportController@getTotalCreditSum')->name('report.getTotalCredit');
+Route::post('/Report-Details','ReportController@showDetailsReport')->name('report.Details');
+
+Route::get('/Report-Summary','ReportController@showSummary')->name('report.showSummary');
+
+
+ /* Company Info
  */
 Route::get('company-info','CompanyController@index')->name('company');
 Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
@@ -77,4 +79,4 @@ Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
  */
 
 Route::get('test','BillController@generatePdf');
->>>>>>> 0d0297648d3d9b84c779fd4ddf35c2cd0fa23cac
+

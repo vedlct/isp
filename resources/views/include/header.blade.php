@@ -88,7 +88,8 @@
                     <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-briefcase"></i> <span>Report </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="list-unstyled">
                             <li><a href="{{route('report.showDebit')}}" class="waves-effect">Debit</a></li>
-                            <li><a href="#" class="waves-effect">Credit</a></li>
+                            <li><a href="{{route('report.showCredit')}}" class="waves-effect">Credit</a></li>
+                            <li><a href="{{route('report.showSummary')}}" class="waves-effect">Summary</a></li>
                         </ul>
                     </li>
                     <li>
