@@ -18,16 +18,16 @@
 
         <div class="card col-12">
             <div class="card-body">
-                <div class="text-left mb-2 mr-2">
-                    <label for="datepicket">Start Date </label>
+                <div class="text-left mb-2">
+                    <label for="datepicket">Month </label>
                     <form action="#" method="POST">
                         @csrf
                     <input class="form-group datepicker" name="chooseMonth" id="dataChange" type="text">
                     </form>
+                    <a class="btn btn-danger" href="{{route('employee.salaryStore')}}"><i class="fa fa-recycle"></i>cancel</a>
                 </div>
-                <div class="text-right mb-2 mr-2">
-                    <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#addEmp">Add Expense</button>
-                </div>
+
+                <div id="testDiv">
                 <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                     <tr>
@@ -54,6 +54,7 @@
                     </tbody>
 
                 </table>
+                </div>
             </div>
         </div>
     </div>
@@ -130,6 +131,7 @@
     <!-- Datatable init js -->
     <script>
         $(document).ready(function() {
+            datatable = $("#datatable").DataTable();
             $('.empform').parsley();
 
             $('.datepicker').datepicker({
@@ -152,7 +154,7 @@
                             alert("No Data Found In This Month ")
                         }
                         else{
-                           console.log(data)
+                            $('#testDiv').html(data)
                         }
 
 
@@ -170,5 +172,4 @@
     <script src="{{url('public/plugins/datatables/dataTables.responsive.min.js')}}"></script>
     <script src="{{url('public/plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
 
-    <script src="{{url('public/pages/datatables.init.js')}}"></script>
 @endsection

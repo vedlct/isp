@@ -16,13 +16,10 @@ Route::post('/edit','EmployeeController@edit')->name('employee.edit');
 Route::post('/employee-store','EmployeeController@storeEmployee')->name('employee.store');
 Route::post('/employee-update','EmployeeController@updateEmployee')->name('employee.updateEmployee');
 Route::post('/employee-salary-month','EmployeeController@salaryByMonth')->name('employee.salaryByMonth');
-//Route::post('/employee-salary','EmployeeController@salaryByMonth')->name('employee.salaryByMonth');
-
-/*
- * Employee Salary
- */
 Route::get('/employee-salary','EmployeeController@getSalary')->name('employee.getSalary');
 Route::post('/employee-salary','EmployeeController@salaryStore')->name('employee.salaryStore');
+
+
 
 /*
  * Expense Route

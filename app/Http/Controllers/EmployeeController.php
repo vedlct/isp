@@ -77,7 +77,11 @@ public function salaryByMonth(Request $request){
         $currentMonth = Carbon::parse($request->chooseMonth)->format('m');
         $currentYear = Carbon::parse($request->chooseMonth)->format('Y');
         $emp = Employee::get();
-        $report = Report::where(DB::raw('Year(date)'),$currentYear)->where(DB::raw('Month(date)'),$currentMonth)->get();
+        $report = DB::table('employee')->join('report','report.tabelId','=','employee.employeeId')
+            ->where('report.tableName','=','employee')
+            ->where(DB::raw('Year(date)'),$currentYear)->where(DB::raw('Month(date)'),$currentMonth)->get();
+
+        return view('User.Employee.getSalaryByFilter',compact('report'));
         return response()->json($report);
 }
 
