@@ -93,16 +93,18 @@ class BillController extends Controller
     }
 
 
-    public function generatePdf(Request $r){
-        $clientId=$r->clientId;
+    public function generatePdf($id,$date){
+        $clientId=$id;
+//        $date=$date;
 
         $client=Client::leftJoin('package','package.packageId','client.fkpackageId')->findOrFail($clientId);
         $company=Company::first();
 
 
-        $pdf = PDF::loadView('bill.pdf',compact('client','company'));
+        $pdf = PDF::loadView('bill.pdf',compact('client','company','date'));
 
-        return $pdf->stream();
+//        return $pdf->stream();
+        return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
 
 
 

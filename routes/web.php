@@ -86,7 +86,7 @@ Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
  */
 
 
-Route::post('test','BillController@generatePdf');
+Route::get('bill/generate/{id}/{date}','BillController@generatePdf')->name('bill.invoice');
 Route::get('settings/account','AccountController@index')->name('account.index');
 Route::post('settings/account','AccountController@changePassword')->name('account.changePassword');
 

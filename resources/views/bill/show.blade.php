@@ -139,6 +139,7 @@
                             <th>Price</th>
                             <th>Address</th>
                             <th>Action</th>
+                            <th>Invoice</th>
                         </tr>
                         </thead>
 
@@ -161,6 +162,9 @@
                                 </select>
                             </td>
 
+                            <td>
+                                <button class="btn btn-info btn-sm" data-panel-date="{{$date}}" data-panel-id="{{$c->clientId}}" onclick="generateBill(this)" ><i class="fa fa-print"></i></button>
+                            </td>
 
 
 
@@ -208,6 +212,21 @@
             );
         } );
 
+        function generateBill(x) {
+            var id = $(x).data('panel-id');
+            var date = $(x).data('panel-date');
+
+            let url = "{{ route('bill.invoice',[':id',':date']) }}";
+
+            // url = url.replace([':id',':date'], id,date);
+            url = url.replace(':date', date);
+            url = url.replace(':id', id);
+            //
+            // document.location.href=url;
+
+            window.open(url,'_blank')
+
+        }
         function changeDate(x) {
             var date=$(x).val();
 
