@@ -77,7 +77,7 @@
                     </li>
                     <li>
                         <a href="{{route('expense.show')}}" class="waves-effect">
-                            <i class="fa fa-shopping-basket"></i> <span>Expanse</span>
+                            <i class="fa fa-shopping-basket"></i> <span>Expense</span>
                         </a>
                     </li>
                     {{--<li>--}}

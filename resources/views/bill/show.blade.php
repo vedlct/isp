@@ -155,7 +155,7 @@
                             <td>
 
 
-                                <select class="form-control" id="billtype" data-panel-id='{{$c->clientId}}' onchange="changebillstatus(this)">
+                                <select class="form-control" id="billtype" data-panel-date="{{$date}}" data-panel-id='{{$c->clientId}}' onchange="changebillstatus(this)">
                                     <option  value="paid" @if($bill->where('fkclientId', $c->clientId)->first() == true) selected @else @endif>Paid</option>
                                     <option value="due" @if($bill->where('fkclientId', $c->clientId)->first() == false) selected   @endif>Due</option>
                                 </select>
@@ -220,6 +220,7 @@
 
         function changebillstatus(x) {
             var id = $(x).data('panel-id');
+            var date = $(x).data('panel-date');
             var billtype = document.getElementById('billtype').value;
 
             if (billtype == 'paid') {
@@ -228,7 +229,7 @@
                     type: 'POST',
                     url: "{!! route('bill.paid') !!}",
                     cache: false,
-                    data: {_token: "{{csrf_token()}}", 'id': id},
+                    data: {_token: "{{csrf_token()}}", 'id': id,date:date},
                     success: function (data) {
                       //  $("#datatable").reload();
 
@@ -242,10 +243,10 @@
                     type: 'POST',
                     url: "{!! route('bill.due') !!}",
                     cache: false,
-                    data: {_token: "{{csrf_token()}}", 'id': id},
+                    data: {_token: "{{csrf_token()}}", 'id': id,date:date},
                     success: function (data) {
                         //  $("#datatable").reload();
-
+                        location.reload();
                         // alert(data);
                         // console.log(data);
                     }
