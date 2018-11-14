@@ -12,10 +12,9 @@ class BillController extends Controller
     public function generatePdf(){
         $clientId=1;
 
-        $client=Client::findOrFail($clientId);
+        $client=Client::leftJoin('package','package.packageId','client.fkpackageId')->findOrFail($clientId);
         $company=Company::first();
 
-//        return view('bill.pdf',compact('client','company'));
 
         $pdf = PDF::loadView('bill.pdf',compact('client','company'));
 
