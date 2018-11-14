@@ -182,6 +182,14 @@
                 <td style="text-align: center;" colspan=""><b>Rate</b></td>
                 <td style="text-align: center;" colspan=""><b>Total</b></td>
             </tr>
+            <tr style="">
+                <td style="text-align: center;" colspan=""><b>{{$date}}</b></td>
+                <td style="text-align: center;" colspan=""><b>{{$client->packageName}}</b></td>
+                <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
+                <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
+            </tr>
+
+
 
 
         </table>

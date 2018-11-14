@@ -60,7 +60,7 @@
                             </div>
 
 
-                            @if($package->where('packageName', 'test')->first()){{$package->where('packageName', 'test')->first()->packageName}}@endif
+                            {{--@if($package->where('packageName', 'test')->first()){{$package->where('packageName', 'test')->first()->packageName}}@endif--}}
                             <div class="form-group col-md-12">
                                 <label>bandWidth</label>
                                 <input type="text" name="bandwidth" id="bandwidth" placeholder="bandwidth" class="form-control" >
@@ -182,15 +182,15 @@
                     "data":{ _token: "{{csrf_token()}}"},
                 },
                 columns: [
-                    { data: 'clientFirstName', name: 'clientFirstName' },
-                    { data: 'clientLastName', name: 'clientLastName' },
-                    { data: 'email', name: 'email'},
-                    { data: 'phone', name: 'phone'},
-                    { data: 'ip', name: 'ip'},
-                    { data: 'packageName', name: 'packageName'},
-                    { data: 'bandWide', name: 'bandWide'},
-                    { data: 'price', name: 'price'},
-                    { data: 'address', name: 'address'},
+                    { data: 'clientFirstName', name: 'client.clientFirstName' },
+                    { data: 'clientLastName', name: 'client.clientLastName' },
+                    { data: 'email', name: 'client.email'},
+                    { data: 'phone', name: 'client.phone'},
+                    { data: 'ip', name: 'client.ip'},
+                    { data: 'packageName', name: 'package.packageName'},
+                    { data: 'bandWide', name: 'client.bandWide'},
+                    { data: 'price', name: 'client.price'},
+                    { data: 'address', name: 'client.address'},
                     { "data": function(data){
 
                             return '<a class="btn btn-default btn-sm"  data-panel-id="'+data.clientId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>'
