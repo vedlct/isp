@@ -29,10 +29,18 @@
                     <tr>
                         <th>Employee Name</th>
                         <th>Employee Salary</th>
-                        <th>Date</th>
                         <th>Salary Status</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
+                    <tbody>
+                    <tr>
+                        <td>Nasim</td>
+                        <td>Nasim</td>
+                        <td>Nasim</td>
+                        <td>Nasim</td>
+                    </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -121,79 +129,7 @@
         });
     </script>
 
-    <script>
-        $(document).ready( function () {
 
-            datatable =  $('#datatable').DataTable({
-                processing: true,
-                serverSide: true,
-                Filter: true,
-                stateSave: true,
-                type:"POST",
-                "ajax":{
-                    "url": "{!! route('expense.getData') !!}",
-                    "type": "POST",
-                    "data":{ _token: "{{csrf_token()}}"},
-                },
-                columns: [
-                    { data: 'amount', name: 'amount' },
-                    { data: 'price', name: 'price' },
-                    { data: 'cause', name: 'cause'},
-                    { "data": function(data){
-
-                            return '<a class="btn btn-info btn-sm" data-panel-id="'+data.expenseId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>' +
-                                '<a class="btn btn-danger btn-sm ml-3" data-panel-id="'+data.expenseId+'" onclick="deleteExpense(this)"><i class="fa fa-trash"></i></a>'
-                                ;},
-                        "orderable": false, "searchable":false, "name":"selected_rows" },
-
-                ]
-            });
-        } );
-        function editClient(x) {
-            var id=$(x).data('panel-id');
-
-            $.ajax({
-                type: 'POST',
-                url: "{!! route('expense.edit') !!}",
-                cache: false,
-                data: {_token: "{{csrf_token()}}",'id': id},
-                success: function (data) {
-                    $("#editEmpBody").html(data);
-                    $('#editEmp').modal();
-                    // console.log(data);
-                }
-            });
-
-        }
-        function deleteExpense(x) {
-            var id=$(x).data('panel-id');
-            $.confirm({
-                title: 'Confirm!',
-                content: 'Simple confirm!',
-                buttons: {
-                    confirm: function () {
-                        $.ajax({
-                            type: 'POST',
-                            url: "{!! route('expense.deleteExpense') !!}",
-                            cache: false,
-                            data: {_token: "{{csrf_token()}}",'expenseId': id},
-                            success: function (data) {
-                                $.alert('Expense Deleted Successfully');
-                                datatable.ajax.reload();
-                            }
-                        });
-                    },
-                    cancel: function () {
-                        $.alert('Canceled!');
-                    }
-                }
-            });
-
-
-
-        }
-
-    </script>
     {{--DataTables--}}
     <script src="{{url('public/plugins/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{url('public/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>

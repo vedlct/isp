@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -59,7 +60,16 @@ public function getSalary(){
      return view('User.Employee.getSalary');
 }
 public function salaryStore(Request $r){
-        return $r;
+    $employee = Employee::all();
+    $datatables = DataTables::of($employee);
+    return $datatables->make(true);
+}
+
+public function testEmployee(){
+        $emp = Employee::leftJoin('report','report.tabelId','employee.employeeId')->where('report.tableName','=','employee')->get();
+//        $getDate = Carbon::parse($emp)->format('m');
+//        $monthget = Carbon::now()->format('m');
+        return $emp;
 }
 
 }

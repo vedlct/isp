@@ -82,4 +82,4 @@ Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
  * Bill Info
  */
 
-Route::get('test','BillController@generatePdf');
+Route::get('test','EmployeeController@testEmployee');
