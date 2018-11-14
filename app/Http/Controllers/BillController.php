@@ -72,8 +72,8 @@ class BillController extends Controller
     }
 
 
-    public function generatePdf(){
-        $clientId=1;
+    public function generatePdf(Request $r){
+        $clientId=$r->clientId;
 
         $client=Client::leftJoin('package','package.packageId','client.fkpackageId')->findOrFail($clientId);
         $company=Company::first();
