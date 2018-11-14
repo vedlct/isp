@@ -20,7 +20,11 @@
             <div class="card-body">
                 <div class="text-left mb-2 mr-2">
                     <label for="datepicket">Start Date </label>
-                    <input class="form-group datepicker" type="text"></div>
+                    <form action="#" method="POST">
+                        @csrf
+                    <input class="form-group datepicker" name="chooseMonth" id="dataChange" type="text">
+                    </form>
+                </div>
                 <div class="text-right mb-2 mr-2">
                     <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#addEmp">Add Expense</button>
                 </div>
@@ -29,18 +33,26 @@
                     <tr>
                         <th>Employee Name</th>
                         <th>Employee Salary</th>
-                        <th>Salary Status</th>
-                        <th>Action</th>
+                        <th>Status</th>
                     </tr>
                     </thead>
                     <tbody>
+                    @foreach($employees as $employee)
                     <tr>
-                        <td>Nasim</td>
-                        <td>Nasim</td>
-                        <td>Nasim</td>
-                        <td>Nasim</td>
+                        <td>{{$employee->employeeName}}</td>
+                        <td>{{$employee->salary}}</td>
+                        <td>
+                            @if($report->where('tabelId', $employee->employeeId)->first() == true)
+                                <div class="btn btn-info">Done</div>
+
+                                @else
+                            <button class="btn btn-success">Pay  </button>
+                                @endif
+                        </td>
                     </tr>
+@endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -126,6 +138,27 @@
                 minViewMode: 1,
 
             });
+
+            $('#dataChange').on('change',function () {
+                currMonth = $('#dataChange').val();
+                $.ajax({
+                    type: 'POST',
+                    url: "{!! route('employee.salaryByMonth') !!}",
+                    cache: false,
+                    data: {_token: "{{csrf_token()}}",'chooseMonth':currMonth},
+                    success: function (data) {
+
+                        if(data.length==0){
+                            alert("No Data Found In This Month ")
+                        }
+                        else{
+
+                        }
+
+
+                    }
+                });
+            })
         });
     </script>
 

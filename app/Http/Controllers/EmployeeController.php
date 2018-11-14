@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class EmployeeController extends Controller
@@ -57,7 +59,13 @@ class EmployeeController extends Controller
         return redirect()->route('employee.show');
     }
 public function getSalary(){
-     return view('User.Employee.getSalary');
+    $emp = Employee::get();
+    $report = Report::where('tableName','=','employee')->get();
+
+//        $getDate = Carbon::parse($emp)->format('m');
+//        $monthget = Carbon::now()->format('m');
+
+    return view('User.Employee.getSalary')->with('employees',$emp)->with('report',$report);
 }
 public function salaryStore(Request $r){
     $employee = Employee::all();
@@ -65,11 +73,18 @@ public function salaryStore(Request $r){
     return $datatables->make(true);
 }
 
+public function salaryByMonth(Request $request){
+        $currentMonth = Carbon::parse($request->chooseMonth)->format('m');
+        $currentYear = Carbon::parse($request->chooseMonth)->format('Y');
+        $emp = Employee::get();
+        $report = Report::where(DB::raw('Year(date)'),$currentYear)->where(DB::raw('Month(date)'),$currentMonth)->get();
+        return response()->json($report);
+}
+
+
+
 public function testEmployee(){
-        $emp = Employee::leftJoin('report','report.tabelId','employee.employeeId')->where('report.tableName','=','employee')->get();
-//        $getDate = Carbon::parse($emp)->format('m');
-//        $monthget = Carbon::now()->format('m');
-        return $emp;
+
 }
 
 }

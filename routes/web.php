@@ -15,7 +15,8 @@ Route::get('/employee-show','EmployeeController@showEmployee')->name('employee.s
 Route::post('/edit','EmployeeController@edit')->name('employee.edit');
 Route::post('/employee-store','EmployeeController@storeEmployee')->name('employee.store');
 Route::post('/employee-update','EmployeeController@updateEmployee')->name('employee.updateEmployee');
-Route::post('/employee-get-data','EmployeeController@getEmpData')->name('employee.getData');
+Route::post('/employee-salary-month','EmployeeController@salaryByMonth')->name('employee.salaryByMonth');
+//Route::post('/employee-salary','EmployeeController@salaryByMonth')->name('employee.salaryByMonth');
 
 /*
  * Employee Salary
