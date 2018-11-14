@@ -13,7 +13,8 @@ use App\Company;
 use App\Report;
 use Illuminate\Http\Request;
 use PDF;
-
+use DB;
+use Carbon\Carbon;
 class BillController extends Controller
 {
 
@@ -33,6 +34,20 @@ class BillController extends Controller
         $package = Package::get();
         return view('bill.show', compact('client', 'bill', 'package'));
     }
+
+    public function showDate($date){
+        $currentMonth = Carbon::parse($date)->format('m');
+
+        $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice', 'address', 'packageName')
+            ->leftjoin('package','packageId','fkpackageId')
+        ->get();
+        $bill = Bill::where(DB::raw('month(billdate)'),$currentMonth)->get();
+
+        $package = Package::get();
+        return view('bill.show', compact('client', 'bill', 'package','date'));
+    }
+
+
     public function paid(Request $r){
 
         $client = Client::findOrFail($r->id);
