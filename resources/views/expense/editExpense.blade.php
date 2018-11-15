@@ -2,15 +2,29 @@
     {{csrf_field()}}
     <input type="hidden" name="expenseId" value="{{$expense->expenseId}}">
     <div class="form-group">
-        <label>Quantity</label>
+        <label>Expense Type</label>
         <div>
-            <input data-parsley-type="digits" name="amount" value="{{$expense->amount}}" type="text" class="form-control" required="" placeholder="Enter Salary Amount">
+            <select class="form-control" name="expenseType">
+                <option value="">Select</option>
+                <option>Food</option>
+                <option>Router</option>
+                <option>Accessories</option>
+                <option>Others</option>
+            </select>
         </div>
     </div>
+
+
     <div class="form-group">
         <label>price</label>
         <div>
             <input data-parsley-type="digits" name="price" value="{{$expense->price}}" type="text" class="form-control" required="" placeholder="Enter Salary Amount">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Quantity</label>
+        <div>
+            <input data-parsley-type="digits" name="amount" value="{{$expense->amount}}" type="text" class="form-control" required="" placeholder="Enter Salary Amount">
         </div>
     </div>
     <div class="form-group">

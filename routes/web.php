@@ -29,6 +29,7 @@ Route::post('/expense-edit','ExpenseController@expenseEdit')->name('expense.edit
 Route::post('/expense-save','ExpenseController@storeExpense')->name('expense.store');
 Route::post('/expense-update','ExpenseController@updateExpense')->name('expense.update');
 Route::post('/expense-delete','ExpenseController@deleteExpense')->name('expense.deleteExpense');
+Route::post('/expense/filterByType', 'ExpenseController@filterByType')->name('expense.filterByType');
 
 
 /*
@@ -78,7 +79,7 @@ Route::post('/Report-Credit','ReportController@getCreditData')->name('report.get
 Route::post('/Report-Credit-Sum','ReportController@getTotalCreditSum')->name('report.getTotalCredit');
 Route::post('/Report-Details','ReportController@showDetailsReport')->name('report.Details');
 
-//Route::get('/Report-Summary','ReportController@showSummary')->name('report.showSummary');
+Route::get('/Report-Summary','ReportController@showSummary')->name('report.showSummary');
 
 //Route::post('/Package-insert','PackageController@insert')->name('package.insert');
 //Route::post('/Package-edit','PackageController@edit')->name('package.edit');

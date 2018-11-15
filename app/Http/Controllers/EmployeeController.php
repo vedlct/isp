@@ -82,7 +82,7 @@ public function salaryByMonth(Request $request){
             ->where(DB::raw('Year(date)'),$currentYear)->where(DB::raw('Month(date)'),$currentMonth)->get();
 
         return view('User.Employee.getSalaryByFilter',compact('report'));
-        return response()->json($report);
+//        return response()->json($report);
 }
 
 
