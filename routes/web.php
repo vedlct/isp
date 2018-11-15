@@ -76,7 +76,7 @@ Route::post('/Report-Credit','ReportController@getCreditData')->name('report.get
 Route::post('/Report-Credit-Sum','ReportController@getTotalCreditSum')->name('report.getTotalCredit');
 Route::post('/Report-Details','ReportController@showDetailsReport')->name('report.Details');
 
-//Route::get('/Report-Summary','ReportController@showSummary')->name('report.showSummary');
+Route::get('/Report-Summary','ReportController@showSummary')->name('report.showSummary');
 
 //Route::post('/Package-insert','PackageController@insert')->name('package.insert');
 //Route::post('/Package-edit','PackageController@edit')->name('package.edit');
