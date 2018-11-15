@@ -127,7 +127,7 @@
 @section('js')
     <!-- Required datatable js -->
     <script src="{{url('public/plugins/parsleyjs/parsley.min.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
     <!-- Datatable init js -->
     <script>
         $(document).ready(function() {

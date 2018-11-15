@@ -18,15 +18,26 @@
 
         <div class="card col-12">
             <div class="card-body">
-                <div class="text-right mb-2 mr-2">
-                    <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#addEmp">Add Expense</button>
-                    <select id="statusFilter" name="expenseTypeFilter">
-                        <option>Select</option>
+                <div class="text-left">
+                    <label for="statusFilter">
+                        Expense Type
+                    </label>
+                    <select id="statusFilter">
+                        <option value="">Select</option>
                         <option value="Food">Food</option>
                         <option value="Router">Router</option>
                         <option value="Accessories">Accessories</option>
                         <option value="Others">Others</option>
                     </select>
+
+                    <label for="Start Date">From</label>
+                    <input class="form-group datepicker" name="fromdate" id="dataChange" type="text">
+                    <label for="Start Date">To</label>
+                    <input class="form-group datepicker" name="toDate" id="dataChange" type="text">
+                </div>
+
+                <div class="text-right mb-2 mr-2">
+                    <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#addEmp">Add Expense</button>
                 </div>
                 <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
@@ -133,8 +144,13 @@
 
     <script>
         $(document).ready( function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose:true,
 
-                datatable =  $('#datatable').DataTable({
+            });
+
+            datatable =  $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 Filter: true,
@@ -143,7 +159,15 @@
                 "ajax":{
                     "url": "{!! route('expense.getData') !!}",
                     "type": "POST",
-                    "data":{ _token: "{{csrf_token()}}"},
+                    data:function (d){
+
+                        d._token="{{csrf_token()}}";
+
+                        if ($('#statusFilter').val()!=""){
+                            d.statusFilter=$('#statusFilter').val();
+                        }
+
+                    }
                 },
                 columns: [
                     { data: 'expenseType', name: 'expenseType'},
@@ -151,6 +175,7 @@
                     { data: 'price', name: 'price' },
                     { data: 'amount', name: 'amount' },
                     { data: 'date', name: 'date'},
+
                     { "data": function(data){
 
                             return '<a class="btn btn-info btn-sm" data-panel-id="'+data.expenseId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>' +
@@ -162,8 +187,9 @@
             });
         } );
         $('#statusFilter').on('change', function(){
-            var filter_value = $(this).val();
-            datatable.ajax.url('{!! route('expense.filterByType') !!}}').load();
+
+                datatable.ajax.reload();
+
         });
         function editClient(x) {
             var id=$(x).data('panel-id');

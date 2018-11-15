@@ -5,7 +5,7 @@
         <label>Expense Type</label>
         <div>
             <select class="form-control" name="expenseType">
-                <option>Select</option>
+                <option value="">Select</option>
                 <option>Food</option>
                 <option>Router</option>
                 <option>Accessories</option>

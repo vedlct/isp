@@ -15,6 +15,10 @@ class ExpenseController extends Controller
     }
     public function getExpenseData(Request $r){
         $expense = Expense::all();
+        if ($r->statusFilter){
+            $expense=$expense->where('expenseType',$r->statusFilter);
+        }
+
         $datatables = DataTables::of($expense);
         return $datatables->make(true);
     }
@@ -60,15 +64,15 @@ public function expenseEdit(Request $r){
         return back();
     }
 
-    public function filterByType(Request $request)
-    {
-        if($request->status) {
-            $expense = Expense::where('expenseType',$request->expenseTypeFilter)->get();
-            return response()->json(['data' => $expense]);
-        } else {
-            $expense = Expense::get();
-            return response()->json(['data' => $expense]);
-        }
-    }
+//    public function filterByType(Request $request)
+//    {
+//        if($request->status) {
+//            $expense = Expense::where('expenseType',$request->status)->get();
+//            return response()->json(['data' => $expense]);
+//        } else {
+//            $expense = Expense::get();
+//            return response()->json(['data' => $expense]);
+//        }
+//    }
 
 }
