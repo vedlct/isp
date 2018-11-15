@@ -22,7 +22,7 @@
                     <label for="statusFilter">
                         Expense Type
                     </label>
-                    <select id="statusFilter">
+                    <select id="statusFilter" class="form-group">
                         <option value="">Select</option>
                         <option value="Food">Food</option>
                         <option value="Router">Router</option>
@@ -30,7 +30,7 @@
                         <option value="Others">Others</option>
                     </select>
 
-                    <label for="Start Date">From</label>
+                    <label for="Start Date">Expense From</label>
                     <input class="form-group datepicker" name="fromdate" id="dataChange" type="text">
                     <label for="Start Date">To</label>
                     <input class="form-group datepicker" name="toDate" id="dataChange" type="text">
