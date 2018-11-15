@@ -79,6 +79,7 @@ class ReportController extends Controller
 
         if ($r->currentMonth){
             $debit=$debit->whereMonth('report.date', Carbon::now()->month);
+
         }
         else{
 
@@ -89,6 +90,10 @@ class ReportController extends Controller
                 $debit=$debit->where('report.date','<=',$r->dateFilterTo);
             }
 
+
+        }
+        if ($r->statusFilter){
+            $debit=$debit->where('reportDebitExpense1.expenseType',$r->statusFilter);
         }
 
         $datatables = DataTables::of($debit);

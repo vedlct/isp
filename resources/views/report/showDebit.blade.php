@@ -18,7 +18,8 @@
 
         <div class="card col-12">
             <div class="card-body">
-                <div class="text-left mb-2 mr-2">
+                <div class="row">
+                <div class="text-left col-md-6">
                     <label for="datepicket">From</label>
                     <input class="form-group datepicker" id="dateFilterFrom" name="dateFilterFrom" type="text"> &nbsp;
                     <label for="datepicket">To</label>
@@ -28,8 +29,22 @@
                     <div class="text-left mb-2 mr-2">
                         <div id="totalSumDiv" style="font-weight: bold">Total Sum : &nbsp;&nbsp;<span id="totalSum" style="color: red">{{$totalOFCurrentMonth}}</span></div>
                     </div>
-
                 </div>
+                    <div class="col-md-6">
+                    <label class="col-md-2" for="statusFilter">
+                        Expense Type
+                    </label>
+                    <select class="form-control col-md-4" id="statusFilter">
+                        <option value="">Select</option>
+                        <option value="Food">Food</option>
+                        <option value="Router">Router</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Others">Others</option>
+                    </select>
+
+                    </div>
+                </div>
+
 
 
                 <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -121,6 +136,9 @@
                         if($('#dateFilterTo').val()== '' && $('#dateFilterFrom').val() == ''){
                             d.currentMonth=true;
                         }
+                        if($('#statusFilter').val()!= ''){
+                            d.statusFilter=$('#statusFilter').val();
+                        }
 
                     }
                 },
@@ -153,6 +171,12 @@
 
 
         } );
+
+        $('#statusFilter').on('change', function(){
+
+            datatable.ajax.reload();
+
+        });
         function showDetails(x) {
             var id = $(x).data('panel-id');
 
