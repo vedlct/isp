@@ -59,7 +59,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title"><a href="#">Past Bill Due</a></h4>
+                    <h4 class="card-title"><a href="{{route('bill.showPastDue')}}">Past Bill Due</a></h4>
 
                     <div class="row">
 

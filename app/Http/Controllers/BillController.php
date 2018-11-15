@@ -35,6 +35,16 @@ class BillController extends Controller
         $package = Package::get();
         return view('bill.show', compact('client', 'bill', 'package','date'));
     }
+    public function showPastDue(){
+        $date=Carbon::now()->startOfMonth()->format('Y-m-d');
+
+        $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice', 'address', 'packageName')
+            ->leftjoin('package','packageId','fkpackageId')
+        ->get();
+        $bill = Bill::get();
+        $package = Package::get();
+        return view('bill.showPastDue', compact('client', 'bill', 'package','date'));
+    }
 
     public function showDate($date){
         $currentMonth = Carbon::parse($date)->format('m');
