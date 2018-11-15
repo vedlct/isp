@@ -29,6 +29,7 @@ Route::post('/expense-edit','ExpenseController@expenseEdit')->name('expense.edit
 Route::post('/expense-save','ExpenseController@storeExpense')->name('expense.store');
 Route::post('/expense-update','ExpenseController@updateExpense')->name('expense.update');
 Route::post('/expense-delete','ExpenseController@deleteExpense')->name('expense.deleteExpense');
+Route::post('/expense/filterByType', 'ExpenseController@filterByType')->name('expense.filterByType');
 
 
 /*
