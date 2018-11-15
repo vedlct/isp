@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui">
-    <title>Drixo - Responsive Booststrap 4 Admin & Dashboard</title>
+    <title>ISP</title>
     <meta content="Admin Dashboard" name="description">
     <meta content="ThemeDesign" name="author">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,7 +32,7 @@
                     <div class="col-lg-5 col-md-8">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="text-center mt-0 m-b-15"><a href="index-2.html" class="logo logo-admin"><img src="{{url('public/images/logo-dark.png')}}" height="30" alt="logo"></a></h3>
+                                {{--<h3 class="text-center mt-0 m-b-15"><a href="index-2.html" class="logo logo-admin"><img src="{{url('public/images/logo-dark.png')}}" height="30" alt="logo"></a></h3>--}}
                                 <h4 class="text-muted text-center font-18"><b>Sign In</b></h4>
                                 <div class="p-2">
                                     <form class="form-horizontal m-t-20" action="{{ route('login') }}" method="post">

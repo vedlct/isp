@@ -18,15 +18,35 @@
 
         <div class="card col-12">
             <div class="card-body">
+                <div class="text-left">
+                    <label for="statusFilter">
+                        Expense Type
+                    </label>
+                    <select id="statusFilter" class="form-group">
+                        <option value="">Select</option>
+                        <option value="Food">Food</option>
+                        <option value="Router">Router</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Others">Others</option>
+                    </select>
+
+                    <label for="Start Date">Expense From</label>
+                    <input class="form-group datepicker" name="fromdate" id="dataChange" type="text">
+                    <label for="Start Date">To</label>
+                    <input class="form-group datepicker" name="toDate" id="dataChange" type="text">
+                </div>
+
                 <div class="text-right mb-2 mr-2">
                     <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#addEmp">Add Expense</button>
                 </div>
                 <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                     <tr>
-                        <th>Quantity</th>
-                        <th>Price</th>
+                        <th>Expense Type</th>
                         <th>Cause</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Date</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -52,15 +72,27 @@
                     <form class="empform" action="{{route('expense.store')}}" novalidate="" method="post">
                         {{csrf_field()}}
                         <div class="form-group">
-                            <label>Quantity</label>
+                            <label>Expense Type</label>
                             <div>
-                                <input data-parsley-type="number" name="amount" type="text" class="form-control" required="" placeholder="Enter Quantity Amount">
+                                <select class="form-control" name="expenseType">
+                                    <option>Select</option>
+                                    <option>Food</option>
+                                    <option>Router</option>
+                                    <option>Accessories</option>
+                                    <option>Others</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>price</label>
                             <div>
                                 <input data-parsley-type="number" name="price" type="text" class="form-control" required="" placeholder="Enter Price Amount">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <div>
+                                <input data-parsley-type="number" name="amount" type="text" class="form-control" required="" placeholder="Enter Quantity Amount">
                             </div>
                         </div>
                         <div class="form-group">
@@ -112,8 +144,13 @@
 
     <script>
         $(document).ready( function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose:true,
 
-                datatable =  $('#datatable').DataTable({
+            });
+
+            datatable =  $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 Filter: true,
@@ -122,12 +159,23 @@
                 "ajax":{
                     "url": "{!! route('expense.getData') !!}",
                     "type": "POST",
-                    "data":{ _token: "{{csrf_token()}}"},
+                    data:function (d){
+
+                        d._token="{{csrf_token()}}";
+
+                        if ($('#statusFilter').val()!=""){
+                            d.statusFilter=$('#statusFilter').val();
+                        }
+
+                    }
                 },
                 columns: [
-                    { data: 'amount', name: 'amount' },
-                    { data: 'price', name: 'price' },
+                    { data: 'expenseType', name: 'expenseType'},
                     { data: 'cause', name: 'cause'},
+                    { data: 'price', name: 'price' },
+                    { data: 'amount', name: 'amount' },
+                    { data: 'date', name: 'date'},
+
                     { "data": function(data){
 
                             return '<a class="btn btn-info btn-sm" data-panel-id="'+data.expenseId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>' +
@@ -138,6 +186,11 @@
                 ]
             });
         } );
+        $('#statusFilter').on('change', function(){
+
+                datatable.ajax.reload();
+
+        });
         function editClient(x) {
             var id=$(x).data('panel-id');
 

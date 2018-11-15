@@ -20,98 +20,55 @@
             <div class="card-body">
                 <div class="text-left mb-2 mr-2">
                     <label for="datepicket">From</label>
-                    <input class="form-group datepicker" id="dateFilterFrom" name="dateFilterFrom" type="text">
+                    <input class="form-group datepicker" id="dateFilterFrom" name="dateFilterFrom" type="text"> &nbsp;
                     <label for="datepicket">To</label>
                     <input class="form-group datepicker" id="dateFilterTo" name="dateFilterTo" type="text">
+                    <input class="btn btn-sm btn-info" id="Submit" name="Submit" value="Submit" onclick="getDebitData()" type="button">
+
+                    <div class="text-left mb-2 mr-2">
+                        <div id="totalSumDiv" style="font-weight: bold">Total Sum : &nbsp;&nbsp;<span id="totalSum" style="color: red">{{$totalOFCurrentMonth}}</span></div>
+                    </div>
+
                 </div>
 
-                {{--<div class="text-right mb-2 mr-2">--}}
-                    {{--<button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#addEmp">Add Expense</button>--}}
-                {{--</div>--}}
+
                 <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                     <tr>
                         <th>Date</th>
                         <th>Amount</th>
+                        <th>Type</th>
                         <th>Action</th>
                     </tr>
                     </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                    <tr>
+
+                        <th style="text-align:right">Total:</th>
+                        <th colspan="3"><span id="pageTotal"></span></th>
+
+                    </tr>
+                    </tfoot>
                 </table>
 
-                <div id="totalSumDiv">Total Sum :<span id="totalSum"></span></div>
             </div>
         </div>
     </div>
     <!-- end col -->
 
 
-
-    {{--Add Employee Modal--}}
-    <!--  Modal content for the above example -->
-
-    {{--<div class="modal fade bs-example-modal-lg" id="addEmp" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">--}}
-        {{--<div class="modal-dialog modal-lg">--}}
-            {{--<div class="modal-content">--}}
-                {{--<div class="modal-header">--}}
-                    {{--<h5 class="modal-title mt-0" id="myLargeModalLabel">Add Employee</h5>--}}
-                    {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                {{--</div>--}}
-                {{--<div class="modal-body">--}}
-                    {{--<form class="empform" action="{{route('expense.store')}}" novalidate="" method="post">--}}
-                        {{--{{csrf_field()}}--}}
-                        {{--<div class="form-group">--}}
-                            {{--<label>Quantity</label>--}}
-                            {{--<div>--}}
-                                {{--<input data-parsley-type="number" name="amount" type="text" class="form-control" required="" placeholder="Enter Quantity Amount">--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--<div class="form-group">--}}
-                            {{--<label>price</label>--}}
-                            {{--<div>--}}
-                                {{--<input data-parsley-type="number" name="price" type="text" class="form-control" required="" placeholder="Enter Price Amount">--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--<div class="form-group">--}}
-                            {{--<label>Cause</label>--}}
-                            {{--<div>--}}
-                                {{--<textarea required="" name="cause" class="form-control" rows="5"></textarea>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--<div class="form-group">--}}
-                            {{--<div>--}}
-                                {{--<button type="submit" class="btn btn-primary waves-effect waves-light">Add Expense</button>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</form>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-            {{--<!-- /.modal-content -->--}}
-        {{--</div>--}}
-    {{--</div>--}}
-    <!-- end row -->
-
-    {{--edit Modal--}}
-    {{--<div class="modal fade " id="editEmp" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">--}}
-        {{--<div class="modal-dialog modal-lg">--}}
-            {{--<div class="modal-content">--}}
-                {{--<div class="modal-header">--}}
-                    {{--<h5 class="modal-title mt-0" id="myLargeModalLabel">Add Employee</h5>--}}
-                    {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                {{--</div>--}}
-                {{--<div class="modal-body" id="editEmpBody">--}}
-
-                {{--</div>--}}
-            {{--</div>--}}
-            {{--<!-- /.modal-content -->--}}
-        {{--</div>--}}
-    {{--</div>--}}
 @endsection
 
 
 @section('js')
+
+
+
     <!-- Required datatable js -->
     <script src="{{url('public/plugins/parsleyjs/parsley.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    {{--<script src="//cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>--}}
     <!-- Datatable init js -->
     <script>
         $(document).ready(function() {
@@ -127,19 +84,20 @@
     </script>
 
     <script>
+
+
+
+
         $(document).ready( function () {
 
-            var data = {};
-
-            if($('#dateFilterTo').val() != null){
-                data['dateFilterTo']=$('#dateFilterTo').val();
-            }
-            if($('#dateFilterFrom').val() != null){
-                data['dateFilterFrom']=$('#dateFilterFrom').val();
-            }
-
-
             datatable =  $('#datatable').DataTable({
+
+                drawCallback: function () {
+                    var api = this.api();
+                    $('#pageTotal').html(api.column( 1, {page:'current'}).data().sum());
+
+                },
+
                 processing: true,
                 serverSide: true,
                 Filter: true,
@@ -148,78 +106,86 @@
                 "ajax":{
                     "url": "{!! route('report.getDebitData') !!}",
                     "type": "POST",
-                    "data":{ _token: "{{csrf_token()}}"},
+
+
+                    data:function (d){
+
+                        d._token="{{csrf_token()}}";
+
+                        if ($('#dateFilterTo').val()!=""){
+                            d.dateFilterTo=$('#dateFilterTo').val();
+                        }
+                        if ($('#dateFilterFrom').val()!=""){
+                            d.dateFilterFrom=$('#dateFilterFrom').val();
+                        }
+                        if($('#dateFilterTo').val()== '' && $('#dateFilterFrom').val() == ''){
+                            d.currentMonth=true;
+                        }
+
+                    }
                 },
                 columns: [
                     { data: 'date', name: 'date' },
                     { data: 'price', name: 'price' },
 
                     { "data": function(data){
+                        if (data.tableName == 'employee'){
+                            return 'Employee-Salary';
+                            }else {
+                            return 'Expense';
 
-                        return '<a class="btn btn-info btn-sm" data-panel-id="" ><i class="fa fa-edit"></i></a>'
+                            }
+                        },
+
+                        "orderable": false, "searchable":false, "name":"selected_rows" },
+
+                    { "data": function(data){
+
+                        return '<a class="btn btn-info btn-sm" data-panel-id="'+data.reportId+'" onclick="showDetails(this)"><i class="fa fa-edit"></i></a>'
                             ;},
                         "orderable": false, "searchable":false, "name":"selected_rows" },
 
                 ]
             });
 
-            $.ajax({
-                type: 'POST',
-                url: "{!! route('report.getTotalDebit') !!}",
-                cache: false,
-                data: {_token: "{{csrf_token()}}",'filterData':data},
-                success: function (data) {
-                    $("#totalSum").html(data);
-                }
-            });
+
 
 
         } );
-        function editClient(x) {
-            var id=$(x).data('panel-id');
+        function showDetails(x) {
+            var id = $(x).data('panel-id');
 
             $.ajax({
                 type: 'POST',
-                url: "{!! route('expense.edit') !!}",
+                url: "{!! route('report.Details') !!}",
                 cache: false,
-                data: {_token: "{{csrf_token()}}",'id': id},
+                data: {_token: "{{csrf_token()}}", 'id': id},
                 success: function (data) {
-                    $("#editEmpBody").html(data);
-                    $('#editEmp').modal();
-                    // console.log(data);
+
+                    $('.modal-body').html(data);
+                    $('#myModalLabel').html("Details-Report");
+                    $('#myModal').modal();
+
                 }
             });
-
         }
-        function deleteExpense(x) {
-            var id=$(x).data('panel-id');
-            $.confirm({
-                title: 'Confirm!',
-                content: 'Simple confirm!',
-                buttons: {
-                    confirm: function () {
-                        $.ajax({
-                            type: 'POST',
-                            url: "{!! route('expense.deleteExpense') !!}",
-                            cache: false,
-                            data: {_token: "{{csrf_token()}}",'expenseId': id},
-                            success: function (data) {
-                                $.alert('Expense Deleted Successfully');
-                                datatable.ajax.reload();
-                            }
-                        });
-                    },
-                    cancel: function () {
-                        $.alert('Canceled!');
+
+        function getDebitData() {
+            datatable.ajax.reload();  //just reload table
+                $.ajax({
+                    type: 'POST',
+                    url: "{!! route('report.getTotalDebit') !!}",
+                    cache: false,
+                    data: {_token: "{{csrf_token()}}",'dateFilterTo':$('#dateFilterTo').val(),'dateFilterFrom':$('#dateFilterFrom').val()},
+                    success: function (data) {
+                        $("#totalSum").html(data);
+//                        console.log(data);
                     }
-                }
-            });
-
-
-
+                });
         }
 
     </script>
+
     {{--DataTables--}}
     <script src="{{url('public/plugins/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{url('public/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
@@ -228,4 +194,20 @@
     <script src="{{url('public/plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
 
     <script src="{{url('public/pages/datatables.init.js')}}"></script>
+
+    <script>
+                jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
+                    return this.flatten().reduce( function ( a, b ) {
+                        if ( typeof a === 'string' ) {
+                            a = a.replace(/[^\d.-]/g, '') * 1;
+                        }
+                        if ( typeof b === 'string' ) {
+                            b = b.replace(/[^\d.-]/g, '') * 1;
+                        }
+
+                        return a + b;
+                    }, 0 );
+                } );
+    </script>
+
 @endsection
