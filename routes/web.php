@@ -55,7 +55,7 @@ Route::post('/Package-update/{id}','PackageController@update')->name('package.up
 Route::post('/Package-getpackage','PackageController@getpackage')->name('package.getpackage');
 
 Route::get('/Package-cable','PackageController@cableshow')->name('package.cable.show');
-Route::post('/Package-cable-getData','PackageController@cablegetData')->name('package.getdata');
+Route::post('/Package-cable-getData','PackageController@cablegetData')->name('package.cable.getdata');
 Route::post('/Package-cable-insert','PackageController@cableinsert')->name('package.cable.insert');
 Route::post('/Package-cable-edit','PackageController@cableedit')->name('package.cable.edit');
 Route::post('/Package-cable-update/{id}','PackageController@cableupdate')->name('package.cable.update');

@@ -48,11 +48,14 @@
                             <i class="dripicons-blog"></i> <span>Dashboard </span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{route('package.show')}}" class="waves-effect">
-                            <i class="dripicons-meter"></i> <span>Package</span>
-                        </a>
+                    <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-meter"></i> <span>Package </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('package.show')}}" class="waves-effect">Internet Package</a></li>
+                            <li><a href="{{route('package.cable.show')}}" class="waves-effect">Cable Package</a></li>
+
+                        </ul>
                     </li>
+
                     <li>
                         <a href="{{route('employee.show')}}" class="waves-effect">
                             <i class="fa fa-empire"></i> <span>Employee</span>

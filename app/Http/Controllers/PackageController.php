@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CablePackage;
 use App\Package;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -60,6 +61,50 @@ class PackageController extends Controller
         $package = Package::select('bandwidth', 'price')
         ->where('packageId' , $r->id)
         ->first();
+        return $package;
+    }
+
+////////////////cable/////////////////////
+
+    public function cableshow(){
+
+        return view('package.cableshow');
+    }
+    public function cableinsert(Request $r){
+        $package = new CablePackage();
+        $package->cablepackageName=$r->cablepackageName;
+        $package->price=$r->price;
+        $package->save();
+        Session::flash('message', 'cable Package Insert Successfully!');
+        return back();
+    }
+    public function cableedit(Request $r){
+
+        $package=CablePackage::findOrFail($r->id);
+
+        return view('package.cableedit',compact('package'));
+    }
+
+    public function cableupdate(Request $r, $id){
+        $package = CablePackage::findOrFail($id);
+        $package->cablepackageName=$r->cablepackageName;
+        $package->price=$r->price;
+        $package->save();
+        Session::flash('message', 'Cable Package Updated Successfully!');
+        return back();
+
+    }
+
+    public function cablegetData(Request $r){
+        $package = CablePackage::get();
+        $datatables = Datatables::of($package);
+        return $datatables->make(true);
+    }
+
+    public function cablegetpackage(Request $r ){
+        $package = CablePackage::select( 'price')
+            ->where('cablepackageId' , $r->id)
+            ->first();
         return $package;
     }
 }

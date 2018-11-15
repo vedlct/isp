@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CablePackage;
 use App\Client;
 use App\Package;
 use Illuminate\Http\Request;
@@ -21,7 +22,8 @@ class ClientController extends Controller
     public function show(){
 
         $package = Package::get();
-        return view('client.show', compact('package'));
+        $cablepackage = CablePackage::get();
+        return view('client.show', compact('package','cablepackage'));
     }
     public function insert(Request $r){
 

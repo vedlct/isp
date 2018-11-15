@@ -25,17 +25,13 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form method="post" action="{{route('package.insert')}}">
+                    <form method="post" action="{{route('package.cable.insert')}}">
                         {{csrf_field()}}
 
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label>package Name</label>
-                                <input type="text" name="packageName" placeholder="package name" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Bandwidth</label>
-                                <input type="text" name="bandwidth" placeholder="Bandwidth" class="form-control" >
+                                <input type="text" name="cablepackageName" placeholder="package name" class="form-control" >
                             </div>
                             <div class="form-group col-md-12">
                                 <label>Price</label>
@@ -80,7 +76,6 @@
                         <thead>
                         <tr>
                             <th>Package Name</th>
-                            <th>Bandwidth</th>
                             <th>Price</th>
                             <th>Action</th>
                         </tr>
@@ -141,17 +136,16 @@
                 stateSave: true,
                 type:"POST",
                 "ajax":{
-                    "url": "{!! route('package.getdata') !!}",
+                    "url": "{!! route('package.cable.getdata') !!}",
                     "type": "POST",
                     "data":{ _token: "{{csrf_token()}}"},
                 },
                 columns: [
-                    { data: 'packageName', name: 'packageName' },
-                    { data: 'bandwidth', name: 'bandwidth' },
+                    { data: 'cablepackageName', name: 'cablepackageName' },
                     { data: 'price', name: 'price'},
                     { "data": function(data){
 
-                            return '<a class="btn btn-default btn-sm" data-panel-id="'+data.packageId+'" onclick="editPackage(this)"><i class="fa fa-edit"></i></a>'
+                            return '<a class="btn btn-default btn-sm" data-panel-id="'+data.cablepackageId+'" onclick="editPackage(this)"><i class="fa fa-edit"></i></a>'
                                 ;},
                         "orderable": false, "searchable":false, "name":"selected_rows" },
                 ]
@@ -164,7 +158,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{!! route('package.edit') !!}",
+                url: "{!! route('package.cable.edit') !!}",
                 cache: false,
                 data: {_token: "{{csrf_token()}}",'id': id},
                 success: function (data) {
