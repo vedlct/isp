@@ -10,6 +10,7 @@ Route::get('home', 'HomeController@index')->name('home');
  * Employee Routes
  */
 Route::get('/employee-show','EmployeeController@showEmployee')->name('employee.show');
+Route::post('/employee-show','EmployeeController@getEmpData')->name('employee.getData');
 Route::post('/edit','EmployeeController@edit')->name('employee.edit');
 Route::post('/employee-store','EmployeeController@storeEmployee')->name('employee.store');
 Route::post('/employee-update','EmployeeController@updateEmployee')->name('employee.updateEmployee');
