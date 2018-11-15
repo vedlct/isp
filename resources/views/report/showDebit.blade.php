@@ -127,17 +127,18 @@
                 columns: [
                     { data: 'date', name: 'date' },
                     { data: 'price', name: 'price' },
+                    { data: 'expenseType', name: 'expense.expenseType' },
 
-                    { "data": function(data){
-                        if (data.tableName == 'employee'){
-                            return 'Employee-Salary';
-                            }else {
-                            return 'Expense';
-
-                            }
-                        },
-
-                        "orderable": false, "searchable":false, "name":"selected_rows" },
+//                    { "data": function(data){
+//                        if (data.tableName == 'employee'){
+//                            return 'Employee-Salary';
+//                            }else {
+//                            return 'Expense';
+//
+//                            }
+//                        },
+//
+//                        "orderable": false, "searchable":false, "name":"selected_rows" },
 
                     { "data": function(data){
 
