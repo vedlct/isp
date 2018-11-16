@@ -28,6 +28,7 @@ class BillController extends Controller
     public function show(){
         $date=Carbon::now()->startOfMonth()->format('Y-m-d');
 
+
         $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice', 'address', 'packageName')
             ->leftjoin('package','packageId','fkpackageId')
         ->get();
@@ -48,6 +49,7 @@ class BillController extends Controller
 
     public function showDate($date){
         $currentMonth = Carbon::parse($date)->format('m');
+
 
         $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice', 'address', 'packageName')
             ->leftjoin('package','packageId','fkpackageId')
