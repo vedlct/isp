@@ -72,10 +72,14 @@ class ReportController extends Controller
 
     public function getDebitData(Request $r){
 
-        $debit=Report::select('report.reportId','report.price','report.date','report.status','report.tableName','report.tabelId')->where('report.status',ACCOUNT_STATUS['Debit']);
+        $debit=Report::select('report.reportId','report.price','report.date','report.status','report.tableName',
+            'reportDebitExpense1.expenseType','report.tabelId')
+            ->leftJoin('expense as reportDebitExpense1', 'reportDebitExpense1.expenseId', '=', 'report.tabelId')
+            ->where('report.status',ACCOUNT_STATUS['Debit']);
 
         if ($r->currentMonth){
             $debit=$debit->whereMonth('report.date', Carbon::now()->month);
+
         }
         else{
 
@@ -86,6 +90,10 @@ class ReportController extends Controller
                 $debit=$debit->where('report.date','<=',$r->dateFilterTo);
             }
 
+
+        }
+        if ($r->statusFilter){
+            $debit=$debit->where('reportDebitExpense1.expenseType',$r->statusFilter);
         }
 
         $datatables = DataTables::of($debit);
@@ -96,7 +104,9 @@ class ReportController extends Controller
     }
     public function getCreditData(Request $r){
 
-        $credit=Report::select('report.reportId','report.price','report.date','report.status')->where('report.status',ACCOUNT_STATUS['Credit']);
+        $credit=Report::select('report.reportId','report.price','report.date','report.status')
+
+            ->where('report.status',ACCOUNT_STATUS['Credit']);
 
         if ($r->currentMonth){
             $credit=$credit->whereMonth('report.date', Carbon::now()->month);
@@ -123,7 +133,7 @@ class ReportController extends Controller
         $reportId=$r->id;
         $report = Report::select('report.*','reportDebitSalary2.employeeName','reportDebitSalary2.degisnation',
             'reportDebitSalary2.phone','reportDebitSalary2.email','client.clientFirstName','client.address',
-            'client.clientLastName','client.email','client.phone',
+            'client.clientLastName','client.email','client.phone','reportDebitExpense1.expenseType',
             'reportDebitExpense1.amount','reportDebitExpense1.cause','reportDebitExpense1.price as expensePrice',DB::raw('CASE WHEN report.status = "'.ACCOUNT_STATUS['Credit'].'" AND report.tableName ="bill"  THEN billCredit.billId
             WHEN report.status = "'.ACCOUNT_STATUS['Debit'].'" AND report.tableName ="employee" THEN reportDebitSalary2.employeeId 
             WHEN report.status = "'.ACCOUNT_STATUS['Debit'].'" AND report.tableName ="expense" THEN reportDebitExpense1.expenseId END Name'))

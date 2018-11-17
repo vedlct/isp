@@ -8,7 +8,7 @@
     {{--</div>--}}
     <div class="card-body">
         @if($report->status==ACCOUNT_STATUS['Debit'])
-        <h5 class="card-title">{{$report->status}}</h5>
+        <h5 class="card-title">{{$report->expenseType}}</h5>
         <p class="card-text">{{$report->cause}}</p>
         <div class="row">
             @if($report->tableName =='employee')
@@ -45,7 +45,7 @@
 
         @else
 
-            <h5 class="card-title">{{$report->status}}</h5>
+            <h5 style="text-align: center" class="card-title">Employee Salary</h5>
             <div class="row">
             <div class="col-md-12">
                 <label>Name</label> : {{$report->clientFirstName.' '. $report->clientLastName}}

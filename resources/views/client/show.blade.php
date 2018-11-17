@@ -50,7 +50,7 @@
                                 <input type="text" name="ip" placeholder="ip" class="form-control" >
                             </div>
                             <div class="form-group col-md-12">
-                                <label>Package</label>
+                                <label>Internet Package</label>
                                <select class="form-control" id="package" onchange="getpackage()" name="package">
                                    <option>Select a Package</option>
                                    @foreach($package as  $p)
@@ -58,7 +58,15 @@
                                        @endforeach
                                </select>
                             </div>
-
+                            <div class="form-group col-md-12">
+                                <label>Cable Package</label>
+                                <select class="form-control" id="cablepackage" onchange="getcablepackage()" name="package">
+                                    <option value="Select a Package">Select a Package</option>
+                                    @foreach($cablepackage as  $c)
+                                        <option value="{{$c->cablepackageId}}">{{$c->cablepackageName}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
                             {{--@if($package->where('packageName', 'test')->first()){{$package->where('packageName', 'test')->first()->packageName}}@endif--}}
                             <div class="form-group col-md-12">
@@ -235,6 +243,30 @@
 
                     document.getElementById('bandwidth').value = data.bandwidth;
                     document.getElementById('price').value = data.price;
+                    document.getElementById('cablepackage').value = "Select a Package";
+
+                }
+            });
+        }
+
+        function getcablepackage() {
+            var id=document.getElementById('package').value;
+
+            $.ajax({
+                type: 'POST',
+                url: "{!! route('package.cable.getpackage') !!}",
+                cache: false,
+                data: {_token: "{{csrf_token()}}",'id': id},
+                success: function (data) {
+                    // $("#editModalBody").html(data);
+                    // $('#editModal').modal();
+                    // console.log(data);
+                 //   $('bandwidth').val(data.bandwidth);
+                  //  $('price').val(data.price);
+              
+                    var price = document.getElementById('price').value ;
+
+                    document.getElementById('price').value =   parseFloat(price) + parseFloat(data.price);
 
                 }
             });
