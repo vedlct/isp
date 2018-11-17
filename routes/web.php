@@ -2,6 +2,7 @@
 
 
 Route::get('/','DashBoardController@index')->middleware('auth')->name('index');
+Route::get('/previousdue','DashBoardController@previousdue')->name('dashboard.duepayment');
 
 Auth::routes();
 
