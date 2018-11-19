@@ -43,7 +43,7 @@
                         <td>{{$employee->salary}}</td>
                         <td>
                             @if($report->where('tabelId', $employee->employeeId)->first() == true)
-                                <div class="btn btn-info">Done</div>
+                                <div class="badge badge-primary">Done</div>
 
                                 @else
                                 <form action="{{route('employee.salary.pay')}}" method="post">
