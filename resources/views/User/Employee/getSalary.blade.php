@@ -24,7 +24,7 @@
                         @csrf
                     <input class="form-group datepicker" name="chooseMonth" id="dataChange" type="text">
                     </form>
-                    <a class="btn btn-danger" href="{{route('employee.salaryStore')}}"><i class="fa fa-recycle"></i>cancel</a>
+                    <a class="btn btn-danger" href="{{route('employee.salaryStore')}}"><i class="fa fa-recycle"></i>Reset</a>
                 </div>
 
                 <div id="testDiv">
@@ -46,7 +46,11 @@
                                 <div class="btn btn-info">Done</div>
 
                                 @else
-                            <button class="btn btn-success">Pay  </button>
+                                <form action="{{route('employee.salary.pay')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" id="id" name="id" value="{{$employee->employeeId}}">
+                                    <input class="btn btn-info" type="submit" value="Pay">
+                                </form>
                                 @endif
                         </td>
                     </tr>
@@ -131,7 +135,9 @@
     <!-- Datatable init js -->
     <script>
         $(document).ready(function() {
-            datatable = $("#datatable").DataTable();
+            datatable = $("#datatable").DataTable({
+                "ordering": false
+            });
             $('.empform').parsley();
 
             $('.datepicker').datepicker({

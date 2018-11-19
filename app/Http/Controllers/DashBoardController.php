@@ -83,12 +83,10 @@ class DashBoardController extends Controller
         for ($i =1 ; $i<13 ; $i++) {
 
          //   $bill = Bill::get();
-
-
             foreach ($client as $c){
                 $bill = Bill::where(DB::raw('month(billdate)'), $i)
                     ->where('fkclientId', $c->clientId)->first();
-               if( !$bill){
+               if(!$bill){
                    $count = $count+ 1;
                 }
             }

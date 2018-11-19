@@ -18,6 +18,7 @@ Route::post('/employee-update','EmployeeController@updateEmployee')->name('emplo
 Route::post('/employee-salary-month','EmployeeController@salaryByMonth')->name('employee.salaryByMonth');
 Route::get('/employee-salary','EmployeeController@getSalary')->name('employee.getSalary');
 Route::post('/employee-salary','EmployeeController@salaryStore')->name('employee.salaryStore');
+Route::post('/employee-salary-pay','EmployeeController@paySalary')->name('employee.salary.pay');
 
 
 
