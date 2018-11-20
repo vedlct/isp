@@ -95,4 +95,17 @@ class DashBoardController extends Controller
         return $count;
     }
 
+    public function insertbillformonth()
+    {
+        $client = Client::select('clientId', 'price')->get();
+        foreach ($client as $c) {
+            $bill = new Bill();
+            $bill->billdate = date('Y-m-d');
+            $bill->price = $c->price;
+            $bill->status = 'np';
+            $bill->fkclientId = $c->price ;
+            $bill->save();
+        }
+    }
+
 }

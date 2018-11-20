@@ -223,6 +223,20 @@
         });
 
     });
+
+    $(document).ready( function () {
+        $.ajax({
+            type: 'GET',
+            url: "{!! route('dashboard.insertbillformonth') !!}",
+            cache: false,
+            data: {_token: "{{csrf_token()}}"},
+            success: function (data) {
+              //  $("#duepayment").html(data);
+                // console.log(data);
+            }
+        });
+
+    });
     </script>
     }
     @endsection
