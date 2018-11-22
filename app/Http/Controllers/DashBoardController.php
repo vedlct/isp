@@ -85,13 +85,20 @@ class DashBoardController extends Controller
          //   $bill = Bill::get();
 
 
-            foreach ($client as $c){
-                $bill = Bill::where(DB::raw('month(billdate)'), $i)
-                    ->where('fkclientId', $c->clientId)->first();
-               if( !$bill){
-                   $count = $count+ 1;
-                }
-            }
+//            foreach ($client as $c){
+//                $bill = Bill::where(DB::raw('month(billdate)'), $i)
+//                    ->where('fkclientId', $c->clientId)->first();
+//               if( !$bill){
+//                   $count = $count+ 1;
+//                }
+//            }
+//            $Bill = Bill::where(DB::raw('month(billdate)'), $i)->get();
+//            foreach ($Bill as $bill) {
+//                $data[] = $bill->id;
+//            }
+            $notpaid = Client::whereNotIn(DB::raw('SELECT * FROM `bill` ')->get());
+            $notpaidCount = $notpaid->count();
+            $count = $count + $notpaidCount;
         }
 
         return $count;
