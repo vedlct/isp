@@ -105,6 +105,13 @@ class DashBoardController extends Controller
         if($n){
         }
         else{
+
+
+            $checkmonthinsert = new CheckMonth();
+            $checkmonthinsert->date = date('Y-m-d');
+            $checkmonthinsert->save();
+
+
             $client = Client::select('clientId', 'price')->get();
             foreach ($client as $c) {
                 $bill = new Bill();
@@ -123,9 +130,7 @@ class DashBoardController extends Controller
                 $salaryinsert->save();
             }
 
-            $checkmonthinsert = new CheckMonth();
-            $checkmonthinsert->date = date('Y-m-d');
-            $checkmonthinsert->save();
+
         }
 
     }

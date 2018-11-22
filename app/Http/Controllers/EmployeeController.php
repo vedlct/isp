@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use App\Report;
+use App\Salary;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -60,12 +61,12 @@ class EmployeeController extends Controller
     }
 public function getSalary(){
     $emp = Employee::get();
-    $report = Report::where('tableName','=','employee')->get();
+    $salary= Salary::get();
 
 //        $getDate = Carbon::parse($emp)->format('m');
 //        $monthget = Carbon::now()->format('m');
 
-    return view('User.Employee.getSalary')->with('employees',$emp)->with('report',$report);
+    return view('User.Employee.getSalary')->with('employees',$emp)->with('salary',$salary);
 }
 public function salaryStore(Request $r){
     $employee = Employee::all();
@@ -94,9 +95,21 @@ $report->date = Carbon::now()->format('Y-m-d');
 $report->tabelId=$emp->employeeId;
 $report->tableName= "employee";
 $report->save();
+$salary = Salary::findOrFail($r->id);
+$salary->status = 'paid';
+$salary->update();
 return back();
 }
+public function unPaySalary(Request $r){
+        $salary = Salary::findOrFail($r->id);
+        $salary->status = 'np';
+        $salary->update();
+    }
 
+public static function salaryStatus($id){
+        $salary = Salary::where('fkemployeeId',$id)->first()->status;
+        return $salary;
+}
 
 public function testEmployee(){
 

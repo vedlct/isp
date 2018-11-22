@@ -20,6 +20,7 @@ Route::post('/employee-salary-month','EmployeeController@salaryByMonth')->name('
 Route::get('/employee-salary','EmployeeController@getSalary')->name('employee.getSalary');
 Route::post('/employee-salary','EmployeeController@salaryStore')->name('employee.salaryStore');
 Route::post('/employee-salary-pay','EmployeeController@paySalary')->name('employee.salary.pay');
+Route::post('/employee-salary-unpay','EmployeeController@unPaySalary')->name('employee.unPaySalary');
 
 
 
@@ -114,5 +115,8 @@ Route::get('test','BillController@generatePdf');
 Route::get('bill/generate/{id}/{date}','BillController@generatePdf')->name('bill.invoice');
 Route::get('settings/account','AccountController@index')->name('account.index');
 Route::post('settings/account','AccountController@changePassword')->name('account.changePassword');
+
+
+//Route::get('status/{id}','EmployeeController@salaryStatus');
 
 

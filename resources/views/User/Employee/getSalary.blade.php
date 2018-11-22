@@ -33,6 +33,7 @@
                     <tr>
                         <th>Employee Name</th>
                         <th>Employee Salary</th>
+                        <th>Month</th>
                         <th>Status</th>
                     </tr>
                     </thead>
@@ -42,18 +43,33 @@
                         <td>{{$employee->employeeName}}</td>
                         <td>{{$employee->salary}}</td>
                         <td>
-
-                            @if($report->where('tabelId', $employee->employeeId)->first() == true)
-
-                                <div class="badge badge-primary">Done</div>
-
+                            {{$salary->where('fkemployeeId',$employee->employeeId)->first()->date}}
+                        </td>
+                        <td>
+                            @if(\App\Http\Controllers\EmployeeController::salaryStatus($employee->employeeId)=='paid')
+                                <div class="badge badge-primary">Paid</div>
+                                <button type="button"  data-panel-id="{{$salary->where('fkemployeeId', $employee->employeeId)->first()->id}}" onclick="unpaid(this)" class="btn btn-sm btn-danger" id="unPaid"><i class="fa fa-trash"></i></button>
                                 @else
                                 <form action="{{route('employee.salary.pay')}}" method="post">
                                     @csrf
                                     <input type="hidden" id="id" name="id" value="{{$employee->employeeId}}">
-                                    <input class="btn btn-info" type="submit" value="Pay">
+                                    <button type="submit" id="payButton" class="btn btn-info">Pay</button>
                                 </form>
-                                @endif
+                            @endif
+
+
+                            {{--@if($salary->where('fkemployeeId', $employee->employeeId)->first())--}}
+                                {{--@foreach($salary as $sal)--}}
+                                {{--@if($sal->satatus=='paid')--}}
+
+                                {{--@endif--}}
+                                    {{--@endforeach--}}
+                                {{--<form action="{{route('employee.salary.pay')}}" method="post">--}}
+                                    {{--@csrf--}}
+                                    {{--<input type="hidden" id="id" name="id" value="{{$employee->employeeId}}">--}}
+                                    {{--<input class="btn btn-info" type="submit" value="Pay">--}}
+                                {{--</form>--}}
+                                {{--@endif--}}
                         </td>
                     </tr>
 @endforeach
@@ -170,6 +186,31 @@
                 });
             })
         });
+
+        function unpaid(id) {
+            var unPaidId = $(id).data('panel-id');
+            $.confirm({
+                title: 'Are You Sure!',
+                content: 'Cancel the Paid Status',
+                buttons: {
+                    confirm: function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: "{!! route('employee.unPaySalary') !!}",
+                            cache: false,
+                            data: {_token: "{{csrf_token()}}",'id':unPaidId},
+                            success: function (data) {
+                            }
+                        });
+                        location.reload();
+                    },
+                    cancel: function () {
+                        $.alert('Canceled!');
+                    }
+                }
+            });
+            console.log(unPaidId);
+        }
     </script>
 
 
