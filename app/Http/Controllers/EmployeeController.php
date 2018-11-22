@@ -85,6 +85,17 @@ public function salaryByMonth(Request $request){
 //        return response()->json($report);
 }
 
+public function paySalary(Request $r){
+$emp = Employee::findOrFail($r->id);
+$report = new Report();
+$report->status = 'debit';
+$report->price = $emp->salary;
+$report->date = Carbon::now()->format('Y-m-d');
+$report->tabelId=$emp->employeeId;
+$report->tableName= "employee";
+$report->save();
+return back();
+}
 
 
 public function testEmployee(){
