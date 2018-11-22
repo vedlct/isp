@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Bill;
+use App\CheckMonth;
 use App\Client;
+use App\Employee;
 use App\Report;
+use App\Salary;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -82,7 +85,6 @@ class DashBoardController extends Controller
         $count = 0;
         for ($i =1 ; $i<13 ; $i++) {
 
-         //   $bill = Bill::get();
             foreach ($client as $c){
                 $bill = Bill::where(DB::raw('month(billdate)'), $i)
                     ->where('fkclientId', $c->clientId)->first();
@@ -90,6 +92,7 @@ class DashBoardController extends Controller
                    $count = $count+ 1;
                 }
             }
+
         }
 
         return $count;
@@ -97,15 +100,34 @@ class DashBoardController extends Controller
 
     public function insertbillformonth()
     {
-        $client = Client::select('clientId', 'price')->get();
-        foreach ($client as $c) {
-            $bill = new Bill();
-            $bill->billdate = date('Y-m-d');
-            $bill->price = $c->price;
-            $bill->status = 'np';
-            $bill->fkclientId = $c->price ;
-            $bill->save();
+        $n = CheckMonth::where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )->first();
+
+        if($n){
         }
+        else{
+            $client = Client::select('clientId', 'price')->get();
+            foreach ($client as $c) {
+                $bill = new Bill();
+                $bill->billdate = date('Y-m-d');
+                $bill->price = $c->price;
+                $bill->status = 'np';
+                $bill->fkclientId = $c->price ;
+                $bill->save();
+            }
+            $employee = Employee::select('employeeId')->get();
+            foreach ($employee as $em){
+                $salaryinsert = new Salary();
+                $salaryinsert->fkemployeeId = $em->employeeId;
+                $salaryinsert->date = date('Y-m-d');
+                $salaryinsert->status = 'np';
+                $salaryinsert->save();
+            }
+
+            $checkmonthinsert = new CheckMonth();
+            $checkmonthinsert->date = date('Y-m-d');
+            $checkmonthinsert->save();
+        }
+
     }
 
 }

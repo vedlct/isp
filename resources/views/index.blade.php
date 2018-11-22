@@ -231,8 +231,10 @@
             cache: false,
             data: {_token: "{{csrf_token()}}"},
             success: function (data) {
+
+
               //  $("#duepayment").html(data);
-                // console.log(data);
+                 console.log(data);
             }
         });
 
