@@ -42,7 +42,9 @@
                         <td>{{$employee->employeeName}}</td>
                         <td>{{$employee->salary}}</td>
                         <td>
+
                             @if($report->where('tabelId', $employee->employeeId)->first() == true)
+
                                 <div class="badge badge-primary">Done</div>
 
                                 @else
