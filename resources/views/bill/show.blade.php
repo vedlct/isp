@@ -124,60 +124,30 @@
                     <h4 class="mt-0 header-title">All Bill</h4>
                     <div class="form-group col-md-3">
                         <label>Select Month</label>
-                        <input type="text" class="form-control datepicker" @if(isset($date)) value="{{$date}}" @endif name="selectMonth" onchange="changeDate(this)">
+                        <input type="text" id="billMonth" class="form-control datepicker" @if(isset($date)) value="{{$date}}" @endif name="selectMonth" onchange="changeDate(this)">
                     </div>
 
+                    <div class="table table-responsive">
+                        <table id="manageapplication" class="table table-striped table-bordered" style="width:100%" >
+                            <thead>
+                            <tr>
 
-                    <table id="datatable" class="table table-bordered  dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                        <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>IP</th>
-                            <th>Package Name</th>
-                            <th>BandWide</th>
-                            <th>Price</th>
-                            <th>Address</th>
-                            <th>Action</th>
-                            <th>Invoice</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        @foreach($client as $c)
-                        <tr>
-                            <td>{{$c->clientFirstName}}</td>
-                            <td>{{$c->clientLastName}}</td>
-                            <td>{{$c->ip}}</td>
-                            <td>{{$c->packageName}}</td>
-                            <td>{{$c->bandWide}}</td>
-                            <td>{{$c->cprice}}</td>
-                            <td>{{$c->address}}</td>
-                            <td>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>IP</th>
+                                <th>Package Name</th>
+                                <th>BandWide</th>
+                                <th>Price</th>
+                                <th>Address</th>
+                                <th>Action</th>
+                                <th>Invoice</th>
 
 
-                                <select class="form-control" id="billtype" data-panel-date="{{$date}}" data-panel-id='{{$c->clientId}}' onchange="changebillstatus(this)">
-                                    <option  value="paid" @if($bill->where('fkclientId', $c->clientId)->first() == true) selected @else @endif>Paid</option>
-                                    <option value="due" @if($bill->where('fkclientId', $c->clientId)->first() == false) selected   @endif>Due</option>
-                                </select>
-                            </td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
 
-                            <td>
-                                <button class="btn btn-info btn-sm" data-panel-date="{{$date}}" data-panel-id="{{$c->clientId}}" onclick="generateBill(this)" ><i class="fa fa-print"></i></button>
-                            </td>
-
-
-
-                        </tr>
-                            @endforeach
-                        </tbody>
-
-
-
-
-
-
-                    </table>
 
                 </div>
             </div>
@@ -200,18 +170,68 @@
 
         $(document).ready( function () {
             $('.datepicker').datepicker({
-                format: 'yyyy-mm-dd',
+                format: 'MM-yyyy',
                 autoclose:true,
                 minViewMode: 1,
 
             });
 
-            $('#datatable').DataTable({
-                    responsive: true,
-                    deferRender: true,
 
-            }
-            );
+            table = $('#manageapplication').DataTable({
+                processing: true,
+                serverSide: true,
+                stateSave: true,
+                "ajax":{
+                    "url": "{!! route('bill.show.withData')!!}",
+                    "type": "POST",
+                    data:function (d){
+
+                        d._token="{{csrf_token()}}";
+                        if ($('#billMonth').val()!=""){
+                            d.billMonth=$('#billMonth').val();
+                        }
+
+
+                    },
+                },
+                columns: [
+
+
+                    { data: 'clientFirstName', name: 'client.clientFirstName',"orderable": false, "searchable":true },
+                    { data: 'clientLastName', name: 'client.clientLastName',"orderable": false, "searchable":true },
+                    { data: 'ip', name: 'client.ip', "orderable": false, "searchable":true },
+                    { data: 'packageName', name: 'bill.packageName', "orderable": false, "searchable":true },
+                    { data: 'bandWide', name: 'client.bandWide', "orderable": true, "searchable":true },
+                    { data: 'cprice', name: 'client.cprice', "orderable": true, "searchable":true },
+                    { data: 'address', name: 'client.address', "orderable": true, "searchable":true },
+
+
+                    { "data": function(data){
+
+                    if (data.billStatus=='np'){
+                        return '<select class="form-control" id="billtype'+data.clientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.clientId+'" onchange="changebillstatus(this)">'+
+                        '<option  value="paid"  >Paid</option>'+
+                        '<option value="due" selected  >Due</option>'+
+                        '</select>';
+                    }else if (data.billStatus=='p'){
+                        return '<select class="form-control" id="billtype'+data.clientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.clientId+'" onchange="changebillstatus(this)">'+
+                            '<option  value="paid" selected  >Paid</option>'+
+                            '<option value="due"   >Due</option>'+
+                            '</select>';
+                    }
+                    ;},
+                        "orderable": false, "searchable":false
+                    },
+                    { "data": function(data){
+                        return '<button class="btn btn-info btn-sm" data-panel-date="{{$date}}" data-panel-id="'+data.clientId+'" onclick="generateBill(this)" ><i class="fa fa-print"></i></button>'
+                            ;},
+                        "orderable": false, "searchable":false
+                    },
+
+
+                ],
+            });
+
         } );
 
         function generateBill(x) {
@@ -240,39 +260,102 @@
         }
 
         function changebillstatus(x) {
-            var id = $(x).data('panel-id');
-            var date = $(x).data('panel-date');
-            var billtype = document.getElementById('billtype').value;
 
-            if (billtype == 'paid') {
+            $.confirm({
+                title: 'Confirm!',
+                content: 'Are You Sure!',
+                buttons: {
+                    confirm: function () {
+                        var id = $(x).data('panel-id');
+                        var date = $(x).data('panel-date');
 
-                $.ajax({
-                    type: 'POST',
-                    url: "{!! route('bill.paid') !!}",
-                    cache: false,
-                    data: {_token: "{{csrf_token()}}", 'id': id,date:date},
-                    success: function (data) {
+                        var billtype = document.getElementById('billtype'+id).value;
 
-                    }
-                });
-            }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: "{!! route('bill.due') !!}",
-                    cache: false,
-                    data: {_token: "{{csrf_token()}}", 'id': id,date:date},
-                    success: function (data) {
-                        alert(data);
-                        //  $("#datatable").reload();
+                        if (billtype == 'paid') {
+
+                            $.ajax({
+                                type: 'POST',
+                                url: "{!! route('bill.paid') !!}",
+                                cache: false,
+                                data: {_token: "{{csrf_token()}}", 'id': id,date:date},
+                                success: function (data) {
+
+                                    console.log(data);
+
+                                    $.alert({
+                                        title: 'Success!',
+                                        type: 'green',
+                                        content: data,
+                                        buttons: {
+                                            tryAgain: {
+                                                text: 'Ok',
+                                                btnClass: 'btn-blue',
+                                                action: function () {
+
+
+                                                    location.reload();
+
+
+
+
+                                                }
+                                            }
+
+                                        }
+                                    });
+
+                                }
+                            });
+                        }
+                        else if (billtype == 'due') {
+                            $.ajax({
+                                type: 'POST',
+                                url: "{!! route('bill.due') !!}",
+                                cache: false,
+                                data: {_token: "{{csrf_token()}}", 'id': id,date:date},
+                                success: function (data) {
+
+
+
+                                    $.alert({
+                                        title: 'Alert!',
+                                        type: 'red',
+                                        content: data,
+                                        buttons: {
+                                            tryAgain: {
+                                                text: 'Ok',
+                                                btnClass: 'btn-red',
+                                                action: function () {
+
+
+                                                    location.reload();
+
+
+
+
+                                                }
+                                            }
+
+                                        }
+                                    });
+
+
+                                }
+                            });
+
+                        }
+
+                    },
+                    cancel: function () {
+
                         location.reload();
-                        // alert(data);
-                        // console.log(data);
 
-                    }
-                });
+                    },
 
-            }
+                }
+            });
+
+
         }
 
 

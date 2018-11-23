@@ -50,7 +50,7 @@
                     <div class="row">
                     <div class="text-left col-md-6">
                         {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                        <h2 class="font-light m-b-0"><span class="text-success">800</span></h2>
+                        <h2 class="font-light m-b-0"><span class="text-success">{{$totalBillRecievedOFLastMonth}} </span></h2>
 
 
                     </div>
@@ -77,7 +77,8 @@
 
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success">200</span></h2>
+                            <h2 class="font-light m-b-0"><span class="text-success">{{$totalBillDueOFLastMonth}} </span></h2>
+
 
 
                         </div>
@@ -132,8 +133,8 @@
 
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthDebit}} </span></h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success">35000.00 </span></h2>
+                            <h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthDebit}} </span></h2>
+                            {{--<h2 class="font-light m-b-0"><span class="text-success">35000.00 </span></h2>--}}
 
 
                         </div>
@@ -160,8 +161,8 @@
 
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthCredit}}</span></h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success">100000.00</span></h2>
+                            <h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthCredit}}</span></h2>
+                            {{--<h2 class="font-light m-b-0"><span class="text-success">100000.00</span></h2>--}}
 
 
                         </div>
@@ -186,8 +187,8 @@
                     <div class="row">
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{(number_format(($totalOFLastMonthCredit-$totalOFLastMonthDebit),2))}}</span></h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success">65000.00</span></h2>
+                            <h2 class="font-light m-b-0"><span class="text-success">{{(number_format(($totalOFLastMonthCredit-$totalOFLastMonthDebit),2))}}</span></h2>
+                            {{--<h2 class="font-light m-b-0"><span class="text-success">65000.00</span></h2>--}}
 
 
                         </div>

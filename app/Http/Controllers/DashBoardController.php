@@ -77,7 +77,10 @@ class DashBoardController extends Controller
         $totalOFLastMonthCredit=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->sum('report.price');
         $totalOFLastMonthCredit=number_format($totalOFLastMonthCredit,2);
 
-        return view('index',compact('totalOFLastMonthCredit','totalOFLastMonthDebit'));
+        $totalBillRecievedOFLastMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->where('report.tableName','bill')->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->groupBy('report.tabelId')->count('report.reportId');
+        $totalBillDueOFLastMonth=Bill::where('bill.status','np')->whereMonth('bill.billdate',((Carbon::now()->subMonth())->month))->count('bill.billId');
+
+        return view('index',compact('totalOFLastMonthCredit','totalOFLastMonthDebit','totalBillRecievedOFLastMonth','totalBillDueOFLastMonth'));
     }
 
     public function previousdue(){

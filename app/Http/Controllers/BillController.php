@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use PDF;
 use DB;
 use Carbon\Carbon;
+use Yajra\DataTables\DataTables;
 class BillController extends Controller
 {
 
@@ -26,15 +27,38 @@ class BillController extends Controller
     }
 
     public function show(){
-        $date=Carbon::now()->startOfMonth()->format('Y-m-d');
+        $date=Carbon::now()->format('F-Y');
 
 
-        $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice', 'address', 'packageName')
-            ->leftjoin('package','packageId','fkpackageId')
-        ->get();
-        $bill = Bill::get();
+//        $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice', 'address', 'packageName')
+//            ->leftjoin('package','packageId','fkpackageId')
+//            ->get();
+//
+//        $bill = Bill::get();
+
         $package = Package::get();
-        return view('bill.show', compact('client', 'bill', 'package','date'));
+
+        return view('bill.show', compact('package','date'));
+    }
+    public function showWithData(Request $r){
+
+        $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice',
+            'address', 'package.packageName','bill.status as billStatus')
+            ->leftjoin('package','packageId','fkpackageId')
+            ->leftjoin('bill','bill.billId','client.clientId');
+
+        if ($r->billMonth){
+            $month = Carbon::parse($r->billMonth)->format('m');
+            $client= $client->where(DB::raw('month(bill.billdate)'),$month);
+        }
+
+        $datatables = DataTables::of($client);
+
+        return $datatables->make(true);
+
+
+
+
     }
     public function showPastDue(){
         $date=Carbon::now()->startOfMonth()->format('Y-m-d');
@@ -63,46 +87,44 @@ class BillController extends Controller
 
     public function paid(Request $r){
 
-        $client = Client::findOrFail($r->id);
-
-        $bill = new Bill();
-        $bill->price =  $client->first()->price;
-        $bill->fkclientId =  $r->id;
-        $bill->billdate =  $r->date;
+//        $client = Client::findOrFail($r->id);
+        $month = Carbon::parse($r->date)->format('m');
+        $bill=Bill::leftjoin('client','client.clientId','bill.billId')->where(DB::raw('month(billdate)'),$month)->where('client.clientId',$r->id)->first();
+        $bill->status = 'p';
         $bill->save();
 
         $report = new Report();
         $report->status = ACCOUNT_STATUS['Credit'];
-        $report->price = $client->first()->price;
+        $report->price = $bill->price;
         $report->tabelId = $bill->billId;
-        $report->date = $r->date;
+        $report->date = $bill->billdate;
         $report->tableName = 'bill';
         $report->save();
 
-        return  $report;
+        $message='Monthly bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
+
+        return  $message;
 
 
 
     }
     public function due(Request $r){
 
-        $client = Client::findOrFail($r->id);
+//        $client = Client::findOrFail($r->id);
+        $month = Carbon::parse($r->date)->format('m');
 
-        $bill = Bill::where('fkclientId' , $client->clientId)->where('billdate',$r->date)->first();
-//        $bill->delete();
+        $bill=Bill::leftjoin('client','client.clientId','bill.billId')->where(DB::raw('month(billdate)'),$month)->where('client.clientId',$r->id)->first();
+        $bill->status = 'np';
+        $bill->save();
 
         $report = Report::where('tabelId' , $bill->billId)
         ->where('tableName', 'bill')->delete();
 
-        $bill = Bill::where('fkclientId' , $client->clientId)->where('billdate',$r->date)->delete();
+        $message='Monthly bill of '.$r->date.' for client Name '.$bill->clientFirstName.' '.$bill->clientLastName.' has been changed to unpaid';
+
+        return  $message;
 
 
-//        $report = Report::where('tabelId' , $bill->first()->billId)
-//        ->where('tableName', 'bill');
-
-//        $report->delete();
-
-        return  0;
 
 
 
