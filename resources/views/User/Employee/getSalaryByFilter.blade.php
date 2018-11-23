@@ -7,16 +7,20 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($report as $employee)
+    @foreach($salary as $employee)
         <tr>
             <td>{{$employee->employeeName}}</td>
             <td>{{$employee->salary}}</td>
             <td>
-                @if($report->where('tabelId', $employee->employeeId)->first() == true)
-                    <div class="btn btn-info">Done</div>
-
+                @if(\App\Http\Controllers\EmployeeController::salaryStatus($employee->employeeId)=='paid')
+                    <div class="badge badge-primary">Paid</div>
+                    <button type="button"  data-panel-id="{{$salary->where('fkemployeeId', $employee->employeeId)->first()->id}}" onclick="unpaid(this)" class="btn btn-sm btn-danger" id="unPaid"><i class="fa fa-trash"></i></button>
                 @else
-                    <button class="btn btn-success">Pay  </button>
+                    <form action="{{route('employee.salary.pay')}}" method="post">
+                        @csrf
+                        <input type="hidden" id="id" name="id" value="{{$employee->employeeId}}">
+                        <button type="submit" id="payButton" class="btn btn-info">Pay</button>
+                    </form>
                 @endif
             </td>
         </tr>

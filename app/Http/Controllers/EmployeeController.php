@@ -60,13 +60,17 @@ class EmployeeController extends Controller
         return redirect()->route('employee.show');
     }
 public function getSalary(){
-    $emp = Employee::get();
-    $salary= Salary::get();
+//    $emp = Employee::get();
+//    $salary= Salary::get();
+    $currentMonth = Carbon::now()->format('m');
+    $currentYear = Carbon::now()->format('Y');
+    $salary =  DB::table('employee')->join('salary','salary.fkemployeeId','=','employee.employeeId')
+        ->where(DB::raw('Year(date)'),$currentYear)->where(DB::raw('Month(date)'),$currentMonth)->get();
 
 //        $getDate = Carbon::parse($emp)->format('m');
 //        $monthget = Carbon::now()->format('m');
 
-    return view('User.Employee.getSalary')->with('employees',$emp)->with('salary',$salary);
+    return view('User.Employee.getSalary')->with('salary',$salary);
 }
 public function salaryStore(Request $r){
     $employee = Employee::all();
@@ -77,16 +81,15 @@ public function salaryStore(Request $r){
 public function salaryByMonth(Request $request){
         $currentMonth = Carbon::parse($request->chooseMonth)->format('m');
         $currentYear = Carbon::parse($request->chooseMonth)->format('Y');
-        $emp = Employee::get();
-        $report = DB::table('employee')->join('report','report.tabelId','=','employee.employeeId')
-            ->where('report.tableName','=','employee')
+        $salary = DB::table('employee')->join('salary','salary.fkemployeeId','=','employee.employeeId')
             ->where(DB::raw('Year(date)'),$currentYear)->where(DB::raw('Month(date)'),$currentMonth)->get();
 
-        return view('User.Employee.getSalaryByFilter',compact('report'));
+        return view('User.Employee.getSalaryByFilter',compact('salary'));
 //        return response()->json($report);
 }
 
 public function paySalary(Request $r){
+//        return $r;
 $emp = Employee::findOrFail($r->id);
 $report = new Report();
 $report->status = 'debit';
@@ -95,7 +98,7 @@ $report->date = Carbon::now()->format('Y-m-d');
 $report->tabelId=$emp->employeeId;
 $report->tableName= "employee";
 $report->save();
-$salary = Salary::findOrFail($r->id);
+$salary = Salary::where('fkemployeeId',$r->id)->first();
 $salary->status = 'paid';
 $salary->update();
 return back();
