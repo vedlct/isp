@@ -38,7 +38,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($employees as $employee)
+                    @foreach($salary as $employee)
                     <tr>
                         <td>{{$employee->employeeName}}</td>
                         <td>{{$employee->salary}}</td>
@@ -173,7 +173,7 @@
                     cache: false,
                     data: {_token: "{{csrf_token()}}",'chooseMonth':currMonth},
                     success: function (data) {
-
+                        console.log(data);
                         if(data.length==0){
                             alert("No Data Found In This Month ")
                         }
