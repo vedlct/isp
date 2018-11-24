@@ -80,25 +80,15 @@ class DashBoardController extends Controller
         $totalBillRecievedOFLastMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->where('report.tableName','bill')->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->groupBy('report.tabelId')->count('report.reportId');
         $totalBillDueOFLastMonth=Bill::where('bill.status','np')->whereMonth('bill.billdate',((Carbon::now()->subMonth())->month))->count('bill.billId');
 
+//        return number_format(str_replace(',','',$totalOFLastMonthCredit)-str_replace(',','',$totalOFLastMonthDebit),2);
+
         return view('index',compact('totalOFLastMonthCredit','totalOFLastMonthDebit','totalBillRecievedOFLastMonth','totalBillDueOFLastMonth'));
     }
 
     public function previousdue(){
-        $client = Client::select('clientId')->get();
-        $count = 0;
-        for ($i =1 ; $i<13 ; $i++) {
 
-            foreach ($client as $c){
-                $bill = Bill::where(DB::raw('month(billdate)'), $i)
-                    ->where('fkclientId', $c->clientId)->first();
-               if(!$bill){
-                   $count = $count+ 1;
-                }
-            }
-
-        }
-
-        return $count;
+        $bill = Bill::where('bill.status','np')->count('bill.billId');
+        return $bill;
     }
 
     public function insertbillformonth()
@@ -121,7 +111,7 @@ class DashBoardController extends Controller
                 $bill->billdate = date('Y-m-d');
                 $bill->price = $c->price;
                 $bill->status = 'np';
-                $bill->fkclientId = $c->price ;
+                $bill->fkclientId = $c->clientId ;
                 $bill->save();
             }
             $employee = Employee::select('employeeId')->get();

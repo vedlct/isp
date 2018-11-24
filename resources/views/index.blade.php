@@ -71,13 +71,13 @@
         <div class="col-lg-3 col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title"><a href="#">Total Bill Due</a></h4>
+                    <h4 class="card-title"><a href="{{route('bill.showPastDueLastMonth')}}">Total Bill Due</a></h4>
 
                     <div class="row">
 
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success">{{$totalBillDueOFLastMonth}} </span></h2>
+                            <h2 class="font-light m-b-0"><span class="text-success">{{$totalBillDueOFLastMonth}}</span></h2>
 
 
 
@@ -99,7 +99,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title"><a href="#">Past Bill Due</a></h4>
+                    <h4 class="card-title"><a href="{{route('bill.showPastDue')}}">Past Bill Due</a></h4>
 
                     <div class="row">
 
@@ -187,7 +187,7 @@
                     <div class="row">
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success">{{(number_format(($totalOFLastMonthCredit-$totalOFLastMonthDebit),2))}}</span></h2>
+                            <h2 class="font-light m-b-0"><span class="text-success">{{(number_format(str_replace(',','',$totalOFLastMonthCredit)-str_replace(',','',$totalOFLastMonthDebit),2))}}</span></h2>
                             {{--<h2 class="font-light m-b-0"><span class="text-success">65000.00</span></h2>--}}
 
 

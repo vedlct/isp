@@ -42,17 +42,21 @@ class BillController extends Controller
     }
     public function showWithData(Request $r){
 
-        $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice',
-            'address', 'package.packageName','bill.status as billStatus')
-            ->leftjoin('package','packageId','fkpackageId')
-            ->leftjoin('bill','bill.billId','client.clientId');
+        $bill = Bill::select('bill.fkclientId','client.clientFirstName','client.clientLastName','client.ip','client.bandWide','bill.price as billprice','bill.billId',DB::raw('DATE_FORMAT(bill.billdate,"%M-%Y") as billdate'),
+            'client.address', 'package.packageName','bill.status as billStatus')
+            ->leftjoin('client','bill.fkclientId','client.clientId')
+            ->leftjoin('package','package.packageId','client.fkpackageId');
 
         if ($r->billMonth){
             $month = Carbon::parse($r->billMonth)->format('m');
-            $client= $client->where(DB::raw('month(bill.billdate)'),$month);
+            $bill= $bill->where(DB::raw('month(bill.billdate)'),$month);
+        }
+        if ($r->pastDue){
+
+            $bill= $bill->where('bill.status','np');
         }
 
-        $datatables = DataTables::of($client);
+        $datatables = DataTables::of($bill);
 
         return $datatables->make(true);
 
@@ -61,14 +65,28 @@ class BillController extends Controller
 
     }
     public function showPastDue(){
-        $date=Carbon::now()->startOfMonth()->format('Y-m-d');
+//        $date=Carbon::now()->startOfMonth()->format('Y-m-d');
 
-        $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice', 'address', 'packageName')
-            ->leftjoin('package','packageId','fkpackageId')
-        ->get();
-        $bill = Bill::get();
-        $package = Package::get();
-        return view('bill.showPastDue', compact('client', 'bill', 'package','date'));
+//        $bill = Bill::select('bill.fkclientId','client.clientFirstName','client.clientLastName','client.ip','client.bandWide','bill.price as billprice','bill.billdate',
+//            'client.address', 'package.packageName','bill.status as billStatus')
+//            ->where('bill.status','np')
+//            ->leftjoin('client','bill.fkclientId','client.clientId')
+//            ->leftjoin('package','package.packageId','client.fkpackageId');
+
+        return view('bill.showPastDue');
+    }
+    public function showPastDueLastMonth(){
+//        $date=Carbon::now()->startOfMonth()->format('Y-m-d');
+
+//        $bill = Bill::select('bill.fkclientId','client.clientFirstName','client.clientLastName','client.ip','client.bandWide','bill.price as billprice','bill.billdate',
+//            'client.address', 'package.packageName','bill.status as billStatus')
+//            ->where('bill.status','np')
+//            ->leftjoin('client','bill.fkclientId','client.clientId')
+//            ->leftjoin('package','package.packageId','client.fkpackageId');
+
+        $LastMonth=Carbon::now()->subMonth()->format('F-Y');
+
+        return view('bill.showPastDue',compact('LastMonth'));
     }
 
     public function showDate($date){
@@ -89,7 +107,7 @@ class BillController extends Controller
 
 //        $client = Client::findOrFail($r->id);
         $month = Carbon::parse($r->date)->format('m');
-        $bill=Bill::leftjoin('client','client.clientId','bill.billId')->where(DB::raw('month(billdate)'),$month)->where('client.clientId',$r->id)->first();
+        $bill=Bill::leftjoin('client','bill.fkclientId','client.clientId')->where(DB::raw('month(billdate)'),$month)->where('client.clientId',$r->id)->first();
         $bill->status = 'p';
         $bill->save();
 
@@ -113,7 +131,7 @@ class BillController extends Controller
 //        $client = Client::findOrFail($r->id);
         $month = Carbon::parse($r->date)->format('m');
 
-        $bill=Bill::leftjoin('client','client.clientId','bill.billId')->where(DB::raw('month(billdate)'),$month)->where('client.clientId',$r->id)->first();
+        $bill=Bill::leftjoin('client','bill.fkclientId','client.clientId')->where(DB::raw('month(billdate)'),$month)->where('client.clientId',$r->id)->first();
         $bill->status = 'np';
         $bill->save();
 

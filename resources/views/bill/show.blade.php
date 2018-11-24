@@ -200,21 +200,21 @@
                     { data: 'clientFirstName', name: 'client.clientFirstName',"orderable": false, "searchable":true },
                     { data: 'clientLastName', name: 'client.clientLastName',"orderable": false, "searchable":true },
                     { data: 'ip', name: 'client.ip', "orderable": false, "searchable":true },
-                    { data: 'packageName', name: 'bill.packageName', "orderable": false, "searchable":true },
+                    { data: 'packageName', name: 'package.packageName', "orderable": false, "searchable":true },
                     { data: 'bandWide', name: 'client.bandWide', "orderable": true, "searchable":true },
-                    { data: 'cprice', name: 'client.cprice', "orderable": true, "searchable":true },
+                    { data: 'billprice', name: 'bill.price', "orderable": true, "searchable":true },
                     { data: 'address', name: 'client.address', "orderable": true, "searchable":true },
 
 
                     { "data": function(data){
 
                     if (data.billStatus=='np'){
-                        return '<select class="form-control" id="billtype'+data.clientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.clientId+'" onchange="changebillstatus(this)">'+
+                        return '<select style="background-color:red;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" onchange="changebillstatus(this)">'+
                         '<option  value="paid"  >Paid</option>'+
                         '<option value="due" selected  >Due</option>'+
                         '</select>';
                     }else if (data.billStatus=='p'){
-                        return '<select class="form-control" id="billtype'+data.clientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.clientId+'" onchange="changebillstatus(this)">'+
+                        return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" onchange="changebillstatus(this)">'+
                             '<option  value="paid" selected  >Paid</option>'+
                             '<option value="due"   >Due</option>'+
                             '</select>';
@@ -223,13 +223,27 @@
                         "orderable": false, "searchable":false
                     },
                     { "data": function(data){
-                        return '<button class="btn btn-info btn-sm" data-panel-date="{{$date}}" data-panel-id="'+data.clientId+'" onclick="generateBill(this)" ><i class="fa fa-print"></i></button>'
+                        return '<button class="btn btn-info btn-sm" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" onclick="generateBill(this)" ><i class="fa fa-print"></i></button>'
                             ;},
                         "orderable": false, "searchable":false
                     },
 
 
                 ],
+//                "rowCallback": function( row, data, index ) {
+//                    if ( data['billStatus'] == "p" )
+//                    {
+//                        $('td', row).css('background-color', 'rgba(0, 188, 212, 0.55)');
+//                    }
+//
+//                    if ( data['billStatus'] == "np" )
+//                    {
+//                        $('td', row).css('background-color', 'rgb(245, 90, 78)');
+//                    }
+//
+//
+//
+//                },
             });
 
         } );
