@@ -33,56 +33,20 @@ class DashBoardController extends Controller
     {
 
 
-//        $client = Client::select('clientId')->get();
-//        $count = 0;
-//        for ($i =1 ; $i<13 ; $i++) {
+//        $totalOFLastMonthDebit=Report::where('report.status',ACCOUNT_STATUS['Debit'])->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->sum('report.price');
+//        $totalOFLastMonthDebit=number_format($totalOFLastMonthDebit,2);
 //
-//            //   $bill = Bill::get();
+//        $totalOFLastMonthCredit=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->sum('report.price');
+//        $totalOFLastMonthCredit=number_format($totalOFLastMonthCredit,2);
 //
-//
-//            foreach ($client as $c){
-//                $bill = Bill::where(DB::raw('month(billdate)'), $i)
-//                    ->where('fkclientId', $c->clientId)->first();
-//                if( !$bill){
-//                    $count = $count+ 1;
-//                }
-//            }
-//        }
-//
-//        return $count;
+//        $totalBillRecievedOFLastMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->where('report.tableName','bill')->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->groupBy('report.tabelId')->count('report.reportId');
+//        $totalBillDueOFLastMonth=Bill::where('bill.status','np')->whereMonth('bill.billdate',((Carbon::now()->subMonth())->month))->count('bill.billId');
 
-//        $client = Client::select('clientId')->get();
-//        $count = 0;
-//        $bill = Bill::get();
-//        for ($i =1 ; $i<13 ; $i++) {
-//
-//            //   $bill = Bill::get();
-//
-//
-//            foreach ($client as $c){
-//                foreach ($bill as $b){
-//                    $month = date('m', strtotime($b->billdate));
-//                    if (!($month == $i && $c->clientId == $b->fkclientId)){
-//                        $count = $count+1;
-//                    }
-//                }
-//            }
-//        }
-//
-//        return $count;
 
-        $totalOFLastMonthDebit=Report::where('report.status',ACCOUNT_STATUS['Debit'])->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->sum('report.price');
-        $totalOFLastMonthDebit=number_format($totalOFLastMonthDebit,2);
 
-        $totalOFLastMonthCredit=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->sum('report.price');
-        $totalOFLastMonthCredit=number_format($totalOFLastMonthCredit,2);
+//        return view('index',compact('totalOFLastMonthCredit','totalOFLastMonthDebit','totalBillRecievedOFLastMonth','totalBillDueOFLastMonth'));
 
-        $totalBillRecievedOFLastMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->where('report.tableName','bill')->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->groupBy('report.tabelId')->count('report.reportId');
-        $totalBillDueOFLastMonth=Bill::where('bill.status','np')->whereMonth('bill.billdate',((Carbon::now()->subMonth())->month))->count('bill.billId');
-
-//        return number_format(str_replace(',','',$totalOFLastMonthCredit)-str_replace(',','',$totalOFLastMonthDebit),2);
-
-        return view('index',compact('totalOFLastMonthCredit','totalOFLastMonthDebit','totalBillRecievedOFLastMonth','totalBillDueOFLastMonth'));
+        return view('index');
     }
 
     public function previousdue(){

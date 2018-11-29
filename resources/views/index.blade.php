@@ -50,7 +50,7 @@
                     <div class="row">
                     <div class="text-left col-md-6">
                         {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                        <h2 class="font-light m-b-0"><span class="text-success">{{$totalBillRecievedOFLastMonth}} </span></h2>
+                        {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalBillRecievedOFLastMonth}} </span></h2>--}}
 
 
                     </div>
@@ -77,7 +77,7 @@
 
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success">{{$totalBillDueOFLastMonth}}</span></h2>
+                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalBillDueOFLastMonth}}</span></h2>--}}
 
 
 
@@ -133,7 +133,7 @@
 
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthDebit}} </span></h2>
+                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthDebit}} </span></h2>--}}
                             {{--<h2 class="font-light m-b-0"><span class="text-success">35000.00 </span></h2>--}}
 
 
@@ -161,7 +161,7 @@
 
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthCredit}}</span></h2>
+                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthCredit}}</span></h2>--}}
                             {{--<h2 class="font-light m-b-0"><span class="text-success">100000.00</span></h2>--}}
 
 
@@ -187,7 +187,7 @@
                     <div class="row">
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success">{{(number_format(str_replace(',','',$totalOFLastMonthCredit)-str_replace(',','',$totalOFLastMonthDebit),2))}}</span></h2>
+                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{(number_format(str_replace(',','',$totalOFLastMonthCredit)-str_replace(',','',$totalOFLastMonthDebit),2))}}</span></h2>--}}
                             {{--<h2 class="font-light m-b-0"><span class="text-success">65000.00</span></h2>--}}
 
 
@@ -212,34 +212,35 @@
 @section('js')
     <script>
     $(document).ready( function () {
-        $.ajax({
-            type: 'GET',
-            url: "{!! route('dashboard.duepayment') !!}",
-            cache: false,
-            data: {_token: "{{csrf_token()}}"},
-            success: function (data) {
-                $("#duepayment").html(data);
-                // console.log(data);
-            }
-        });
+
+        {{--$.ajax({--}}
+            {{--type: 'GET',--}}
+            {{--url: "{!! route('dashboard.duepayment') !!}",--}}
+            {{--cache: false,--}}
+            {{--data: {_token: "{{csrf_token()}}"},--}}
+            {{--success: function (data) {--}}
+                {{--$("#duepayment").html(data);--}}
+                {{--// console.log(data);--}}
+            {{--}--}}
+        {{--});--}}
 
     });
 
-    $(document).ready( function () {
-        $.ajax({
-            type: 'GET',
-            url: "{!! route('dashboard.insertbillformonth') !!}",
-            cache: false,
-            data: {_token: "{{csrf_token()}}"},
-            success: function (data) {
+    {{--$(document).ready( function () {--}}
+        {{--$.ajax({--}}
+            {{--type: 'GET',--}}
+            {{--url: "{!! route('dashboard.insertbillformonth') !!}",--}}
+            {{--cache: false,--}}
+            {{--data: {_token: "{{csrf_token()}}"},--}}
+            {{--success: function (data) {--}}
 
 
-              //  $("#duepayment").html(data);
-                 console.log(data);
-            }
-        });
+              {{--//  $("#duepayment").html(data);--}}
+                 {{--console.log(data);--}}
+            {{--}--}}
+        {{--});--}}
 
-    });
+    {{--});--}}
     </script>
     }
     @endsection

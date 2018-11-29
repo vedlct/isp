@@ -36,4 +36,28 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+//    public function redirectTo()
+//    {
+//
+//        if (Auth::user()->fkusertype == USER_TYPE['Admin'] || Auth::user()->fkusertype == USER_TYPE['Emp']) {
+//            return route('admin.dashboard');
+//        }
+//        elseif (Auth::user()->fkusertype == USER_TYPE['Admin']) {
+//
+//            $cvStatus1=Employee::where('fkuserId',Auth::user()->userId)->first();
+//
+//            if ($cvStatus1 != null && $cvStatus1->cvStatus == 1){
+//
+//                return route('job.all');
+//
+//            }else {
+//                return route('candidate.cvPersonalInfo');
+//            }
+//
+//
+//
+//        }
+//
+//    }
 }

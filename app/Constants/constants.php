@@ -5,6 +5,13 @@ define('ACCOUNT_STATUS',array(
     "Credit"=>'credit'
 ));
 
+define('USER_TYPE',array(
+    "Admin"=>'admin',
+    "CableEmp"=>'CableEmp',
+    "InternetEmp"=>'InternetEmp',
+
+));
+
 
 
 
