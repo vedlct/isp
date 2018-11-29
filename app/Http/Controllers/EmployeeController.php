@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Employee;
 use App\Report;
 use App\Salary;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 
 class EmployeeController extends Controller
@@ -27,11 +29,21 @@ class EmployeeController extends Controller
     public function edit(Request $r){
 
         $employee=Employee::findOrFail($r->id);
+        $user = User::findOrFail($r->userId);
 
-        return view('User.Employee.editEmployee',compact('employee'));
+        return view('User.Employee.editEmployee',compact('employee','user'));
     }
 
     public function storeEmployee(Request $r){
+
+        $user = new User();
+        $user->name = $r->employeeName;
+        $user->email = $r->email;
+        $user->password = Hash::make($r->password);
+        $user->phone = $r->phone;
+        $user->fkusertype = $r->usertype;
+        $user->save();
+
         $emp = new Employee();
         $emp->employeeName = $r->employeeName;
         $emp->degisnation = $r->degisnation;
@@ -40,6 +52,7 @@ class EmployeeController extends Controller
         $emp->email = $r->email;
         $emp->address = $r->address;
         $emp->status = '1';
+        $emp->fkUserId = $user->userId;
         $emp->save();
         session()->flash('success', 'Employee Added Successfully');
         return redirect()->route('employee.show');
@@ -47,6 +60,15 @@ class EmployeeController extends Controller
 
     public function updateEmployee(Request $r){
 //        return $r->empId;
+        $user = User::findOrFail($r->userId);
+        $user->name = $r->employeeName;
+        $user->email = $r->email;
+        $user->phone = $r->phone;
+        $user->fkusertype = $r->usertype;
+        if($r->password!=null){
+            $user->password = Hash::make($r->password);
+        }
+        $user->save();
         $employee = Employee::findOrFail($r->empId);
         $employee->employeeName=$r->employeeName;
         $employee->degisnation=$r->degisnation;

@@ -60,6 +60,24 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label>Password</label>
+                            <div>
+                                <input type="password" class="form-control" name="password" required="" parsley-type="email" placeholder="enter Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>User Type</label>
+                            <div>
+                                <select class="form-control" name="usertype">
+                                    @foreach(USER_TYPE as $key=>$value)
+                                        <option value="{{$key}}">{{$value}}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label>Designation</label>
                             <div>
                                 <input parsley-type="text" type="text" name="degisnation" class="form-control" required="" placeholder="Enter Designation">
@@ -157,20 +175,21 @@
                             "orderable": false, "searchable":false, "name":"selected_rows" },
                         { "data": function(data){
 
-                                return '<a class="btn btn-default btn-sm" data-panel-id="'+data.employeeId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>'
+                                return '<a class="btn btn-default btn-sm" data-panel-id="'+data.employeeId+'" data-user-id="'+data.fkUserId +'" onclick="editClient(this,this)"><i class="fa fa-edit"></i></a>'
                                     ;},
                             "orderable": false, "searchable":false, "name":"selected_rows" },
                     ]
                 });
-            } );
-            function editClient(x) {
+            });
+            function editClient(x,y) {
                 var id=$(x).data('panel-id');
+                var userId=$(y).data('user-id');
 
                 $.ajax({
                     type: 'POST',
                     url: "{!! route('employee.edit') !!}",
                     cache: false,
-                    data: {_token: "{{csrf_token()}}",'id': id},
+                    data: {_token: "{{csrf_token()}}",'id': id,'userId':userId},
                     success: function (data) {
                         $("#editEmpBody").html(data);
                         $('#editEmp').modal();
