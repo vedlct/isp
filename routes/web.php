@@ -101,14 +101,21 @@ Route::get('/Bill','BillController@show')->name('bill.show');
 Route::post('/Bill','BillController@showWithData')->name('bill.show.withData');
 
 Route::get('/Bill-PastDue-Client','BillController@showPastDue')->name('bill.showPastDue');
+
 Route::get('/Bill-PastDueLastMonth-Client','BillController@showPastDueLastMonth')->name('bill.showPastDueLastMonth');
 Route::get('/Bill/{date}','BillController@showDate')->name('bill.show.date');
+
 Route::post('/Bill-paid','BillController@paid')->name('bill.paid');
 Route::post('/Bill-due','BillController@due')->name('bill.due');
 
+
 Route::get('/Internet-Bill','BillController@internetBillShow')->name('bill.Internet.show');
 Route::post('/Internet-Bill','BillController@internetBillShowWithData')->name('bill.internet.show.withData');
+Route::get('/Bill/{date}','BillController@showInternetBillDate')->name('bill.Internet.show.date');
 Route::post('/Internet-Bill-paid','BillController@internetBillPaid')->name('bill.Internet.paid');
+Route::get('/Bill-PastDue-Internet-Client','BillController@showPastDue')->name('bill.Internet.showPastDue');
+
+Route::post('/Internet-Bill-due','BillController@internetBillDue')->name('bill.Internet.due');
 
  /* Report Routes
 
