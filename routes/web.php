@@ -154,7 +154,7 @@ Route::get('test','BillController@generatePdf');
 
 
 Route::get('bill/generate/{id}/{date}','BillController@generatePdf')->name('bill.invoice');
-Route::get('Bill/generate/{id}/{date}','BillController@generateInternetPdf')->name('bill.Internet.invoice');
+Route::get('Bill/generate/{id}/{date}','BillController@generateInternetPdf')->name('bill.Internet.invoiceByClient');
 
 Route::get('Bill/Generate-All/{date}','BillController@generateAllInternetBillPdf')->name('bill.Internet.invoice');
 

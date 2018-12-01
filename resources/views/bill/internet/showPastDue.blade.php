@@ -145,13 +145,14 @@
 //            alert(date);return false;
 
 
-            {{--let url = "{{ route('bill.Internet.invoice',[':id',':date']) }}";--}}
-
-            {{--url = url.replace(':date', date);--}}
-            {{--url = url.replace(':id', id);--}}
+            let url = "{{ route('bill.Internet.invoiceByClient',[':id',':date']) }}";
 
 
-            {{--window.open(url,'_blank');--}}
+            url = url.replace(':id', id);
+            url = url.replace(':date', date);
+
+
+            window.open(url,'_blank');
 
         }
         function changeDate(x) {

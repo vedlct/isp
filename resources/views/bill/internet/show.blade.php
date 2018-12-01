@@ -194,14 +194,14 @@
             var id = $(x).data('panel-id');
             var date = $(x).data('panel-date');
 
-            let url = "{{ route('bill.Internet.invoice',[':id',':date']) }}";
+            let url = "{{ route('bill.Internet.invoiceByClient',[':id',':date']) }}";
 
 
             url = url.replace(':date', date);
             url = url.replace(':id', id);
 
 
-            window.open(url,'_blank')
+            window.open(url,'_blank');
 
         }
         function changeDate(x) {
