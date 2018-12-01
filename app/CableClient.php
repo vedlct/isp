@@ -4,10 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class InternetClient extends Model
+class CableClient extends Model
 {
-
-    protected $table ='internet_client';
+    protected $table ='cable_client';
     protected $primaryKey='clientId';
     public $timestamps = false;
 }

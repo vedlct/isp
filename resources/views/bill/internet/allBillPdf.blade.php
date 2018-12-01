@@ -4,45 +4,9 @@
     <title>Invoice</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--}}
+
     <style>
-        /* body {
-             background: #ddd none repeat scroll 0 0;
-         }*/
 
-
-        /*
-        img {
-            width: 80px;
-
-        }
-        .versity_name span {
-            color: red;
-        }
-
-        .application h3 {
-            color: red;
-            font-size: 25px;
-            margin-bottom: 30px;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .versity_name h2 {
-            font-size: 37px;
-            margin-left: 18px;
-        }
-        .application p {
-            margin: 0;
-            padding: 0;
-        }
-        .photo > p {
-            border: 1px solid;
-            height: 122px;
-            margin-top: 5px;
-            text-align: center;
-            width: 110px;
-        }*/
 
         table, th, td {
             border: 1px solid black;
@@ -65,8 +29,7 @@
 
 
     </style>
-    {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>--}}
-    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
+
 
     <style>
 
@@ -93,6 +56,8 @@
 <body style="background: #fff ">
 <div class="structure">
     <div style= "background: #fff; padding: 20px; " class="container ">
+
+        @foreach($client as $client)
 
         <table  style="width:100%; text-align: center; border: none; margin-top: -60px " >
 
@@ -129,7 +94,7 @@
                 <td style="width: 40%;border: none "></td>
 
                 <td style="border: none;width: 25%;">
-                    {{--<img style="margin-left: 30px" width="198px" height="148px" src="{{url('public/logo/TCL_logo.png')}}" alt="">--}}
+                {{--<img style="margin-left: 30px" width="198px" height="148px" src="{{url('public/logo/TCL_logo.png')}}" alt="">--}}
                 <td style="width: 40%; border: none;">
                     <p><h3 style="color: #0476BD">{{strtoupper($client->clientFirstName)}} {{strtoupper($client->clientLastName)}}</h3></p>
 
@@ -158,26 +123,7 @@
                 <td style="width: 45%;border: none;">
 
                 </td>
-                {{--<td style="width: 35%; border: none; ">--}}
 
-                    {{--<table width="100%" class="tblColor" style=" margin-top: 50px; margin-left: auto ; margin-right: auto; margin-bottom: auto; "  >--}}
-
-                        {{--<tr >--}}
-                            {{--<td ><b>Invoice Number:</b></td>--}}
-                            {{--<td width="45%">{{$invoiceNumber}}</td>--}}
-                        {{--</tr>--}}
-                        {{--<tr >--}}
-                            {{--<td ><b>Invoice Date: </b></td>--}}
-                            {{--<td width="45%">{{date('Y-m-d')}}</td>--}}
-                        {{--</tr>--}}
-                        {{--<tr>--}}
-                            {{--<td ><b>Payment Date:</b></td>--}}
-                            {{--<td width="45%">{{$paymentDate}}</td>--}}
-
-                        {{--</tr>--}}
-                    {{--</table>--}}
-
-                {{--</td>--}}
             </tr>
 
         </table>
@@ -251,26 +197,7 @@
                 <td style="width: 45%;border: none;">
 
                 </td>
-                {{--<td style="width: 35%; border: none; ">--}}
 
-                {{--<table width="100%" class="tblColor" style=" margin-top: 50px; margin-left: auto ; margin-right: auto; margin-bottom: auto; "  >--}}
-
-                {{--<tr >--}}
-                {{--<td ><b>Invoice Number:</b></td>--}}
-                {{--<td width="45%">{{$invoiceNumber}}</td>--}}
-                {{--</tr>--}}
-                {{--<tr >--}}
-                {{--<td ><b>Invoice Date: </b></td>--}}
-                {{--<td width="45%">{{date('Y-m-d')}}</td>--}}
-                {{--</tr>--}}
-                {{--<tr>--}}
-                {{--<td ><b>Payment Date:</b></td>--}}
-                {{--<td width="45%">{{$paymentDate}}</td>--}}
-
-                {{--</tr>--}}
-                {{--</table>--}}
-
-                {{--</td>--}}
             </tr>
 
         </table>
@@ -316,7 +243,7 @@
                 <td style="width: 40%;border: none "></td>
 
                 <td style="border: none;width: 25%;">
-                {{--<img style="margin-left: 30px" width="198px" height="148px" src="{{url('public/logo/TCL_logo.png')}}" alt="">--}}
+
                 <td style="width: 40%; border: none;">
                     <p><h3 style="color: #0476BD">{{strtoupper($client->clientFirstName)}} {{strtoupper($client->clientLastName)}}</h3></p>
 
@@ -345,26 +272,7 @@
                 <td style="width: 45%;border: none;">
 
                 </td>
-                {{--<td style="width: 35%; border: none; ">--}}
 
-                {{--<table width="100%" class="tblColor" style=" margin-top: 50px; margin-left: auto ; margin-right: auto; margin-bottom: auto; "  >--}}
-
-                {{--<tr >--}}
-                {{--<td ><b>Invoice Number:</b></td>--}}
-                {{--<td width="45%">{{$invoiceNumber}}</td>--}}
-                {{--</tr>--}}
-                {{--<tr >--}}
-                {{--<td ><b>Invoice Date: </b></td>--}}
-                {{--<td width="45%">{{date('Y-m-d')}}</td>--}}
-                {{--</tr>--}}
-                {{--<tr>--}}
-                {{--<td ><b>Payment Date:</b></td>--}}
-                {{--<td width="45%">{{$paymentDate}}</td>--}}
-
-                {{--</tr>--}}
-                {{--</table>--}}
-
-                {{--</td>--}}
             </tr>
 
         </table>
@@ -387,6 +295,7 @@
 
 
         </table>
+            @endforeach
 
     </div>
 </div>

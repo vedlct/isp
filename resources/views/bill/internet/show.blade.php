@@ -66,7 +66,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
-                        <button id="generateBill" style="display: none" class="btn-info" name="generateBill">Genarate bill</button>
+                        <button id="generateBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>
                     </div>
 
                     <div class="table table-responsive">
@@ -80,7 +80,6 @@
                                 <th>Package Name</th>
                                 <th>BandWidth</th>
                                 <th>Price</th>
-
                                 <th>Action</th>
                                 <th>Invoice</th>
 
@@ -176,7 +175,7 @@
                 "fnDrawCallback": function() {
                     var api = this.api()
                     var json = api.ajax.json();
-                    if ('{{$internetClient}}'==json.total){
+                    if ('{{$internetClient}}'!=json.total){
 
                         $('#generateBill').show();
                         $('#loding').hide();
@@ -195,13 +194,12 @@
             var id = $(x).data('panel-id');
             var date = $(x).data('panel-date');
 
-            let url = "{{ route('bill.invoice',[':id',':date']) }}";
+            let url = "{{ route('bill.Internet.invoice',[':id',':date']) }}";
 
-            // url = url.replace([':id',':date'], id,date);
+
             url = url.replace(':date', date);
             url = url.replace(':id', id);
-            //
-            // document.location.href=url;
+
 
             window.open(url,'_blank')
 
@@ -354,6 +352,20 @@
                     }
                 });
             }
+
+        $("#generateBill").click(function () {
+
+
+
+
+            let url = "{{ route('bill.Internet.invoice',[':date']) }}";
+
+
+            url = url.replace(':date', '{{$date}}');
+
+            window.open(url,'_blank')
+
+        });
 
 
 

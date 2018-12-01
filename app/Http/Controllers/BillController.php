@@ -165,6 +165,7 @@ class BillController extends Controller
 
     }
 
+
     /* internet Bill */
     public function internetBillShow(){
 
@@ -222,6 +223,40 @@ class BillController extends Controller
         $message='Monthly Internet bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
 
         return  $message;
+
+
+
+    }
+
+    public function generateInternetPdf($id,$date){
+        $clientId=$id;
+
+
+        $client=InternetClient::leftJoin('package','package.packageId','internet_client.fkpackageId')->findOrFail($clientId);
+        $company=Company::first();
+
+        $pdf = PDF::loadView('bill.pdf',compact('client','company','date'));
+
+//        return $pdf->stream();
+        return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
+
+
+
+
+    }
+    public function generateAllInternetBillPdf($date){
+
+        $month = Carbon::parse($date)->format('m');
+        $client=InternetBill::leftJoin('internet_client','internet_bill.fkclientId','internet_client.clientId')->leftJoin('package','package.packageId','internet_client.fkpackageId')->where(DB::raw('month(internet_bill.billdate)'),$month)->get();
+        $company=Company::first();
+
+
+
+        $pdf = PDF::loadView('bill.internet.allBillPdf',compact('client','company','date'));
+
+
+        return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
+
 
 
 

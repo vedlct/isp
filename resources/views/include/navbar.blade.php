@@ -43,10 +43,17 @@
                 </li>
 
 
-                <li>
-                    <a href="{{route('client.show')}}" class="waves-effect">
-                        <i class="fa fa-user"></i> <span>Client</span>
-                    </a>
+                {{--<li>--}}
+                    {{--<a href="{{route('client.show')}}" class="waves-effect">--}}
+                        {{--<i class="fa fa-user"></i> <span>Client</span>--}}
+                    {{--</a>--}}
+                {{--</li>--}}
+                <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-meter"></i> <span>Client </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('internet.client.index')}}" class="waves-effect">Internet Client</a></li>
+                        <li><a href="{{route('cable.client.index')}}" class="waves-effect">Cable Client</a></li>
+
+                    </ul>
                 </li>
 
 

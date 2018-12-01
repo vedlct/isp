@@ -1,6 +1,7 @@
 <form class="empform" action="{{route('employee.updateEmployee')}}" novalidate="" method="post">
     {{csrf_field()}}
     <input type="hidden"value="{{$employee->employeeId}}" name="empId" id="empId" >
+    <input type="hidden"value="{{$user->userId}}" name="userId" id="userId" >
     <div class="form-group">
         <label>Employee Name</label>
         <input type="text" class="form-control"value="{{$employee->employeeName}}" name="employeeName" required="" placeholder="Enter Employee Name">
@@ -9,6 +10,23 @@
         <label>Email</label>
         <div>
             <input type="email" class="form-control"value="{{$employee->email}}" name="email" required="" parsley-type="email" placeholder="Enter a valid e-mail">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <div>
+            <input type="text" class="form-control" name="password" value="" required="" parsley-type="email" placeholder="enter Password">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>User Type</label>
+        <div>
+            <select class="form-control" name="usertype">
+                @foreach(USER_TYPE as $key=>$value)
+                    <option value="{{$key}}" {{ $user->fkusertype == $key ? 'selected' : '' }}>{{$value}}</option>
+                @endforeach
+
+            </select>
         </div>
     </div>
     <div class="form-group">
