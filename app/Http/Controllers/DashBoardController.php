@@ -6,6 +6,7 @@ use App\Bill;
 use App\CheckMonth;
 use App\Client;
 use App\Employee;
+use App\InternetBill;
 use App\Report;
 use App\Salary;
 use Illuminate\Http\Request;
@@ -45,8 +46,12 @@ class DashBoardController extends Controller
 
 
 //        return view('index',compact('totalOFLastMonthCredit','totalOFLastMonthDebit','totalBillRecievedOFLastMonth','totalBillDueOFLastMonth'));
+        $date = new Carbon();
+        $last_month = $date->subMonth()->format('m');
+        $totalbilllastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totalbillinternet'))->where('status', 'p')->where(DB::raw('MONTH(billdate)'), $last_month)->first();
+        $totalduelastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totaldueinternet'))->where('status', 'np')->where(DB::raw('MONTH(billdate)'), $last_month)->first();
 
-        return view('index');
+        return view('index', compact('totalbilllastmonthinternet','totalduelastmonthinternet'));
     }
 
     public function previousdue(){
