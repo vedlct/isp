@@ -36,9 +36,35 @@ Route::post('/expense-delete','ExpenseController@deleteExpense')->name('expense.
 Route::post('/expense/filterByType', 'ExpenseController@filterByType')->name('expense.filterByType');
 
 
+
+
+/*
+ * Internet Client
+ */
+
+Route::get('internet/client','InternetClientController@index')->name('internet.client.index');
+Route::post('internet/client','InternetClientController@getData')->name('internet.client.getData');
+Route::post('internet/client/insert','InternetClientController@insert')->name('internet.client.insert');
+Route::post('internet/client/edit','InternetClientController@edit')->name('internet.client.edit');
+Route::post('internet/Client-update/{id}','InternetClientController@update')->name('internet.client.update');
+Route::post('internet/client/deleteFile','InternetClientController@deleteFile')->name('internet.client.deleteFile');
+
+/*
+ * Cable Client
+ */
+
+Route::get('cable/client','CableClientController@index')->name('cable.client.index');
+Route::post('cable/client','CableClientController@getData')->name('cable.client.getData');
+Route::post('cable/client/insert','CableClientController@insert')->name('cable.client.insert');
+Route::post('cable/client/edit','CableClientController@edit')->name('cable.client.edit');
+Route::post('cable/Client-update/{id}','CableClientController@update')->name('cable.client.update');
+
+
+
 /*
  * Client Routes
  */
+
 Route::get('/Client','ClientController@show')->name('client.show');
 Route::post('/Client-getData','ClientController@getData')->name('client.getdata');
 Route::post('/Client-insert','ClientController@insert')->name('client.insert');

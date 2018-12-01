@@ -1,4 +1,4 @@
-<form method="post" action="{{route('internet.client.update',['id'=>$client->clientId])}}" enctype="multipart/form-data">
+<form method="post" action="{{route('cable.client.update',['id'=>$client->clientId])}}" enctype="multipart/form-data">
     {{csrf_field()}}
     <div class="row">
         <div class="form-group col-md-6">
@@ -17,24 +17,8 @@
             <label>phone</label>
             <input type="text" name="phone" placeholder="phone" class="form-control" value="{{$client->phone}}" >
         </div>
-        <div class="form-group col-md-6">
-            <label>ip</label>
-            <input type="text" name="ip" placeholder="ip" class="form-control" value="{{$client->ip}}" >
-        </div>
-        <div class="form-group col-md-6">
-            <label>Package</label>
-            <select class="form-control" id="packageedit" onchange="getpackage()" name="package">
-                <option>Select a Package</option>
-                @foreach($package as  $p)
-                    <option value="{{$p->packageId}}"  @if($p->packageId == $client->fkpackageId) selected @endif >{{$p->packageName}}</option>
-                @endforeach
-            </select>
-        </div>
 
-        <div class="form-group col-md-6">
-            <label>bandWidth</label>
-            <input type="text" name="bandwidth" id="bandwidthedit" placeholder="bandwidth" class="form-control" value="{{$client->bandWide}}" >
-        </div>
+
         <div class="form-group col-md-6">
             <label>Price</label>
             <input type="text" name="price" id="priceedit" placeholder="price" class="form-control" value="{{$client->price}}" >
@@ -49,11 +33,11 @@
             <div class="form-group col-md-6">
                 <a href="{{url("public/".$document->path)}}" download>{{$document->name}}</a>
             </div>
-        {{--{{$document->path}}--}}
+            {{--{{$document->path}}--}}
 
             <div class="form-group col-md-6 pull-right">
-            {{--<button type="button" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></button>--}}
-            <button type="button" class="btn btn-sm btn-danger" data-panel-id="{{$document->fileId}}" onclick="deleteFile(this)"><i class="fa fa-trash"></i></button>
+                {{--<button type="button" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></button>--}}
+                <button type="button" class="btn btn-sm btn-danger" data-panel-id="{{$document->fileId}}" onclick="deleteFile(this)"><i class="fa fa-trash"></i></button>
             </div>
 
         @endforeach
@@ -131,11 +115,7 @@
             cache: false,
             data: {_token: "{{csrf_token()}}",'id': id},
             success: function (data) {
-                // $("#editModalBody").html(data);
-                // $('#editModal').modal();
-                // console.log(data);
-                //   $('bandwidth').val(data.bandwidth);
-                //  $('price').val(data.price);
+
 
                 document.getElementById('bandwidthedit').value = data.bandwidth;
                 document.getElementById('priceedit').value = data.price;

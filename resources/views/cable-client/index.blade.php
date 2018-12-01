@@ -14,7 +14,7 @@
 
     <!-- end page title end breadcrumb -->
     <div class="modal" id="myModal">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
                 <!-- Modal Header -->
@@ -25,61 +25,42 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form method="post" action="{{route('client.insert')}}">
+                    <form method="post" action="{{route('cable.client.insert')}}" enctype="multipart/form-data">
                         {{csrf_field()}}
 
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label>First Name</label>
                                 <input type="text" name="clientFirstName" placeholder="First Name" class="form-control" >
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label>Last Name</label>
                                 <input type="text" name="clientLastName" placeholder="Last Name" class="form-control" >
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label>email</label>
                                 <input type="email" name="email" placeholder="Email" class="form-control" >
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label>phone</label>
                                 <input type="text" name="phone" placeholder="phone" class="form-control" >
                             </div>
-                            <div class="form-group col-md-12">
-                                <label>ip</label>
-                                <input type="text" name="ip" placeholder="ip" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Internet Package</label>
-                               <select class="form-control" id="package" onchange="getpackage()" name="package">
-                                   <option>Select a Package</option>
-                                   @foreach($package as  $p)
-                                       <option value="{{$p->packageId}}">{{$p->packageName}}</option>
-                                       @endforeach
-                               </select>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Cable Package</label>
-                                <select class="form-control" id="cablepackage" onchange="getcablepackage()" name="package">
-                                    <option value="Select a Package">Select a Package</option>
-                                    @foreach($cablepackage as  $c)
-                                        <option value="{{$c->cablepackageId}}">{{$c->cablepackageName}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
 
-                            {{--@if($package->where('packageName', 'test')->first()){{$package->where('packageName', 'test')->first()->packageName}}@endif--}}
-                            <div class="form-group col-md-12">
-                                <label>bandWidth</label>
-                                <input type="text" name="bandwidth" id="bandwidth" placeholder="bandwidth" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label>Price</label>
                                 <input type="text" name="price" id="price" placeholder="price" class="form-control" >
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label>address</label>
                                 <input type="text" name="address"  placeholder="address" class="form-control" >
+                            </div>
+                            <div class="col-md-12"><hr></div>
+                            <div id="TextBoxesGroup" class="col-md-12">
+
+                            </div>
+                            <div class="form-group col-md-12 pull-right">
+                                <button type="button" class="btn btn-info btn-sm " onclick="addMore()">add more</button>
+                                <button type="button" class="btn btn-danger btn-sm " onclick="removeField()">remove</button>
                             </div>
                             <div class="form-group col-md-12">
                                 <button class="btn btn-success pull-right">submit</button>
@@ -102,12 +83,12 @@
     </div>
     <!-- The Edit Modal -->
     <div class="modal" id="editModal">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Update Package</h4>
+                    <h4 class="modal-title">Update Client</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -144,9 +125,6 @@
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>Phone Number</th>
-                            <th>IP</th>
-                            <th>Package Name</th>
-                            <th>BandWide</th>
                             <th>Price</th>
                             <th>Address</th>
 
@@ -176,6 +154,50 @@
     <!-- Buttons examples -->
     <script src="{{url('public/assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
     <script>
+        counter=0;
+
+        function addMore(){
+            // if(counter>10){
+            //     alert("Only 10 textboxes allow");
+            //     return false;
+            // }
+
+
+            // var id=document.getElementById("service"+(counter-1)).value;
+            // if(id=="") {
+            //     alert("Please Select a Service First!!");
+            //     return false;
+            //
+            // }
+            //
+
+
+            var newTextBoxDiv = $(document.createElement('div'))
+                .attr("id", 'TextBoxDiv' + counter);
+
+            newTextBoxDiv.after().html('<div class="row"><div class="form-group col-md-6">\n' +
+                '                                <label>Name</label>\n' +
+                '                                <input type="text" name="clientFile[]"  placeholder="insert image" class="form-control" required>\n' +
+                '                            </div>\n' +
+                '                            <div class="form-group col-md-6">\n' +
+                '                                <label>File</label>\n' +
+                '                                <input type="file" name="clientImage[]"  placeholder="insert image" class="form-control" required>\n' +
+                '                            </div></div>'
+            );
+            newTextBoxDiv.appendTo("#TextBoxesGroup");
+            counter++;
+            // ii++;
+
+        }
+        function removeField(){
+            if(counter==0){
+                alert(" textbox to remove");
+                return false;
+            }
+            counter--;
+            $("#TextBoxDiv" + counter).remove();
+
+        }
         $(document).ready( function () {
 
             $('#datatable').DataTable({
@@ -185,20 +207,20 @@
                 stateSave: true,
                 type:"POST",
                 "ajax":{
-                    "url": "{!! route('client.getdata') !!}",
+                    "url": "{!! route('cable.client.getData') !!}",
                     "type": "POST",
                     "data":{ _token: "{{csrf_token()}}"},
                 },
                 columns: [
-                    { data: 'clientFirstName', name: 'internet_client.clientFirstName' },
-                    { data: 'clientLastName', name: 'internet_client.clientLastName' },
-                    { data: 'email', name: 'internet_client.email'},
-                    { data: 'phone', name: 'internet_client.phone'},
-                    { data: 'ip', name: 'internet_client.ip'},
-                    { data: 'packageName', name: 'package.packageName'},
-                    { data: 'bandWide', name: 'internet_client.bandWide'},
-                    { data: 'price', name: 'internet_client.price'},
-                    { data: 'address', name: 'internet_client.address'},
+                    { data: 'clientFirstName', name: 'clientFirstName' },
+                    { data: 'clientLastName', name: 'clientLastName' },
+                    { data: 'email', name: 'email'},
+                    { data: 'phone', name: 'phone'},
+                    // { data: 'ip', name: 'internet_client.ip'},
+                    // { data: 'packageName', name: 'package.packageName'},
+                    // { data: 'bandWide', name: 'internet_client.bandWide'},
+                    { data: 'price', name: 'price'},
+                    { data: 'address', name: 'address'},
                     { "data": function(data){
 
                             return '<a class="btn btn-default btn-sm"  data-panel-id="'+data.clientId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>'
@@ -214,17 +236,31 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{!! route('client.edit') !!}",
+                url: "{!! route('cable.client.edit') !!}",
                 cache: false,
                 data: {_token: "{{csrf_token()}}",'id': id},
                 success: function (data) {
                     $("#editModalBody").html(data);
                     $('#editModal').modal();
-                    // console.log(data);
+
                 }
             });
         }
+        function editClientById(id) {
+            // var id=$(x).data('panel-id');
 
+            $.ajax({
+                type: 'POST',
+                url: "{!! route('cable.client.edit') !!}",
+                cache: false,
+                data: {_token: "{{csrf_token()}}",'id': id},
+                success: function (data) {
+                    $("#editModalBody").html(data);
+                    $('#editModal').modal();
+
+                }
+            });
+        }
 
         function getpackage() {
             var id=document.getElementById('package').value;
@@ -238,8 +274,8 @@
                     // $("#editModalBody").html(data);
                     // $('#editModal').modal();
                     // console.log(data);
-                 //   $('bandwidth').val(data.bandwidth);
-                  //  $('price').val(data.price);
+                    //   $('bandwidth').val(data.bandwidth);
+                    //  $('price').val(data.price);
 
                     document.getElementById('bandwidth').value = data.bandwidth;
                     document.getElementById('price').value = data.price;
@@ -261,9 +297,9 @@
                     // $("#editModalBody").html(data);
                     // $('#editModal').modal();
                     // console.log(data);
-                 //   $('bandwidth').val(data.bandwidth);
-                  //  $('price').val(data.price);
-              
+                    //   $('bandwidth').val(data.bandwidth);
+                    //  $('price').val(data.price);
+
                     var price = document.getElementById('price').value ;
 
                     document.getElementById('price').value =   parseFloat(price) + parseFloat(data.price);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\CablePackage;
 use App\Client;
+use App\InternetClient;
 use App\Package;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -13,20 +14,19 @@ use Auth;
 
 class ClientController extends Controller
 {
-    //
+
     public function __construct()
     {
         $this->middleware('auth');
     }
 
     public function show(){
-
         $package = Package::get();
         $cablepackage = CablePackage::get();
         return view('client.show', compact('package','cablepackage'));
     }
-    public function insert(Request $r){
 
+    public function insert(Request $r){
         $client = new Client();
         $client->clientFirstName = $r->clientFirstName;
         $client->clientLastName = $r->clientLastName;
@@ -42,7 +42,7 @@ class ClientController extends Controller
         return back();
     }
     public function edit(Request $r){
-        $client = Client::select('client.*', 'packageName')
+        $client = InternetClient::select('internet_client.*', 'packageName')
             ->leftjoin('package','fkpackageId','packageId')
             ->where('clientId', $r->id)
             ->first();
@@ -66,8 +66,9 @@ class ClientController extends Controller
         return back();
     }
 
+
     public function getData(Request $r){
-        $client = Client::select('client.*', 'packageName')
+        $client = InternetClient::select('internet_client.*', 'packageName')
             ->leftjoin('package','fkpackageId','packageId');
         $datatables = Datatables::of($client);
         return $datatables->make(true);
