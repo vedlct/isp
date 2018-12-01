@@ -62,24 +62,12 @@ class BillController extends Controller
     }
 
     public function showPastDue(){
-//        $date=Carbon::now()->startOfMonth()->format('Y-m-d');
 
-//        $bill = Bill::select('bill.fkclientId','client.clientFirstName','client.clientLastName','client.ip','client.bandWide','bill.price as billprice','bill.billdate',
-//            'client.address', 'package.packageName','bill.status as billStatus')
-//            ->where('bill.status','np')
-//            ->leftjoin('client','bill.fkclientId','client.clientId')
-//            ->leftjoin('package','package.packageId','client.fkpackageId');
 
-        return view('bill.showPastDue');
+        return view('bill.internet.showPastDue');
     }
     public function showPastDueLastMonth(){
-//        $date=Carbon::now()->startOfMonth()->format('Y-m-d');
 
-//        $bill = Bill::select('bill.fkclientId','client.clientFirstName','client.clientLastName','client.ip','client.bandWide','bill.price as billprice','bill.billdate',
-//            'client.address', 'package.packageName','bill.status as billStatus')
-//            ->where('bill.status','np')
-//            ->leftjoin('client','bill.fkclientId','client.clientId')
-//            ->leftjoin('package','package.packageId','client.fkpackageId');
 
         $LastMonth=Carbon::now()->subMonth()->format('F-Y');
 
@@ -98,6 +86,7 @@ class BillController extends Controller
         $package = Package::get();
         return view('bill.show', compact('client', 'bill', 'package','date'));
     }
+
 
 
     public function paid(Request $r){
@@ -145,6 +134,7 @@ class BillController extends Controller
 
 
     }
+
 
 
     public function generatePdf($id,$date){
@@ -229,15 +219,14 @@ class BillController extends Controller
     }
 
     public function generateInternetPdf($id,$date){
-        $clientId=$id;
 
+        $clientId=$id;
 
         $client=InternetClient::leftJoin('package','package.packageId','internet_client.fkpackageId')->findOrFail($clientId);
         $company=Company::first();
 
         $pdf = PDF::loadView('bill.pdf',compact('client','company','date'));
 
-//        return $pdf->stream();
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
 
 
@@ -256,6 +245,28 @@ class BillController extends Controller
 
 
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
+
+
+
+
+    }
+
+    public function internetBillDue(Request $r){
+
+
+        $month = Carbon::parse($r->date)->format('m');
+
+        $bill=InternetBill::leftjoin('internet_client','internet_bill.fkclientId','internet_client.clientId')->where(DB::raw('month(internet_bill.billdate)'),$month)->where('internet_client.clientId',$r->id)->first();
+        $bill->status = 'np';
+        $bill->save();
+
+        $report = Report::where('tabelId' , $bill->billId)
+            ->where('tableName', 'internet_bill')->delete();
+
+        $message='Monthly Internet bill of '.$r->date.' for client Name '.$bill->clientFirstName.' '.$bill->clientLastName.' has been changed to unpaid';
+
+        return  $message;
+
 
 
 

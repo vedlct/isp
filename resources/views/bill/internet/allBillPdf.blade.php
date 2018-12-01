@@ -55,9 +55,15 @@
 
 <body style="background: #fff ">
 <div class="structure">
+    @php $i=0;
+    @endphp
+    @foreach($client as $client)
+        @if($i>=1)
+            <p style="page-break-before: always"></p>
+        @endif
     <div style= "background: #fff; padding: 20px; " class="container ">
 
-        @foreach($client as $client)
+
 
         <table  style="width:100%; text-align: center; border: none; margin-top: -60px " >
 
@@ -295,9 +301,12 @@
 
 
         </table>
-            @endforeach
+
 
     </div>
+        @php $i++; @endphp
+    @endforeach
 </div>
+
 </body>
 </html>

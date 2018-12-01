@@ -8,49 +8,10 @@
     <!-- Responsive datatable examples -->
     <link href="{{url('public/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
 
-    <style>
-        .lds-facebook {
-            display: inline-block;
-            position: relative;
-            width: 64px;
-            height: 37px;
-        }
-        .lds-facebook div {
-            display: inline-block;
-            position: absolute;
-            left: 6px;
-            width: 13px;
-            background: #99ff48;
-            animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
-        }
-        .lds-facebook div:nth-child(1) {
-            left: 6px;
-            animation-delay: -0.24s;
-        }
-        .lds-facebook div:nth-child(2) {
-            left: 26px;
-            animation-delay: -0.12s;
-        }
-        .lds-facebook div:nth-child(3) {
-            left: 45px;
-            animation-delay: 0;
-        }
-        @keyframes lds-facebook {
-            0% {
-                top: 6px;
-                height: 51px;
-            }
-            50%, 100% {
-                top: 19px;
-                height: 26px;
-            }
-        }
-
-    </style>
-
 @endsection
 
 @section('content')
+
 
 
     <div class="row">
@@ -60,14 +21,7 @@
                 <div class="card-body">
 
                     <h4 class="mt-0 header-title">All Bill</h4>
-                    <div class="form-group col-md-3">
-                        <label>Select Month</label>
-                        <input type="text" id="billMonth" class="form-control datepicker" @if(isset($date)) value="{{$date}}" @endif name="selectMonth" onchange="changeDate(this)">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
-                        <button id="generateBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>
-                    </div>
+
 
                     <div class="table table-responsive">
                         <table id="manageapplication" class="table table-striped table-bordered" style="width:100%" >
@@ -80,6 +34,7 @@
                                 <th>Package Name</th>
                                 <th>BandWidth</th>
                                 <th>Price</th>
+                                <th>Bill Date</th>
                                 <th>Action</th>
                                 <th>Invoice</th>
 
@@ -129,9 +84,11 @@
                     data:function (d){
 
                         d._token="{{csrf_token()}}";
-                        if ($('#billMonth').val()!=""){
-                            d.billMonth=$('#billMonth').val();
-                        }
+                        d.pastDue=true;
+                        @isset($LastMonth)
+                            d.billMonth='{{$LastMonth}}';
+                        @endisset
+
 
 
                     },
@@ -145,48 +102,39 @@
                     { data: 'packageName', name: 'package.packageName', "orderable": false, "searchable":true },
                     { data: 'bandWide', name: 'internet_client.bandWide', "orderable": true, "searchable":true },
                     { data: 'billprice', name: 'internet_bill.price', "orderable": true, "searchable":true },
+//                    { data: 'address', name: 'client.address', "orderable": true, "searchable":true },
+                    { data: 'billdate', name: 'internet_bill.billdate', "orderable": true, "searchable":true },
 
 
 
                     { "data": function(data){
 
-                    if (data.billStatus=='np'){
-                        return '<select style="background-color:red;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" onchange="changebillstatus(this)">'+
-                        '<option  value="paid"  >Paid</option>'+
-                        '<option value="due" selected  >Due</option>'+
-                        '</select>';
-                    }else if (data.billStatus=='p'){
-                        return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" onchange="changebillstatus(this)">'+
-                            '<option  value="paid" selected  >Paid</option>'+
-                            '<option value="due"   >Due</option>'+
-                            '</select>';
-                    }
-                    ;},
+                        if (data.billStatus=='np'){
+
+                            return '<select style="background-color:red;color:white" class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="'+data.billdate+'" data-panel-id="'+data.fkclientId+'" onchange="changebillstatus(this)">'+
+                                '<option  value="paid"  >Paid</option>'+
+                                '<option value="due" selected  >Due</option>'+
+                                '</select>';
+                        }else if (data.billStatus=='p'){
+
+                            return '<select style="background-color:green;color:white" class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="'+data.billdate+'" data-panel-id="'+data.fkclientId+'" onchange="changebillstatus(this)">'+
+                                '<option  value="paid" selected  >Paid</option>'+
+                                '<option value="due"   >Due</option>'+
+                                '</select>';
+                        }
+                        ;},
                         "orderable": false, "searchable":false
                     },
                     { "data": function(data){
-                        return '<button class="btn btn-info btn-sm" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" onclick="generateBill(this)" ><i class="fa fa-print"></i></button>'
+                        return '<button class="btn btn-info btn-sm" data-panel-date="{{date('Y-m-d')}}" data-panel-id="'+data.fkclientId+'" onclick="generateBill(this)" ><i class="fa fa-print"></i></button>'
                             ;},
                         "orderable": false, "searchable":false
                     },
 
 
                 ],
-                "fnDrawCallback": function() {
-                    var api = this.api()
-                    var json = api.ajax.json();
-                    if ('{{$internetClient}}'==json.total){
 
-                        $('#generateBill').show();
-                        $('#loding').hide();
-
-                    }
-
-
-                }
             });
-
-
 
         } );
 
@@ -194,25 +142,20 @@
             var id = $(x).data('panel-id');
             var date = $(x).data('panel-date');
 
+//            alert(date);return false;
+
+
             let url = "{{ route('bill.Internet.invoiceByClient',[':id',':date']) }}";
 
 
-            url = url.replace(':date', date);
             url = url.replace(':id', id);
+            url = url.replace(':date', date);
 
 
             window.open(url,'_blank');
 
         }
         function changeDate(x) {
-
-            {{--var date=$(x).val();--}}
-
-            {{--// alert(date);--}}
-            {{--let url = "{{ route('bill.Internet.show.date', ':date') }}";--}}
-            {{--url = url.replace(':date', date);--}}
-            {{--document.location.href=url;--}}
-
             table.ajax.reload();
 
         }
@@ -321,19 +264,6 @@
 
 
 
-        $("#generateBill").click(function () {
-
-
-
-
-            let url = "{{ route('bill.Internet.invoice',[':date']) }}";
-
-
-            url = url.replace(':date', '{{$date}}');
-
-            window.open(url,'_blank')
-
-        });
 
 
 
