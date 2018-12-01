@@ -70,13 +70,19 @@ Route::post('/Package-cable-getpackage','PackageController@cablegetpackage')->na
 =======
  * Bill Routes
  */
+
 Route::get('/Bill','BillController@show')->name('bill.show');
 Route::post('/Bill','BillController@showWithData')->name('bill.show.withData');
+
 Route::get('/Bill-PastDue-Client','BillController@showPastDue')->name('bill.showPastDue');
 Route::get('/Bill-PastDueLastMonth-Client','BillController@showPastDueLastMonth')->name('bill.showPastDueLastMonth');
 Route::get('/Bill/{date}','BillController@showDate')->name('bill.show.date');
 Route::post('/Bill-paid','BillController@paid')->name('bill.paid');
 Route::post('/Bill-due','BillController@due')->name('bill.due');
+
+Route::get('/Internet-Bill','BillController@internetBillShow')->name('bill.Internet.show');
+Route::post('/Internet-Bill','BillController@internetBillShowWithData')->name('bill.internet.show.withData');
+Route::post('/Internet-Bill-paid','BillController@internetBillPaid')->name('bill.Internet.paid');
 
  /* Report Routes
 

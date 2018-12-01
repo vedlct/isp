@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Bill;
 use App\Client;
+use App\InternetBill;
+use App\InternetClient;
 use App\Package;
 
 //use App\Client;
@@ -29,12 +31,6 @@ class BillController extends Controller
     public function show(){
         $date=Carbon::now()->format('F-Y');
 
-
-//        $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice', 'address', 'packageName')
-//            ->leftjoin('package','packageId','fkpackageId')
-//            ->get();
-//
-//        $bill = Bill::get();
 
         $package = Package::get();
 
@@ -64,6 +60,7 @@ class BillController extends Controller
 
 
     }
+
     public function showPastDue(){
 //        $date=Carbon::now()->startOfMonth()->format('Y-m-d');
 
@@ -126,6 +123,7 @@ class BillController extends Controller
 
 
     }
+
     public function due(Request $r){
 
 //        $client = Client::findOrFail($r->id);
@@ -162,6 +160,68 @@ class BillController extends Controller
 //        return $pdf->stream();
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
 
+
+
+
+    }
+
+    /* internet Bill */
+    public function internetBillShow(){
+
+        $date=Carbon::now()->format('F-Y');
+
+        $package = Package::get();
+        $internetClient=InternetClient::where('internet_client.clientStatus',2)->count('internet_client.clientId');
+
+        return view('bill.internet.show', compact('package','date','internetClient'));
+
+
+    }
+
+    public function internetBillShowWithData(Request $r){
+
+
+        $bill = InternetBill::select('internet_bill.fkclientId','internet_client.clientFirstName','internet_client.clientLastName','internet_client.phone','internet_bill.price as billprice','internet_bill.billId',DB::raw('DATE_FORMAT(internet_bill.billdate,"%M-%Y") as billdate'),
+            'internet_client.bandWide', 'package.packageName','internet_bill.status as billStatus')
+            ->leftjoin('internet_client','internet_bill.fkclientId','internet_client.clientId')
+            ->leftjoin('package','package.packageId','internet_client.fkpackageId')
+            ->where('internet_client.clientStatus',2);
+
+        if ($r->billMonth){
+            $month = Carbon::parse($r->billMonth)->format('m');
+            $bill= $bill->where(DB::raw('month(internet_bill.billdate)'),$month);
+        }
+        if ($r->pastDue){
+
+            $bill= $bill->where('internet_bill.status','np');
+        }
+
+        $datatables = DataTables::of($bill)->with('total', $bill->count('internet_client.clientId'));
+
+        return $datatables->make(true);
+
+
+    }
+
+    public function internetBillPaid(Request $r){
+
+//        $client = Client::findOrFail($r->id);
+        $month = Carbon::parse($r->date)->format('m');
+        $bill=InternetBill::leftjoin('internet_client','internet_bill.fkclientId','internet_client.clientId')->where(DB::raw('month(internet_bill.billdate)'),$month)->where('internet_client.clientId',$r->id)->first();
+        $bill->status = 'p';
+        $bill->save();
+
+        $report = new Report();
+        $report->status = ACCOUNT_STATUS['Credit'];
+        $report->price = $bill->price;
+        $report->tabelId = $bill->billId;
+        $report->date = $bill->billdate;
+        $report->tableName = 'internet_bill';
+        $report->save();
+
+        $message='Monthly Internet bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
+
+        return  $message;
 
 
 
