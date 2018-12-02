@@ -50,8 +50,10 @@ class DashBoardController extends Controller
         $last_month = $date->subMonth()->format('m');
         $totalbilllastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totalbillinternet'))->where('status', 'p')->where(DB::raw('MONTH(billdate)'), $last_month)->first();
         $totalduelastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totaldueinternet'))->where('status', 'np')->where(DB::raw('MONTH(billdate)'), $last_month)->first();
+        $totalpastduelastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totalpastdueinternet'))->where('status', 'np')->first();
 
-        return view('index', compact('totalbilllastmonthinternet','totalduelastmonthinternet'));
+
+        return view('index', compact('totalbilllastmonthinternet','totalduelastmonthinternet', 'totalpastduelastmonthinternet'));
     }
 
     public function previousdue(){

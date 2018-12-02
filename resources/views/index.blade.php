@@ -56,7 +56,7 @@
 
                     </div>
                     <div class="text-right col-md-6">
-                        <h5 class="font-light m-b-0">{{$totalbilllastmonthinternet->totalbillinternet}}</h5>
+                        <h4 class="font-light m-b-0">{{$totalbilllastmonthinternet->totalbillinternet}}</h4>
 
                         <span class="text-muted">Last Month</span>
 
@@ -85,7 +85,7 @@
                         </div>
 
                     <div class="text-right col-md-6">
-                        <h5 class="font-light m-b-0">{{$totalduelastmonthinternet->totaldueinternet}}</h5>
+                        <h4 class="font-light m-b-0">{{$totalduelastmonthinternet->totaldueinternet}}</h4>
 
                         <span class="text-muted">Last Month</span>
 
@@ -106,15 +106,16 @@
 
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success"><span id="duepayment"><div class="lds-facebook"><div></div><div></div><div></div></div></span></span></h2>
+
+
 
 
                         </div>
 
                     <div class="text-right col-md-6">
-                        <h5 class="font-light m-b-0">Client</h5>
+                        <h4 class="font-light m-b-0">{{$totalpastduelastmonthinternet->totalpastdueinternet}}</h4>
 
-                        {{--<span class="text-muted">Last Month</span>--}}
+                        <span class="text-muted">Total Previous Months</span>
 
                     </div>
 
