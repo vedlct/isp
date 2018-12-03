@@ -30,6 +30,7 @@
                         <option value="Others">Others</option>
                     </select>
 
+
                     <label for="Start Date">Expense From</label>
                     <input class="form-group datepicker" name="fromdate" id="dataChange" type="text">
                     <label for="Start Date">To</label>
@@ -71,6 +72,18 @@
                 <div class="modal-body">
                     <form class="empform" action="{{route('expense.store')}}" novalidate="" method="post">
                         {{csrf_field()}}
+
+                        <div class="form-group">
+                            <label>Expense For</label>
+                            <div>
+                                <select id="statusFilter" class="form-control" name="expensefor">
+                                    <option value="">Select</option>
+                                    <option value="Internet">Internet</option>
+                                    <option value="Cable">Cable</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label>Expense Type</label>
                             <div>
@@ -83,6 +96,7 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label>price</label>
                             <div>

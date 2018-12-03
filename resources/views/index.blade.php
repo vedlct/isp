@@ -142,7 +142,7 @@
                         </div>
 
                     <div class="text-right col-md-6">
-                        <h5 class="font-light m-b-0">TK</h5>
+                        <h5 class="font-light m-b-0">{{$totalOFLastMonthDebit}}</h5>
 
                         <span class="text-muted">Last Month</span>
 
@@ -170,7 +170,7 @@
                         </div>
 
                     <div class="text-right col-md-6">
-                        <h5 class="font-light m-b-0">TK</h5>
+                        <h5 class="font-light m-b-0">{{$totalOFLastMonthCredit}}</h5>
 
                         <span class="text-muted">Last Month</span>
 
@@ -195,7 +195,7 @@
 
                         </div>
                     <div class="text-right col-md-6">
-                        <h5 class="font-light m-b-0">TK</h5>
+                        <h5 class="font-light m-b-0">{{$summary }}</h5>
 
                         <span class="text-muted">Last Month</span>
 
