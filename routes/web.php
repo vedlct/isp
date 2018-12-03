@@ -108,14 +108,32 @@ Route::get('/Bill/{date}','BillController@showDate')->name('bill.show.date');
 Route::post('/Bill-paid','BillController@paid')->name('bill.paid');
 Route::post('/Bill-due','BillController@due')->name('bill.due');
 
-
+/*internet */
 Route::get('/Internet-Bill','BillController@internetBillShow')->name('bill.Internet.show');
+
 Route::post('/Internet-Bill','BillController@internetBillShowWithData')->name('bill.internet.show.withData');
+
 Route::get('/Bill/{date}','BillController@showInternetBillDate')->name('bill.Internet.show.date');
 Route::post('/Internet-Bill-paid','BillController@internetBillPaid')->name('bill.Internet.paid');
+
 Route::get('/Bill-PastDue-Internet-Client','BillController@showPastDue')->name('bill.Internet.showPastDue');
 
+
 Route::post('/Internet-Bill-due','BillController@internetBillDue')->name('bill.Internet.due');
+
+
+/*Cable*/
+
+Route::get('/Cable-Bill','BillController@cableBillShow')->name('bill.Cable.show');
+Route::post('/Cable-Bill','BillController@cableBillShowWithData')->name('bill.cable.show.withData');
+Route::post('/Cable-Bill-paid','BillController@cableBillPaid')->name('bill.Cable.paid');
+Route::post('/Cable-Bill-due','BillController@cableBillDue')->name('bill.Cable.due');
+
+Route::get('Bill/Generate-Cable/{id}/{date}','BillController@generateCablePdf')->name('bill.Cable.invoiceByClient');
+
+Route::get('Bill/Generate-Cable-All/{date}','BillController@generateAllCableBillPdf')->name('bill.Cable.invoice');
+
+Route::get('/Bill-PastDue-Cable-Client','BillController@showCablePastDue')->name('bill.Cable.showPastDue');
 
  /* Report Routes
 
@@ -156,7 +174,9 @@ Route::get('test','BillController@generatePdf');
 Route::get('bill/generate/{id}/{date}','BillController@generatePdf')->name('bill.invoice');
 Route::get('Bill/generate/{id}/{date}','BillController@generateInternetPdf')->name('bill.Internet.invoiceByClient');
 
+
 Route::get('Bill/Generate-All/{date}','BillController@generateAllInternetBillPdf')->name('bill.Internet.invoice');
+
 
 Route::get('settings/account','AccountController@index')->name('account.index');
 Route::post('settings/account','AccountController@changePassword')->name('account.changePassword');
