@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 
 use App\Bill;
+use App\CableBill;
+use App\CableClient;
+use App\CablePackage;
 use App\Client;
 use App\InternetBill;
 use App\InternetClient;
@@ -66,6 +69,8 @@ class BillController extends Controller
 
         return view('bill.internet.showPastDue');
     }
+
+
     public function showPastDueLastMonth(){
 
 
@@ -169,6 +174,7 @@ class BillController extends Controller
 
     }
 
+
     public function internetBillShowWithData(Request $r){
 
 
@@ -194,6 +200,7 @@ class BillController extends Controller
 
     }
 
+
     public function internetBillPaid(Request $r){
 
 //        $client = Client::findOrFail($r->id);
@@ -218,6 +225,7 @@ class BillController extends Controller
 
     }
 
+
     public function generateInternetPdf($id,$date){
 
         $clientId=$id;
@@ -233,6 +241,7 @@ class BillController extends Controller
 
 
     }
+
     public function generateAllInternetBillPdf($date){
 
         $month = Carbon::parse($date)->format('m');
@@ -251,6 +260,7 @@ class BillController extends Controller
 
     }
 
+
     public function internetBillDue(Request $r){
 
 
@@ -268,9 +278,126 @@ class BillController extends Controller
         return  $message;
 
 
+    }
+
+    /*Cable Bill */
+
+    public function cableBillShow(){
+
+        $date=Carbon::now()->format('F-Y');
+
+        $package = CablePackage::get();
+        $cableClient=CableClient::where('cable_client.clientStatus',2)->count('cable_client.clientId');
+
+        return view('bill.cable.show', compact('package','date','cableClient'));
+
+
+    }
+
+    public function cableBillShowWithData(Request $r){
+
+
+        $bill = CableBill::select('cable_bill.fkclientId','cable_client.clientFirstName','cable_client.clientLastName','cable_client.phone','cable_bill.price as billprice','cable_bill.billId',DB::raw('DATE_FORMAT(cable_bill.billdate,"%M-%Y") as billdate'),
+             'cablepackage.cablepackageName','cable_bill.status as billStatus')
+            ->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')
+            ->leftjoin('cablepackage','cablepackage.cablepackageId','cable_client.fkpackageId')
+            ->where('cable_client.clientStatus',2);
+
+        if ($r->billMonth){
+            $month = Carbon::parse($r->billMonth)->format('m');
+            $bill= $bill->where(DB::raw('month(cable_bill.billdate)'),$month);
+        }
+        if ($r->pastDue){
+
+            $bill= $bill->where('cable_bill.status','np');
+        }
+
+        $datatables = DataTables::of($bill)->with('total', $bill->count('cable_client.clientId'));
+
+        return $datatables->make(true);
+
+
+    }
+
+    public function cableBillPaid(Request $r){
+
+        $month = Carbon::parse($r->date)->format('m');
+        $bill=CableBill::leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
+        $bill->status = 'p';
+        $bill->save();
+
+        $report = new Report();
+        $report->status = ACCOUNT_STATUS['Credit'];
+        $report->price = $bill->price;
+        $report->tabelId = $bill->billId;
+        $report->date = $bill->billdate;
+        $report->tableName = 'cable_bill';
+        $report->save();
+
+        $message='Monthly Cable bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
+
+        return  $message;
 
 
 
     }
+
+    public function cableBillDue(Request $r){
+
+
+        $month = Carbon::parse($r->date)->format('m');
+
+        $bill=CableBill::leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
+        $bill->status = 'np';
+        $bill->save();
+
+        $report = Report::where('tabelId' , $bill->billId)
+            ->where('tableName', 'cable_bill')->delete();
+
+        $message='Monthly Cable bill of '.$r->date.' for client Name '.$bill->clientFirstName.' '.$bill->clientLastName.' has been changed to unpaid';
+
+        return  $message;
+
+
+
+
+
+    }
+
+    public function generateCablePdf($id,$date){
+
+        $clientId=$id;
+
+        $client=CableClient::leftJoin('cablepackage','cablepackage.cablepackageId','cable_client.fkpackageId')->findOrFail($clientId);
+        $company=Company::first();
+
+        $pdf = PDF::loadView('bill.cable.pdf',compact('client','company','date'));
+
+        return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
+
+
+
+
+    }
+
+    public function generateAllCableBillPdf($date){
+
+        $month = Carbon::parse($date)->format('m');
+        $client=CableBill::leftJoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->leftJoin('cablepackage','cablepackage.cablepackageId','cable_client.fkpackageId')->where(DB::raw('month(cable_bill.billdate)'),$month)->get();
+        $company=Company::first();
+
+        $pdf = PDF::loadView('bill.cable.allBillPdf',compact('client','company','date'));
+
+
+        return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
+
+
+    }
+    public function showCablePastDue(){
+
+        return view('bill.cable.showPastDue');
+    }
+
+
 
 }
