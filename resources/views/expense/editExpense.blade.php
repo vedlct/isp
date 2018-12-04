@@ -6,10 +6,20 @@
         <div>
             <select class="form-control" name="expenseType">
                 <option value="">Select</option>
-                <option>Food</option>
-                <option>Router</option>
-                <option>Accessories</option>
-                <option>Others</option>
+                <option @if($expense->expenseType == 'Food')selected @endif>Food</option>
+                <option @if($expense->expenseType == 'Router')selected @endif>Router</option>
+                <option @if($expense->expenseType == 'Accessories')selected @endif>Accessories</option>
+                <option @if($expense->expenseType == 'Others')selected @endif>Others</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Expense For</label>
+        <div>
+            <select id="statusFilter" class="form-control" name="expensefor">
+                <option value="">Select</option>
+                <option value="Internet" @if($expense->expenseFor == 'Internet')selected @endif>Internet</option>
+                <option value="Cable" @if($expense->expenseFor == 'Cable')selected @endif>Cable</option>
             </select>
         </div>
     </div>
