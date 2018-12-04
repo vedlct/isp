@@ -64,7 +64,6 @@ class DashBoardController extends Controller
             ->sum('report.price');
         $totalOFLastMonthDebit=number_format($totalOFLastMonthDebits,2);
 
-
         $totalOFLastMonthCredits=Report::where('report.status',ACCOUNT_STATUS['Credit'])
             ->whereMonth('report.date', ((Carbon::now()->subMonth())->month))
             ->sum('report.price');
