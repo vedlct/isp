@@ -24,7 +24,7 @@
 
 
 
-
+                @if(Auth::user()->fkusertype=="Admin")
                 <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-briefcase"></i> <span>Employee </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         <li>
@@ -41,6 +41,7 @@
                     </ul>
 
                 </li>
+                @endif
 
 
                 {{--<li>--}}
@@ -50,8 +51,12 @@
                 {{--</li>--}}
                 <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-meter"></i> <span>Client </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
+                        @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="InternetEmp")
                         <li><a href="{{route('internet.client.index')}}" class="waves-effect">Internet Client</a></li>
+                        @endif
+                            @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="CableEmp")
                         <li><a href="{{route('cable.client.index')}}" class="waves-effect">Cable Client</a></li>
+                            @endif
 
                     </ul>
                 </li>
@@ -66,7 +71,7 @@
                     {{--</ul>--}}
                 {{--</li>--}}
 
-
+                @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="InternetEmp")
                 <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="fa fa-money"></i> <span>Internet Bill</span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         <li><a href="{{route('bill.Internet.show')}}" class="waves-effect">Monthly Bill</a></li>
@@ -74,6 +79,8 @@
                         {{--<li><a href="{{route('report.showSummary')}}" class="waves-effect">Summary</a></li>--}}
                     </ul>
                 </li>
+                @endif
+                @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="CableEmp")
                 <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="fa fa-money"></i> <span>Cable Bill</span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         <li><a href="{{route('bill.Cable.show')}}" class="waves-effect">Monthly Bill</a></li>
@@ -81,12 +88,14 @@
                         {{--<li><a href="{{route('report.showSummary')}}" class="waves-effect">Summary</a></li>--}}
                     </ul>
                 </li>
+                @endif
 
                 <li>
                     <a href="{{route('expense.show')}}" class="waves-effect">
                         <i class="fa fa-shopping-basket"></i> <span>Expense</span>
                     </a>
                 </li>
+                @if(Auth::user()->fkusertype=="Admin")
 
                 <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-briefcase"></i> <span>Report </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
@@ -95,11 +104,14 @@
                         {{--<li><a href="{{route('report.showSummary')}}" class="waves-effect">Summary</a></li>--}}
                     </ul>
                 </li>
+
+
                 <li>
                     <a href="{{route('company')}}" class="waves-effect">
                         <i class="fa fa-bar-chart"></i> <span>Company Info</span>
                     </a>
                 </li>
+                @endif
 
             </ul>
         </div>
