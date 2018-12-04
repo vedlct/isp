@@ -65,7 +65,7 @@
                         {{--<li><a href="{{route('report.showSummary')}}" class="waves-effect">Summary</a></li>--}}
                     {{--</ul>--}}
                 {{--</li>--}}
-                
+
 
                 <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="fa fa-money"></i> <span>Internet Bill</span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">

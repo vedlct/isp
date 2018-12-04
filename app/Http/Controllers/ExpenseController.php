@@ -32,6 +32,7 @@ public function expenseEdit(Request $r){
         $expense->price=$r->price;
         $expense->cause=$r->cause;
         $expense->expenseType = $r->expenseType;
+        $expense->expenseFor = $r->expensefor;
         $expense->save();
         $report = new Report();
         $report->tabelId = $expense->expenseId;
@@ -49,6 +50,7 @@ public function expenseEdit(Request $r){
         $expense = Expense::findOrFail($r->expenseId);
         $expense->amount=$r->amount;
         $expense->expenseType = $r->expenseType;
+        $expense->expenseFor = $r->expensefor;
         $expense->price=$r->price;
         $expense->cause=$r->cause;
         $expense->save();

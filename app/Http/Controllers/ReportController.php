@@ -131,17 +131,61 @@ class ReportController extends Controller
     public function showDetailsReport(Request $r){
 
         $reportId=$r->id;
-        $report = Report::select('report.*','reportDebitSalary2.employeeName','reportDebitSalary2.degisnation',
-            'reportDebitSalary2.phone','reportDebitSalary2.email','client.clientFirstName','client.address',
-            'client.clientLastName','client.email','client.phone','reportDebitExpense1.expenseType',
-            'reportDebitExpense1.amount','reportDebitExpense1.cause','reportDebitExpense1.price as expensePrice',DB::raw('CASE WHEN report.status = "'.ACCOUNT_STATUS['Credit'].'" AND report.tableName ="bill"  THEN billCredit.billId
-            WHEN report.status = "'.ACCOUNT_STATUS['Debit'].'" AND report.tableName ="employee" THEN reportDebitSalary2.employeeId 
-            WHEN report.status = "'.ACCOUNT_STATUS['Debit'].'" AND report.tableName ="expense" THEN reportDebitExpense1.expenseId END Name'))
-            ->leftJoin('bill as billCredit', 'billCredit.billId', '=', 'report.tabelId')
-            ->leftJoin('client', 'client.clientId', '=', 'billCredit.fkclientId')
-            ->leftJoin('expense as reportDebitExpense1', 'reportDebitExpense1.expenseId', '=', 'report.tabelId')
-            ->leftJoin('employee as reportDebitSalary2', 'reportDebitSalary2.employeeId', '=', 'report.tabelId')
-            ->findOrFail($reportId);
+        $report = Report::
+//        select('report.*','reportDebitSalary2.employeeName','reportDebitSalary2.degisnation',
+//            'reportDebitSalary2.phone','reportDebitSalary2.email',
+////            'cable_client.clientFirstName','cable_client.address','cable_client.clientLastName','cable_client.email','cable_client.phone',
+////            'internet_client.clientFirstName','internet_client.address','internet_client.clientLastName','internet_client.email','internet_client.phone',
+//            'reportDebitExpense1.expenseType',
+//            'reportDebitExpense1.amount','reportDebitExpense1.cause','reportDebitExpense1.price as expensePrice')
+////            DB::raw('CASE WHEN report.status = "'.ACCOUNT_STATUS['Credit'].'" AND report.tableName ="cable_bill"  THEN cablebillCredit.billId
+////            WHEN report.status = "'.ACCOUNT_STATUS['Credit'].'" AND report.tableName ="internet_bill" THEN internetbillCredit.billId
+////            WHEN report.status = "'.ACCOUNT_STATUS['Debit'].'" AND report.tableName ="employee" THEN reportDebitSalary2.employeeId
+////            WHEN report.status = "'.ACCOUNT_STATUS['Debit'].'" AND report.tableName ="expense" THEN reportDebitExpense1.expenseId END Name'))
+//
+////            ->join('cable_bill as cablebillCredit', 'cablebillCredit.billId', '=', 'report.tabelId')
+////                ->join('cable_client',function($join) {
+////                    $join->on('cable_client.clientId', '=', 'cablebillCredit.fkclientId');
+////
+////                })
+////
+//            ->join('internet_bill as internetbillCredit', 'internetbillCredit.billId', '=', 'report.tabelId')
+//                ->join('internet_client',function($join) {
+//                    $join->on('internet_client.clientId', '=', 'internetbillCredit.fkclientId');
+//
+//                })
+//
+////            ->leftJoin('cable_bill as cablebillCredit', 'cablebillCredit.billId', '=', 'report.tabelId')
+////            ->leftJoin('internet_bill as internetbillCredit', 'internetbillCredit.billId', '=', 'report.tabelId')
+////            ->leftJoin('cable_client', 'cable_client.clientId', '=', 'cablebillCredit.fkclientId')
+////            ->leftJoin('internet_client as internetClient', 'internetClient.clientId', '=', 'internetbillCredit.fkclientId')
+//
+//            ->leftJoin('expense as reportDebitExpense1', 'reportDebitExpense1.expenseId', '=', 'report.tabelId')
+//            ->leftJoin('employee as reportDebitSalary2', 'reportDebitSalary2.employeeId', '=', 'report.tabelId')
+
+//            ->findOrFail($reportId);
+            findOrFail($reportId);
+
+        if ($report->tableName == 'cable_bill'){
+
+            $report=$report->join('cable_bill', function($join) use ($report){
+                $join->on('cable_bill.billId', '=', 'report.tabelId');
+                $join->where('report.tabelId', '=', $report->tabelId);
+                })->join('cable_client',function($join) {
+                    $join->on('cable_client.clientId', '=', 'cable_bill.fkclientId');
+
+                })->get();
+        }
+//        if ($report->tableName=='internet_bill'){
+//
+//            $report=$report->leftJoin('internet_bill as internetbillCredit', 'internetbillCredit.billId', '=', 'report.tabelId')
+//                ->join('internet_client',function($join) {
+//                    $join->on('internet_client.clientId', '=', 'internetbillCredit.fkclientId');
+//
+//                });
+//        }
+
+        return $report;
 
 
         return view('report.showDetails',compact('report','reportId'));
