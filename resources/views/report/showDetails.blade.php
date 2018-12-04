@@ -2,11 +2,11 @@
 {{--{{$report}}--}}
 {{--{{$report->tableName}}--}}
 
-<div class="card">
+{{--<div class="card">--}}
     {{--<div class="card-header">--}}
         {{--Report - {{$report->status}}--}}
     {{--</div>--}}
-    <div class="card-body">
+    {{--<div class="card-body">--}}
         @if($report->status==ACCOUNT_STATUS['Debit'])
         <h5 class="card-title">{{$report->expenseType}}</h5>
         <p class="card-text">{{$report->cause}}</p>
@@ -36,16 +36,26 @@
                 <label>Price</label> : {{$report->price}}
             </div>
             <div class="col-md-4">
-                <label>Total</label> : {{$report->expensePrice}}
+                <label>Expense For</label> : {{$report->expenseFor}}
             </div>
             @endif
-
-
         </div>
+
+
+        {{--</div>--}}
 
         @else
 
-            <h5 style="text-align: center" class="card-title">Employee Salary</h5>
+            <h5 style="text-align: center" class="card-title">
+                @if($report->tableName=="cable_bill")
+                    Cable
+                @elseif($report->tableName=="internet_bill")
+                    Internet
+                @endif
+                Bill
+
+
+            </h5>
             <div class="row">
             <div class="col-md-12">
                 <label>Name</label> : {{$report->clientFirstName.' '. $report->clientLastName}}
@@ -65,8 +75,9 @@
             </div>
             </div>
 
-            {{--{{$report}}--}}
+
 
         @endif
-    </div>
-</div>
+    {{--</div>--}}
+{{--</div>--}}
+

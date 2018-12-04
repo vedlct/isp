@@ -131,17 +131,41 @@ class ReportController extends Controller
     public function showDetailsReport(Request $r){
 
         $reportId=$r->id;
-        $report = Report::select('report.*','reportDebitSalary2.employeeName','reportDebitSalary2.degisnation',
-            'reportDebitSalary2.phone','reportDebitSalary2.email','client.clientFirstName','client.address',
-            'client.clientLastName','client.email','client.phone','reportDebitExpense1.expenseType',
-            'reportDebitExpense1.amount','reportDebitExpense1.cause','reportDebitExpense1.price as expensePrice',DB::raw('CASE WHEN report.status = "'.ACCOUNT_STATUS['Credit'].'" AND report.tableName ="bill"  THEN billCredit.billId
-            WHEN report.status = "'.ACCOUNT_STATUS['Debit'].'" AND report.tableName ="employee" THEN reportDebitSalary2.employeeId 
-            WHEN report.status = "'.ACCOUNT_STATUS['Debit'].'" AND report.tableName ="expense" THEN reportDebitExpense1.expenseId END Name'))
-            ->leftJoin('bill as billCredit', 'billCredit.billId', '=', 'report.tabelId')
-            ->leftJoin('client', 'client.clientId', '=', 'billCredit.fkclientId')
-            ->leftJoin('expense as reportDebitExpense1', 'reportDebitExpense1.expenseId', '=', 'report.tabelId')
-            ->leftJoin('employee as reportDebitSalary2', 'reportDebitSalary2.employeeId', '=', 'report.tabelId')
-            ->findOrFail($reportId);
+        $report = Report::findOrFail($reportId);
+
+        if ($report->tableName == 'cable_bill'){
+
+            $report=$report->select('report.*','cable_client.clientFirstName','cable_client.clientLastName',
+                'cable_client.email','cable_client.phone','cable_client.price','cable_client.address')
+                ->leftJoin('cable_bill','cable_bill.billId','report.tabelId')
+                ->leftJoin('cable_client','cable_client.clientId','cable_bill.fkclientId')
+                ->findOrFail($reportId);
+        }
+        elseif ($report->tableName=='internet_bill'){
+
+            $report=$report->select('report.*','internet_client.clientFirstName','internet_client.clientLastName',
+                'internet_client.email','internet_client.phone','internet_client.price','internet_client.address')
+                ->leftJoin('internet_bill','internet_bill.billId','report.tabelId')
+                ->leftJoin('internet_client','internet_client.clientId','internet_bill.fkclientId')
+                ->findOrFail($reportId);
+        }
+
+        elseif ($report->tableName=='employee'){
+            $report=$report->select('report.*','employee.employeeName','employee.degisnation',
+                'employee.phone','employee.email','employee.price')
+                ->leftJoin('employee','employee.employeeId','report.tabelId')
+                ->findOrFail($reportId);
+
+        }
+
+        elseif ($report->tableName=='expense'){
+            $report=$report->select('report.*','expense.*')
+                ->leftJoin('expense','expense.expenseId','report.tabelId')
+                ->findOrFail($reportId);
+
+        }
+
+//        return $report;
 
 
         return view('report.showDetails',compact('report','reportId'));
