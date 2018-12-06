@@ -142,19 +142,17 @@ class BillController extends Controller
 
 
 
-    public function generatePdf($id,$date){
-        $clientId=$id;
-//        $date=$date;
+    public function generatePdf(){
+        $userName="techcloud";
+        $password="tcl@it404$";
+        $brand="TECH%20CLOUD";
+        $destination="01731893442";
+        $sms="Test%20SMS%20From%20TCL%20API";
 
-        $client=Client::leftJoin('package','package.packageId','client.fkpackageId')->findOrFail($clientId);
-        $company=Company::first();
+        $json = file_get_contents('https://msms.techcloudltd.com/msms-new/pages/RequestSMS.php?user_name='.$userName.'&pass_word='.$password.'&brand='.$brand.'&type=1&destination='.$destination.'&sms='.$sms);
+//        $json = json_decode(file_get_contents('https://msms.techcloudltd.com/msms-new/pages/RequestSMS.php?user_name=techcloud&pass_word=tcl@it404$&brand=TECH%20CLOUD&type=1&destination=01616404404&sms=Test%20SMS%20From%20TCL%20API'), true);
 
-
-        $pdf = PDF::loadView('bill.pdf',compact('client','company','date'));
-
-//        return $pdf->stream();
-        return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
-
+        return $json;
 
 
 

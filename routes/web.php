@@ -42,6 +42,7 @@ Route::post('/expense/filterByType', 'ExpenseController@filterByType')->name('ex
  * Internet Client
  */
 
+
 Route::get('internet/client','InternetClientController@index')->name('internet.client.index');
 Route::post('internet/client','InternetClientController@getData')->name('internet.client.getData');
 Route::post('internet/client/insert','InternetClientController@insert')->name('internet.client.insert');

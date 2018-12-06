@@ -24,13 +24,11 @@ class ReportController extends Controller
 
     public function showDebit(){
 
-
         $totalOFCurrentMonth=Report::where('report.status',ACCOUNT_STATUS['Debit'])->whereMonth('report.date', Carbon::now()->month)->sum('report.price');
         $totalOFCurrentMonth=number_format($totalOFCurrentMonth,2);
         return view('report.showDebit',compact('totalOFCurrentMonth'));
     }
     public function showCredit(){
-
 
         $totalOFCurrentMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', Carbon::now()->month)->sum('report.price');
         $totalOFCurrentMonth=number_format($totalOFCurrentMonth,2);

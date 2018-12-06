@@ -16,8 +16,12 @@
                 </li>
                 <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-meter"></i> <span>Package </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
+                        @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="InternetEmp")
                         <li><a href="{{route('package.show')}}" class="waves-effect">Internet Package</a></li>
+                        @endif
+                            @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="CableEmp")
                         <li><a href="{{route('package.cable.show')}}" class="waves-effect">Cable Package</a></li>
+                            @endif
 
                     </ul>
                 </li>
