@@ -41,6 +41,8 @@
         }
 
     </style>
+
+    @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="InternetEmp")
     <h3>Internet</h3>
     <div class="row">
 
@@ -209,7 +211,10 @@
         </div>
 
     </div>
+
+    @endif
     <br>
+    @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="CableEmp")
     <h3>Cable</h3>
     <div class="row">
 
@@ -378,6 +383,8 @@
         </div>
 
     </div>
+
+    @endif
 @endsection
 @section('js')
     <script>
