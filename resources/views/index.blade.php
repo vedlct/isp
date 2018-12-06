@@ -60,7 +60,7 @@
                     <div class="text-right col-md-6">
                         <h4 class="font-light m-b-0">{{$totalbilllastmonthinternet->totalbillinternet}}</h4>
 
-                        <span class="text-muted">Last Month</span>
+                        <span class="text-muted">This Month</span>
 
                     </div>
                     </div>
@@ -89,7 +89,7 @@
                     <div class="text-right col-md-6">
                         <h4 class="font-light m-b-0">{{$totalduelastmonthinternet->totaldueinternet}}</h4>
 
-                        <span class="text-muted">Last Month</span>
+                        <span class="text-muted">This Month</span>
 
                     </div>
 
@@ -146,7 +146,7 @@
                     <div class="text-right col-md-6">
                         <h5 class="font-light m-b-0">{{$totalOFLastMonthDebit}}</h5>
 
-                        <span class="text-muted">Last Month</span>
+                        <span class="text-muted">This Month</span>
 
                     </div>
 
@@ -174,7 +174,7 @@
                     <div class="text-right col-md-6">
                         <h5 class="font-light m-b-0">{{$totalOFLastMonthCredit}}</h5>
 
-                        <span class="text-muted">Last Month</span>
+                        <span class="text-muted">This Month</span>
 
                     </div>
 
@@ -199,7 +199,7 @@
                     <div class="text-right col-md-6">
                         <h5 class="font-light m-b-0">{{$summary }}</h5>
 
-                        <span class="text-muted">Last Month</span>
+                        <span class="text-muted">This Month</span>
 
                     </div>
 
@@ -230,9 +230,9 @@
 
                         </div>
                         <div class="text-right col-md-6">
-                            <h5 class="font-light m-b-0">Client</h5>
+                            <h4 class="font-light m-b-0">{{$totalbilllastmonthcable->totalbillcable}}</h4>
 
-                            <span class="text-muted">Last Month</span>
+                            <span class="text-muted">This Month</span>
 
                         </div>
                     </div>
@@ -259,9 +259,9 @@
                         </div>
 
                         <div class="text-right col-md-6">
-                            <h5 class="font-light m-b-0">Client</h5>
+                            <h4 class="font-light m-b-0">{{$totalduelastmonthcable->totalduecable}}</h4>
 
-                            <span class="text-muted">Last Month</span>
+                            <span class="text-muted">This Month</span>
 
                         </div>
 
@@ -280,15 +280,16 @@
 
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            <h2 class="font-light m-b-0"><span class="text-success"><span id="duepayment"><div class="lds-facebook"><div></div><div></div><div></div></div></span></span></h2>
+
+
 
 
                         </div>
 
                         <div class="text-right col-md-6">
-                            <h5 class="font-light m-b-0">Client</h5>
+                            <h4 class="font-light m-b-0">{{$totalpastduelastmonthcable->totalpastduecable}}</h4>
 
-                            {{--<span class="text-muted">Last Month</span>--}}
+                            <span class="text-muted">Total Previous Months</span>
 
                         </div>
 
@@ -315,9 +316,9 @@
                         </div>
 
                         <div class="text-right col-md-6">
-                            <h5 class="font-light m-b-0">TK</h5>
+                            <h5 class="font-light m-b-0">{{$totalOFLastMonthDebitcable}}</h5>
 
-                            <span class="text-muted">Last Month</span>
+                            <span class="text-muted">This Month</span>
 
                         </div>
 
@@ -343,9 +344,9 @@
                         </div>
 
                         <div class="text-right col-md-6">
-                            <h5 class="font-light m-b-0">TK</h5>
+                            <h5 class="font-light m-b-0">{{$totalOFLastMonthCreditcable}}</h5>
 
-                            <span class="text-muted">Last Month</span>
+                            <span class="text-muted">This Month</span>
 
                         </div>
 
@@ -368,9 +369,9 @@
 
                         </div>
                         <div class="text-right col-md-6">
-                            <h5 class="font-light m-b-0">TK</h5>
+                            <h5 class="font-light m-b-0">{{$summarycable }}</h5>
 
-                            <span class="text-muted">Last Month</span>
+                            <span class="text-muted">This Month</span>
 
                         </div>
 
@@ -387,7 +388,7 @@
 @endsection
 @section('js')
     <script>
-    $(document).ready( function () {
+    {{--$(document).ready( function () {--}}
 
         {{--$.ajax({--}}
             {{--type: 'GET',--}}
@@ -400,23 +401,23 @@
             {{--}--}}
         {{--});--}}
 
-    });
-
-    {{--$(document).ready( function () {--}}
-        {{--$.ajax({--}}
-            {{--type: 'GET',--}}
-            {{--url: "{!! route('dashboard.insertbillformonth') !!}",--}}
-            {{--cache: false,--}}
-            {{--data: {_token: "{{csrf_token()}}"},--}}
-            {{--success: function (data) {--}}
-
-
-              {{--//  $("#duepayment").html(data);--}}
-                 {{--console.log(data);--}}
-            {{--}--}}
-        {{--});--}}
-
     {{--});--}}
+
+    $(document).ready( function () {
+        $.ajax({
+            type: 'GET',
+            url: "{!! route('dashboard.insertbillformonth') !!}",
+            cache: false,
+            data: {_token: "{{csrf_token()}}"},
+            success: function (data) {
+
+
+              //  $("#duepayment").html(data);
+                 console.log(data);
+            }
+        });
+
+    });
     </script>
     }
     @endsection
