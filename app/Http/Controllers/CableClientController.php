@@ -21,16 +21,26 @@ class CableClientController extends Controller
         return $datatables->make(true);
     }
     public function insert(Request $r){
+
+
+
         $client=new CableClient();
         $client->clientFirstName=$r->clientFirstName;
         $client->clientLastName=$r->clientLastName;
         $client->email=$r->email;
         $client->phone=$r->phone;
         $client->address=$r->address;
+        $client->cableLength=$r->cableLength;
+        $client->clientSerial=$r->clientSerial;
+        $client->noOfTv=$r->noOfTv;
+        $client->conDate=$r->conDate;
         $client->save();
         Session::flash('message', 'Client Insert Successfully!');
 
         $index=0;
+        if($r->clientImage){
+
+
         foreach($r->file('clientImage') as $image){
             $fileName=$r->clientFile[$index];
             $index++;
@@ -53,6 +63,7 @@ class CableClientController extends Controller
             $document->path =$empDir.'/'.$name;
             $document->tableName="cable_client";
             $document->save();
+        }
         }
 
 
@@ -77,35 +88,40 @@ class CableClientController extends Controller
         $client->email=$r->email;
         $client->phone=$r->phone;
         $client->address=$r->address;
+        $client->cableLength=$r->cableLength;
+        $client->clientSerial=$r->clientSerial;
+        $client->noOfTv=$r->noOfTv;
+        $client->conDate=$r->conDate;
         $client->save();
         Session::flash('message', 'Client Updated Successfully!');
 
 
         $index=0;
-        foreach($r->file('clientImage') as $image){
-            $fileName=$r->clientFile[$index];
-            $index++;
+        if($r->clientImage) {
+            foreach ($r->file('clientImage') as $image) {
+                $fileName = $r->clientFile[$index];
+                $index++;
 
-            $name=$fileName.time().$image->getClientOriginalName();
+                $name = $fileName . time() . $image->getClientOriginalName();
 
 
-            $empid=$client->clientId;
-            $empDir="documents".'/cable_client';
-            if (!file_exists(public_path($empDir))){
-                mkdir(public_path($empDir), 0777, true);
+                $empid = $client->clientId;
+                $empDir = "documents" . '/cable_client';
+                if (!file_exists(public_path($empDir))) {
+                    mkdir(public_path($empDir), 0777, true);
+                }
+
+
+                $image->move(public_path($empDir), $name);
+                $document = new ClientFile();
+                $document->clienId = $empid;
+                $document->name = $fileName;
+                $document->uploadedBy = Auth::user()->userId;
+                $document->path = $empDir . '/' . $name;
+                $document->tableName = "cable_client";
+                $document->save();
             }
-
-
-            $image->move(public_path($empDir), $name);
-            $document = new ClientFile();
-            $document->clienId = $empid;
-            $document->name =$fileName;
-            $document->uploadedBy = Auth::user()->userId;
-            $document->path =$empDir.'/'.$name;
-            $document->tableName="cable_client";
-            $document->save();
         }
-
 
         return back();
 

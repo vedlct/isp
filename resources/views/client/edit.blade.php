@@ -39,6 +39,37 @@
             <label>Price</label>
             <input type="text" name="price" id="priceedit" placeholder="price" class="form-control" value="{{$client->price}}" >
         </div>
+
+
+
+
+        <div class="form-group col-md-6">
+            <label>Bandwidth Type</label>
+            <select class="form-control" name="bandwidthType" required>
+                <option value="">Select Type</option>
+                @foreach(BANDWIDTH_TYPE as $key => $value)
+                    <option value="{{$key}}" @if($key == $client->bandwidthType) selected @endif>{{$value}}</option>
+
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label>Cable Length</label>
+            <input type="number" name="cableLength" value="{{$client->cableLength}}"  placeholder="meter" class="form-control" >
+        </div>
+
+        <div class="form-group col-md-6">
+            <label>Client Id</label>
+            <input type="text" name="clientSerial" value="{{$client->clientSerial}}"  placeholder="id" class="form-control" >
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label>Connection Date</label>
+            <input type="text" name="conDate"  placeholder="date" value="{{$client->conDate}}" class="form-control datepicker" >
+        </div>
+
         <div class="form-group col-md-6">
             <label>address</label>
             <input type="text" name="address"  placeholder="address" class="form-control" value="{{$client->address}}" >
@@ -77,6 +108,16 @@
 </form>
 <script>
     counter=0;
+    $(document).ready(function() {
+//            $('.empform').parsley();
+
+        $('.datepicker').datepicker({
+            format: 'yyyy/mm/dd',
+            autoclose:true,
+
+
+        });
+    });
 
     function addMoreField(){
         // if(counter>10){

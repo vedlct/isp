@@ -50,10 +50,35 @@
                                 <label>Price</label>
                                 <input type="text" name="price" id="price" placeholder="price" class="form-control" >
                             </div>
+
+
+                            <div class="form-group col-md-6">
+                                <label>Cable Length</label>
+                                <input type="number" name="cableLength"  placeholder="meter" class="form-control" >
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Client Id</label>
+                                <input type="text" name="clientSerial"  placeholder="id" class="form-control" >
+                            </div>
+
+
+
                             <div class="form-group col-md-6">
                                 <label>address</label>
                                 <input type="text" name="address"  placeholder="address" class="form-control" >
                             </div>
+
+                            <div class="form-group col-md-6">
+                                <label>No. Of Tv</label>
+                                <input type="number" name="noOfTv"   class="form-control" >
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Connection Date</label>
+                                <input type="text" name="conDate"  placeholder="date" class="form-control datepicker" >
+                            </div>
+
                             <div class="col-md-12"><hr></div>
                             <div id="TextBoxesGroup" class="col-md-12">
 
@@ -153,9 +178,22 @@
     <script src="{{url('public/plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
     <!-- Buttons examples -->
     <script src="{{url('public/assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
     <script>
         counter=0;
+        // datepicker
 
+        $(document).ready(function() {
+//            $('.empform').parsley();
+
+            $('.datepicker').datepicker({
+                format: 'yyyy/mm/dd',
+                autoclose:true,
+
+
+            });
+        });
         function addMore(){
             // if(counter>10){
             //     alert("Only 10 textboxes allow");

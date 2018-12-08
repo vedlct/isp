@@ -37,33 +37,39 @@ class InternetClientController extends Controller
         $client->price = $r->price;
         $client->address = $r->address;
         $client->fkpackageId = $r->package;
+        $client->cableLength=$r->cableLength;
+        $client->bandwidthType=$r->bandwidthType;
+        $client->clientSerial=$r->clientSerial;
+        $client->conDate=$r->conDate;
+
         $client->save();
         Session::flash('message', 'Client Insert Successfully!');
         $index=0;
-        foreach($r->file('clientImage') as $image){
-            $fileName=$r->clientFile[$index];
-            $index++;
+        if($r->clientImage) {
+            foreach ($r->file('clientImage') as $image) {
+                $fileName = $r->clientFile[$index];
+                $index++;
 
-            $name=$fileName.time().$image->getClientOriginalName();
+                $name = $fileName . time() . $image->getClientOriginalName();
 
 
-            $empid=$client->clientId;
-            $empDir="documents".'/internet_client';
-            if (!file_exists(public_path($empDir))){
-                mkdir(public_path($empDir), 0777, true);
+                $empid = $client->clientId;
+                $empDir = "documents" . '/internet_client';
+                if (!file_exists(public_path($empDir))) {
+                    mkdir(public_path($empDir), 0777, true);
+                }
+
+
+                $image->move(public_path($empDir), $name);
+                $document = new ClientFile();
+                $document->clienId = $empid;
+                $document->name = $fileName;
+                $document->uploadedBy = Auth::user()->userId;
+                $document->path = $empDir . '/' . $name;
+                $document->tableName = "internet_client";
+                $document->save();
             }
-
-
-            $image->move(public_path($empDir), $name);
-            $document = new ClientFile();
-            $document->clienId = $empid;
-            $document->name =$fileName;
-            $document->uploadedBy = Auth::user()->userId;
-            $document->path =$empDir.'/'.$name;
-            $document->tableName="internet_client";
-            $document->save();
         }
-
         return back();
     }
 
@@ -91,32 +97,38 @@ class InternetClientController extends Controller
         $client->price = $r->price;
         $client->address = $r->address;
         $client->fkpackageId = $r->package;
+        $client->cableLength=$r->cableLength;
+        $client->bandwidthType=$r->bandwidthType;
+        $client->clientSerial=$r->clientSerial;
+        $client->conDate=$r->conDate;
         $client->save();
         Session::flash('message', 'Client Updated Successfully!');
 
         $index=0;
-        foreach($r->file('clientImage') as $image){
-            $fileName=$r->clientFile[$index];
-            $index++;
+        if($r->clientImage) {
+            foreach ($r->file('clientImage') as $image) {
+                $fileName = $r->clientFile[$index];
+                $index++;
 
-            $name="test".$image->getClientOriginalName();
+                $name = "test" . $image->getClientOriginalName();
 
 
-            $empid=$client->clientId;
-            $empDir="documents".'/internet_client';
-            if (!file_exists(public_path($empDir))){
-                mkdir(public_path($empDir), 0777, true);
+                $empid = $client->clientId;
+                $empDir = "documents" . '/internet_client';
+                if (!file_exists(public_path($empDir))) {
+                    mkdir(public_path($empDir), 0777, true);
+                }
+
+
+                $image->move(public_path($empDir), $name);
+                $document = new ClientFile();
+                $document->clienId = $empid;
+                $document->name = $fileName;
+                $document->uploadedBy = Auth::user()->userId;
+                $document->path = $empDir . '/' . $name;
+                $document->tableName = "internet_client";
+                $document->save();
             }
-
-
-            $image->move(public_path($empDir), $name);
-            $document = new ClientFile();
-            $document->clienId = $empid;
-            $document->name =$fileName;
-            $document->uploadedBy = Auth::user()->userId;
-            $document->path =$empDir.'/'.$name;
-            $document->tableName="internet_client";
-            $document->save();
         }
         return back();
     }
