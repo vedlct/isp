@@ -71,6 +71,22 @@
         </div>
 
         <div class="form-group col-md-6">
+            <label>Connection Type</label>
+            <select class="form-control" name="connectionType" onchange="connectionTypeChangeEdit(this)" required>
+                <option value="">Select Connection Type</option>
+                @foreach(CONNECTION_TYPE as $key => $value)
+                    <option value="{{$key}}" @if($key==$client->type)selected @endif>{{$value}}</option>
+                @endforeach
+            </select>
+        </div>
+
+
+        <div class="form-group col-md-6" id="connectionTypeFieldEdit">
+
+        </div>
+
+
+        <div class="form-group col-md-6">
             <label>address</label>
             <input type="text" name="address"  placeholder="address" class="form-control" value="{{$client->address}}" >
         </div>
@@ -116,8 +132,67 @@
             autoclose:true,
 
 
-        });
+        })
+        @if($client->type)
+
+        var val={{$client->type}};
+        if(val=='1'){
+            $('#connectionTypeFieldEdit').html('' +
+                ' <label>Connection</label>\n' +
+                '<select class="form-control" name="connectionValue"  required>\n' +
+                '                                    <option value="">Select Connection Type</option>\n' +
+                '                                    @foreach(CONNECTION_FIBER as $key => $value)\n' +
+                '                                        <option value="{{$key}}" @if($key==$client->typeDetails)selected @endif>{{$value}}</option>\n' +
+                '                                    @endforeach\n' +
+                '                                </select>');
+        }
+        else if(val=='2'){
+            $('#connectionTypeFieldEdit').html('' +
+                ' <label>Connection</label>\n' +
+                '<select class="form-control" name="connectionValue"  required>\n' +
+                '                                    <option value="">Select Connection Type</option>\n' +
+                '                                    @foreach(CONNECTION_UTP as $key => $value)\n' +
+                '                                        <option value="{{$key}}" @if($key==$client->typeDetails)selected @endif>{{$value}}</option>\n' +
+                '                                    @endforeach\n' +
+                '                                </select>');
+        }
+        else {
+            $('#connectionTypeFieldEdit').html('');
+        }
+
+        @endif
     });
+
+
+    function connectionTypeChangeEdit(x) {
+        // alert();
+        var val=$(x).val();
+        if(val=='1'){
+            $('#connectionTypeFieldEdit').html('' +
+                ' <label>Connection</label>\n' +
+                '<select class="form-control" name="connectionValue"  required>\n' +
+                '                                    <option value="">Select Connection Type</option>\n' +
+                '                                    @foreach(CONNECTION_FIBER as $key => $value)\n' +
+                '                                        <option value="{{$key}}">{{$value}}</option>\n' +
+                '                                    @endforeach\n' +
+                '                                </select>');
+        }
+        else if(val=='2'){
+            $('#connectionTypeFieldEdit').html('' +
+                ' <label>Connection</label>\n' +
+                '<select class="form-control" name="connectionValue"  required>\n' +
+                '                                    <option value="">Select Connection Type</option>\n' +
+                '                                    @foreach(CONNECTION_UTP as $key => $value)\n' +
+                '                                        <option value="{{$key}}">{{$value}}</option>\n' +
+                '                                    @endforeach\n' +
+                '                                </select>');
+        }
+        else {
+            $('#connectionTypeFieldEdit').html('');
+        }
+
+
+    }
 
     function addMoreField(){
         // if(counter>10){

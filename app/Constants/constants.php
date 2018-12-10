@@ -22,6 +22,15 @@ define('CONNECTION_TYPE',array(
     "2"=>'Utp',
     "3"=>'Cable'
 ));
+define('CONNECTION_FIBER',array(
+    "1"=>'onu',
+    "2"=>'mc',
+    "3"=>'mac'
+));
+define('CONNECTION_UTP',array(
+    "1"=>'cat-5',
+    "2"=>'cat-6'
+));
 
 
 

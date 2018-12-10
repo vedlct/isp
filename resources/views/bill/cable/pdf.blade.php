@@ -78,7 +78,7 @@
         /*<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300" rel="stylesheet">*/
         body{
             font-family: 'Helvetica', sans-serif;
-            font-size: 12px;
+            font-size: 11px;
         }
 
 
@@ -92,63 +92,188 @@
 
 <body style="background: #fff ">
 <div class="structure">
-    <div style= "background: #fff; padding: 20px; " class="container ">
+    <div style= "background: #fff;" class="container ">
 
-        <table  style="width:100%; text-align: center; border: none; margin-top: -60px " >
 
-            <tr style="">
 
-                <td style="text-align: center; border: none; ">
+
+
+
+
+
+
+        {{--Test--}}
+        <table style="width: 100%; border:none;">
+
+            <tr>
+
+                <td  style="width: 100%;border: none;">
+                    <table  style="width:100%; text-align: center; border: none; margin-top: -60px " >
+
+                    <tr style="">
+
+                    <td style="text-align: center; border: none; ">
                     <h1 style="">
-                        <span style=" padding: 20px ;  border: 1px solid #787878; background-color: #ddd;font-weight: bold">INVOICE</span>
+                    <span style=" padding: 20px ;  border: 1px solid #787878; background-color: #ddd;font-weight: bold">INVOICE
+
+                    </span>
+                        <br>{{$date}}
+
                     </h1>
+                    </td>
+
+                    </tr>
+
+                    </table>
+                    <table style="width:100%; margin-top: 0;border: none;">
+
+                        <tr>
+
+                            <td style="width: 35%;border: none ">
+
+
+                                <p><h3 style="color: #0476BD;">{{strtoupper($company->companyTitle)}}</h3></p>
+
+                                <p>{{$company->companyAddress}}</p>
+
+                                <p style="margin-top: -10px">
+                                P: {{$company->companyPhone1}}, {{$company->companyPhone2}} <br>
+                                E: {{$company->companyEmail}}<br>
+                                </p>
+
+                            </td>
+                            <td style="width: 40%;border: none "></td>
+
+                            <td style="border: none;width: 25%;">
+                                <img style="margin-left: 30px" width="198px" height="148px" src="{{url('public/logo/TCL_logo.png')}}" alt="">
+                            </td>
+
+                            <td style="width: 40%; border: none;">
+                                <p><h3 style="color: #0476BD">{{strtoupper($client->clientFirstName)}} {{strtoupper($client->clientLastName)}}</h3></p>
+
+                                <p style="margin-top: -10px">
+
+                                E: {{$client->email}} <br>
+                                P: {{$client->phone}}<br>
+                                Address : {{$client->address }}<br>
+
+
+                                </p>
+
+
+                            </td>
+
+                        </tr>
+                    </table>
+
+
+                <table border="0" style="width:100%;">
+                <tr style="background: #4682B4;color: white">
+                <td style="text-align: center;" colspan=""><b>Month</b></td>
+                <td style="text-align: center;" colspan=""><b>Prev Due</b></td>
+                <td style="text-align: center;" colspan=""><b>Due</b></td>
+                <td style="text-align: center;" colspan=""><b>Total</b></td>
+                </tr>
+                <tr style="">
+                <td style="text-align: center;" colspan=""></td>
+                <td style="text-align: center;" colspan=""><b>0</b></td>
+                <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
+                <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
+                </tr>
+
+
+
+
+                </table>
+
                 </td>
+
 
             </tr>
 
-        </table>
-
-
-        <table style="width:100%; margin-top: 0;border: none;">
 
             <tr>
+                <td style="width: 100%;border: none;">
+                {{--Client Copy--}}
+                    <hr style="border:2px solid dotted;">
+                    Client Copy
+                    <table border="0" style="width:100%;">
+                        <tr>
+                            <td></td>
+                            <td>Name :</td>
+                            <td colspan="2">{{strtoupper($client->clientFirstName)}} {{strtoupper($client->clientLastName)}}</td>
+                            <td>Mem. No.</td>
+                            <td colspan="2">{{$client->clientSerial}}</td>
+                            <td>Tv No.</td>
+                            <td>{{$client->noOfTv}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Address :</td>
+                            <td colspan="2">{{$client->address }}</td>
+                            <td>Con. Date</td>
+                            <td colspan="2">{{$client->conDate}}</td>
+                            <td>C.C.</td>
+                            <td>0</td>
 
-                <td style="width: 35%;border: none ">
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Date</td>
+                            <td colspan="2"></td>
+                            <td colspan="2">Paid:</td>
+                            <td colspan="2">Due:</td>
+                            <td>{{$client->phone}}</td>
+                        </tr>
+
+                    </table>
 
 
-                    <p><h3 style="color: #0476BD;">{{strtoupper($company->companyTitle)}}</h3></p>
+                    {{--Office Copy--}}
+                    <hr style="border:2px solid dotted;">
+                    Office Copy
+                    <table border="0" style="width:100%;">
+                        <tr>
+                            <td></td>
+                            <td>Name :</td>
+                            <td colspan="2">{{strtoupper($client->clientFirstName)}} {{strtoupper($client->clientLastName)}}</td>
+                            <td>Mem. No.</td>
+                            <td colspan="2">{{$client->clientSerial}}</td>
+                            <td>Tv No.</td>
+                            <td>{{$client->noOfTv}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Address :</td>
+                            <td colspan="2">{{$client->address }}</td>
+                            <td>Con. Date</td>
+                            <td colspan="2">{{$client->conDate}}</td>
+                            <td>C.C.</td>
+                            <td>0</td>
 
-                    <p>{{$company->companyAddress}}</p>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Date</td>
+                            <td colspan="2"></td>
+                            <td colspan="2">Paid:</td>
+                            <td colspan="2">Due:</td>
+                            <td>{{$client->phone}}</td>
+                        </tr>
 
-                    <p style="margin-top: -10px">
-                        P: {{$company->companyPhone1}}, {{$company->companyPhone2}} <br>
-                        E: {{$company->companyEmail}}<br>
-                    </p>
+                    </table>
+
 
                 </td>
-                <td style="width: 40%;border: none "></td>
-
-                <td style="border: none;width: 25%;">
-                    {{--<img style="margin-left: 30px" width="198px" height="148px" src="{{url('public/logo/TCL_logo.png')}}" alt="">--}}
-                <td style="width: 40%; border: none;">
-                    <p><h3 style="color: #0476BD">{{strtoupper($client->clientFirstName)}} {{strtoupper($client->clientLastName)}}</h3></p>
-
-                    <p style="margin-top: -10px">
-
-                        E: {{$client->email}} <br>
-                        P: {{$client->phone}}<br>
-                        {{--IP: {{$client->ip}}<br>--}}
-                        {{--Bandwidth : {{$client->bandWide }}<br>--}}
-                        Address : {{$client->address }}<br>
 
 
-                    </p>
-
-
-                </td>
-                </td>
             </tr>
+
         </table>
+
+
+
+        {{--Test Ends--}}
 
         <table style="width:100%; margin-top: 0; margin-bottom: 15px;border: none;">
 
@@ -158,235 +283,12 @@
                 <td style="width: 45%;border: none;">
 
                 </td>
-                {{--<td style="width: 35%; border: none; ">--}}
-
-                    {{--<table width="100%" class="tblColor" style=" margin-top: 50px; margin-left: auto ; margin-right: auto; margin-bottom: auto; "  >--}}
-
-                        {{--<tr >--}}
-                            {{--<td ><b>Invoice Number:</b></td>--}}
-                            {{--<td width="45%">{{$invoiceNumber}}</td>--}}
-                        {{--</tr>--}}
-                        {{--<tr >--}}
-                            {{--<td ><b>Invoice Date: </b></td>--}}
-                            {{--<td width="45%">{{date('Y-m-d')}}</td>--}}
-                        {{--</tr>--}}
-                        {{--<tr>--}}
-                            {{--<td ><b>Payment Date:</b></td>--}}
-                            {{--<td width="45%">{{$paymentDate}}</td>--}}
-
-                        {{--</tr>--}}
-                    {{--</table>--}}
-
-                {{--</td>--}}
             </tr>
 
         </table>
 
-        <table border="0" style="width:100%;">
-            <tr style="background: #4682B4;color: white">
-                <td style="text-align: center;" colspan=""><b>Date</b></td>
-                <td style="text-align: center;" colspan=""><b>Package Name</b></td>
-                <td style="text-align: center;" colspan=""><b>Rate</b></td>
-                <td style="text-align: center;" colspan=""><b>Total</b></td>
-            </tr>
-            <tr style="">
-                <td style="text-align: center;" colspan=""><b>{{$date}}</b></td>
-                <td style="text-align: center;" colspan=""><b>{{$client->packageName}}</b></td>
-                <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
-                <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
-            </tr>
-
-
-
-
-        </table>
-        <hr style="border:2px solid dotted;">
-        <h3>Client Copy</h3>
-        <table style="width:100%; margin-top: 0;border: none;">
-
-            <tr>
-
-                <td style="width: 35%;border: none ">
-
-
-                    <p><h3 style="color: #0476BD;">{{strtoupper($company->companyTitle)}}</h3></p>
-
-                    <p>{{$company->companyAddress}}</p>
-
-                    <p style="margin-top: -10px">
-                        P: {{$company->companyPhone1}}, {{$company->companyPhone2}} <br>
-                        E: {{$company->companyEmail}}<br>
-                    </p>
-
-                </td>
-                <td style="width: 40%;border: none "></td>
-
-                <td style="border: none;width: 25%;">
-                {{--<img style="margin-left: 30px" width="198px" height="148px" src="{{url('public/logo/TCL_logo.png')}}" alt="">--}}
-                <td style="width: 40%; border: none;">
-                    <p><h3 style="color: #0476BD">{{strtoupper($client->clientFirstName)}} {{strtoupper($client->clientLastName)}}</h3></p>
-
-                    <p style="margin-top: -10px">
-
-                        E: {{$client->email}} <br>
-                        P: {{$client->phone}}<br>
-                        IP: {{$client->ip}}<br>
-                        Bandwidth : {{$client->bandWide }}<br>
-                        Address : {{$client->address }}<br>
-
-
-                    </p>
-
-
-                </td>
-                </td>
-            </tr>
-        </table>
-
-        <table style="width:100%; margin-top: 0; margin-bottom: 15px;border: none;">
-
-            <tr style="width: 100%; border: none;">
-
-
-                <td style="width: 45%;border: none;">
-
-                </td>
-                {{--<td style="width: 35%; border: none; ">--}}
-
-                {{--<table width="100%" class="tblColor" style=" margin-top: 50px; margin-left: auto ; margin-right: auto; margin-bottom: auto; "  >--}}
-
-                {{--<tr >--}}
-                {{--<td ><b>Invoice Number:</b></td>--}}
-                {{--<td width="45%">{{$invoiceNumber}}</td>--}}
-                {{--</tr>--}}
-                {{--<tr >--}}
-                {{--<td ><b>Invoice Date: </b></td>--}}
-                {{--<td width="45%">{{date('Y-m-d')}}</td>--}}
-                {{--</tr>--}}
-                {{--<tr>--}}
-                {{--<td ><b>Payment Date:</b></td>--}}
-                {{--<td width="45%">{{$paymentDate}}</td>--}}
-
-                {{--</tr>--}}
-                {{--</table>--}}
-
-                {{--</td>--}}
-            </tr>
-
-        </table>
-
-        <table border="0" style="width:100%;">
-            <tr style="background: #4682B4;color: white">
-                <td style="text-align: center;" colspan=""><b>Date</b></td>
-                <td style="text-align: center;" colspan=""><b>Package Name</b></td>
-                <td style="text-align: center;" colspan=""><b>Rate</b></td>
-                <td style="text-align: center;" colspan=""><b>Total</b></td>
-            </tr>
-            <tr style="">
-                <td style="text-align: center;" colspan=""><b>{{$date}}</b></td>
-                <td style="text-align: center;" colspan=""><b>{{$client->packageName}}</b></td>
-                <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
-                <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
-            </tr>
-
-
-
-
-        </table>
 
         <hr style="border:2px solid dotted;">
-        <h3>Office Copy</h3>
-        <table style="width:100%; margin-top: 0;border: none;">
-
-            <tr>
-
-                <td style="width: 35%;border: none ">
-
-
-                    <p><h3 style="color: #0476BD;">{{strtoupper($company->companyTitle)}}</h3></p>
-
-                    <p>{{$company->companyAddress}}</p>
-
-                    <p style="margin-top: -10px">
-                        P: {{$company->companyPhone1}}, {{$company->companyPhone2}} <br>
-                        E: {{$company->companyEmail}}<br>
-                    </p>
-
-                </td>
-                <td style="width: 40%;border: none "></td>
-
-                <td style="border: none;width: 25%;">
-                {{--<img style="margin-left: 30px" width="198px" height="148px" src="{{url('public/logo/TCL_logo.png')}}" alt="">--}}
-                <td style="width: 40%; border: none;">
-                    <p><h3 style="color: #0476BD">{{strtoupper($client->clientFirstName)}} {{strtoupper($client->clientLastName)}}</h3></p>
-
-                    <p style="margin-top: -10px">
-
-                        E: {{$client->email}} <br>
-                        P: {{$client->phone}}<br>
-                        IP: {{$client->ip}}<br>
-                        Bandwidth : {{$client->bandWide }}<br>
-                        Address : {{$client->address }}<br>
-
-
-                    </p>
-
-
-                </td>
-                </td>
-            </tr>
-        </table>
-
-        <table style="width:100%; margin-top: 0; margin-bottom: 15px;border: none;">
-
-            <tr style="width: 100%; border: none;">
-
-
-                <td style="width: 45%;border: none;">
-
-                </td>
-                {{--<td style="width: 35%; border: none; ">--}}
-
-                {{--<table width="100%" class="tblColor" style=" margin-top: 50px; margin-left: auto ; margin-right: auto; margin-bottom: auto; "  >--}}
-
-                {{--<tr >--}}
-                {{--<td ><b>Invoice Number:</b></td>--}}
-                {{--<td width="45%">{{$invoiceNumber}}</td>--}}
-                {{--</tr>--}}
-                {{--<tr >--}}
-                {{--<td ><b>Invoice Date: </b></td>--}}
-                {{--<td width="45%">{{date('Y-m-d')}}</td>--}}
-                {{--</tr>--}}
-                {{--<tr>--}}
-                {{--<td ><b>Payment Date:</b></td>--}}
-                {{--<td width="45%">{{$paymentDate}}</td>--}}
-
-                {{--</tr>--}}
-                {{--</table>--}}
-
-                {{--</td>--}}
-            </tr>
-
-        </table>
-
-        <table border="0" style="width:100%;">
-            <tr style="background: #4682B4;color: white">
-                <td style="text-align: center;" colspan=""><b>Date</b></td>
-                <td style="text-align: center;" colspan=""><b>Package Name</b></td>
-                <td style="text-align: center;" colspan=""><b>Rate</b></td>
-                <td style="text-align: center;" colspan=""><b>Total</b></td>
-            </tr>
-            <tr style="">
-                <td style="text-align: center;" colspan=""><b>{{$date}}</b></td>
-                <td style="text-align: center;" colspan=""><b>{{$client->packageName}}</b></td>
-                <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
-                <td style="text-align: center;" colspan=""><b>{{$client->price}}</b></td>
-            </tr>
-
-
-
-
-        </table>
 
     </div>
 </div>

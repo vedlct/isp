@@ -366,7 +366,7 @@ class BillController extends Controller
 
         $clientId=$id;
 
-        $client=CableClient::leftJoin('cablepackage','cablepackage.cablepackageId','cable_client.fkpackageId')->findOrFail($clientId);
+        $client=CableClient::findOrFail($clientId);
         $company=Company::first();
 
         $pdf = PDF::loadView('bill.cable.pdf',compact('client','company','date'));

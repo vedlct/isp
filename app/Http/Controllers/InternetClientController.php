@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\CablePackage;
 use App\ClientFile;
+use App\ConnectionType;
 use App\InternetClient;
 use App\Package;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Session;
 use Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 class InternetClientController extends Controller
 {
     public function index(){
@@ -33,7 +35,7 @@ class InternetClientController extends Controller
         $client->email = $r->email;
         $client->phone = $r->phone;
         $client->ip = $r->ip;
-        $client->bandWide = $r->bandWidth ;
+        $client->bandWide = $r->bandWidth;
         $client->price = $r->price;
         $client->address = $r->address;
         $client->fkpackageId = $r->package;
@@ -41,8 +43,21 @@ class InternetClientController extends Controller
         $client->bandwidthType=$r->bandwidthType;
         $client->clientSerial=$r->clientSerial;
         $client->conDate=$r->conDate;
-
         $client->save();
+
+        if($r->connectionType){
+            $connectionType=new ConnectionType();
+            $connectionType->type=$r->connectionType;
+            $connectionType->typeDetails=$r->connectionValue;
+            $connectionType->save();
+
+            $client->fkconnectionTypeId=$connectionType->connectionTypeId;
+            $client->save();
+        }
+
+
+
+
         Session::flash('message', 'Client Insert Successfully!');
         $index=0;
         if($r->clientImage) {
@@ -74,10 +89,14 @@ class InternetClientController extends Controller
     }
 
     public function edit(Request $r){
-        $client = InternetClient::select('internet_client.*', 'packageName')
+        $client = InternetClient::select('internet_client.*', 'packageName','connectiontype.typeDetails','connectiontype.type')
             ->leftjoin('package','fkpackageId','packageId')
+            ->leftjoin('connectiontype','connectiontype.connectionTypeId','internet_client.fkconnectionTypeId')
             ->where('clientId', $r->id)
             ->first();
+
+
+
         $package = Package::get();
         $documents=ClientFile::where('tableName','internet_client')
             ->where('clienId',$r->id)
@@ -102,6 +121,28 @@ class InternetClientController extends Controller
         $client->clientSerial=$r->clientSerial;
         $client->conDate=$r->conDate;
         $client->save();
+
+
+        if($r->connectionType){
+
+
+            try {
+                $connectionType=ConnectionType::findOrFail($r->connectionType);
+            }
+            catch (ModelNotFoundException $ex) {
+                $connectionType=new ConnectionType();
+            }
+            $connectionType->type=$r->connectionType;
+            $connectionType->typeDetails=$r->connectionValue;
+            $connectionType->save();
+
+            $client->fkconnectionTypeId=$connectionType->connectionTypeId;
+            $client->save();
+        }
+
+
+
+
         Session::flash('message', 'Client Updated Successfully!');
 
         $index=0;
