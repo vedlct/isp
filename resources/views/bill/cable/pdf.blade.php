@@ -108,7 +108,7 @@
 
         </table>
 
-        <h3>Client Copy</h3>
+
         <table style="width:100%; margin-top: 0;border: none;">
 
             <tr>

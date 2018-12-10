@@ -34,6 +34,7 @@ class CableClientController extends Controller
         $client->clientSerial=$r->clientSerial;
         $client->noOfTv=$r->noOfTv;
         $client->conDate=$r->conDate;
+        $client->price=$r->price;
         $client->save();
         Session::flash('message', 'Client Insert Successfully!');
 
@@ -92,6 +93,8 @@ class CableClientController extends Controller
         $client->clientSerial=$r->clientSerial;
         $client->noOfTv=$r->noOfTv;
         $client->conDate=$r->conDate;
+        $client->price=$r->price;
+
         $client->save();
         Session::flash('message', 'Client Updated Successfully!');
 
