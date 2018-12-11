@@ -31,21 +31,21 @@
     </style>
 
 
-    <style>
+    {{--<style>--}}
 
-        @font-face {
-            font-family: 'Helvetica', sans-serif;
-            src: url('public/fonts/HelveticaLt_1.ttf');
-        }
+        {{--@font-face {--}}
+            {{--font-family: 'Helvetica', sans-serif;--}}
+            {{--src: url('public/fonts/HelveticaLt_1.ttf');--}}
+        {{--}--}}
 
-        /*<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300" rel="stylesheet">*/
-        body{
-            font-family: 'Helvetica', sans-serif;
-            font-size: 12px;
-        }
+        {{--/*<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300" rel="stylesheet">*/--}}
+        {{--body{--}}
+            {{--font-family: 'Helvetica', sans-serif;--}}
+            {{--font-size: 12px;--}}
+        {{--}--}}
 
 
-    </style>
+    {{--</style>--}}
 
 </head>
 
@@ -305,6 +305,9 @@
 
     </div>
         @php $i++; @endphp
+
+            <hr style="border:2px solid dotted;">
+            <p style="page-break-before: always">
     @endforeach
 </div>
 

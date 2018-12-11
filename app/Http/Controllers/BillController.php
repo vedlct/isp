@@ -231,6 +231,8 @@ class BillController extends Controller
         $client=InternetClient::leftJoin('package','package.packageId','internet_client.fkpackageId')->findOrFail($clientId);
         $company=Company::first();
 
+
+
         $pdf = PDF::loadView('bill.pdf',compact('client','company','date'));
 
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
@@ -247,11 +249,13 @@ class BillController extends Controller
         $company=Company::first();
 
 
+        return view('bill.internet.allBillPdf',compact('client','company','date'));
 
-        $pdf = PDF::loadView('bill.internet.allBillPdf',compact('client','company','date'));
 
-
-        return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
+//        $pdf = PDF::loadView('bill.internet.allBillPdf',compact('client','company','date'));
+//
+//
+//        return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
 
 
 
