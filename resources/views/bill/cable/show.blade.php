@@ -64,9 +64,16 @@
                         <label>Select Month</label>
                         <input type="text" id="billMonth" class="form-control datepicker" @if(isset($date)) value="{{$date}}" @endif name="selectMonth" onchange="changeDate(this)">
                     </div>
-                    <div class="form-group col-md-3">
-                        <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
-                        <button id="generateBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>
+                    
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
+                            <button id="generateBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>
+                        </div>
+                        <div class="col-md-3">
+                            {{--<button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay</button>--}}
+                            <button id="" style="" class="btn btn-success" name="">Send Sms To Bill Pay</button>
+                        </div>
                     </div>
 
                     <div class="table table-responsive">

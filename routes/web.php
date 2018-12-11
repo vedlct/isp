@@ -180,9 +180,15 @@ Route::get('Bill/Generate-All/{date}','BillController@generateAllInternetBillPdf
 
 
 Route::get('settings/account','AccountController@index')->name('account.index');
+
 Route::post('settings/account','AccountController@changePassword')->name('account.changePassword');
 
 
 //Route::get('status/{id}','EmployeeController@salaryStatus');
+
+/*Sms*/
+
+Route::get('SMS','SmsController@sendBillToPay')->name('sms.billToPay.send');
+
 
 
