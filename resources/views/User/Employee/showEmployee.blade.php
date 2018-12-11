@@ -47,67 +47,82 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form class="empform" action="{{route('employee.store')}}" novalidate="" method="post">
-                        {{csrf_field()}}
-                        <div class="form-group">
-                            <label>Employee Name</label>
-                            <input type="text" class="form-control" name="employeeName" required="" placeholder="Enter Employee Name">
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <div>
-                                <input type="email" class="form-control" name="email" required="" parsley-type="email" placeholder="Enter a valid e-mail">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <div>
-                                <input type="password" class="form-control" name="password" required="" parsley-type="email" placeholder="enter Password">
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label>User Type</label>
-                            <div>
-                                <select class="form-control" name="usertype">
-                                    @foreach(USER_TYPE as $key=>$value)
-                                        <option value="{{$key}}">{{$value}}</option>
-                                    @endforeach
+                        <form class="empform" action="{{route('employee.store')}}" novalidate="" method="post" enctype="multipart/form-data">
+                            {{csrf_field()}}
+                            <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Employee Name</label>
+                                <input type="text" class="form-control" name="employeeName" required="" placeholder="Enter Employee Name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Email</label>
+                                <div>
+                                    <input type="email" class="form-control" name="email" required="" parsley-type="email" placeholder="Enter a valid e-mail">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Password</label>
+                                <div>
+                                    <input type="password" class="form-control" name="password" required="" parsley-type="email" placeholder="enter Password">
+                                </div>
+                            </div>
 
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Designation</label>
-                            <div>
-                                <input parsley-type="text" type="text" name="degisnation" class="form-control" required="" placeholder="Enter Designation">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>salary</label>
-                            <div>
-                                <input data-parsley-type="digits" name="salary" type="text" class="form-control" required="" placeholder="Enter Salary Amount">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <div>
-                                <input data-parsley-type="number" name="phone" type="text" class="form-control" required="" placeholder="Enter Phone numbers">
-                            </div>
-                        </div>
+                            <div class="form-group col-md-6">
+                                <label>User Type</label>
+                                <div>
+                                    <select class="form-control" name="usertype">
+                                        @foreach(USER_TYPE as $key=>$value)
+                                            <option value="{{$key}}">{{$value}}</option>
+                                        @endforeach
 
-                        <div class="form-group">
-                            <label>Address</label>
-                            <div>
-                                <textarea required="" name="address" class="form-control" rows="5"></textarea>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div>
-                                <button type="submit" class="btn btn-primary waves-effect waves-light">Add Employee</button>
+                            <div class="form-group col-md-6">
+                                <label>Designation</label>
+                                <div>
+                                    <input parsley-type="text" type="text" name="degisnation" class="form-control" required="" placeholder="Enter Designation">
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                            <div class="form-group col-md-6">
+                                <label>salary</label>
+                                <div>
+                                    <input data-parsley-type="digits" name="salary" type="text" class="form-control" required="" placeholder="Enter Salary Amount">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Phone</label>
+                                <div>
+                                    <input data-parsley-type="number" name="phone" type="text" class="form-control" required="" placeholder="Enter Phone numbers">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Address</label>
+                                <div>
+                                    <textarea required="" name="address" class="form-control" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12"><hr></div>
+
+
+                            <div id="TextBoxesGroup" class="col-md-12">
+
+                            </div>
+
+                            <div class="form-group col-md-12 pull-right">
+                                <button type="button" class="btn btn-info btn-sm " onclick="addMore()">add more</button>
+                                <button type="button" class="btn btn-danger btn-sm " onclick="removeField()">remove</button>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Add Employee</button>
+                                </div>
+                            </div>
+                            </div>
+                        </form>
+
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -144,6 +159,49 @@
         </script>
 
         <script>
+            counter=0;
+            function addMore(){
+                // if(counter>10){
+                //     alert("Only 10 textboxes allow");
+                //     return false;
+                // }
+
+
+                // var id=document.getElementById("service"+(counter-1)).value;
+                // if(id=="") {
+                //     alert("Please Select a Service First!!");
+                //     return false;
+                //
+                // }
+                //
+
+
+                var newTextBoxDiv = $(document.createElement('div'))
+                    .attr("id", 'TextBoxDiv' + counter);
+
+                newTextBoxDiv.after().html('<div class="row"><div class="form-group col-md-6">\n' +
+                    '                                <label>Name</label>\n' +
+                    '                                <input type="text" name="clientFile[]"  placeholder="insert image" class="form-control" required>\n' +
+                    '                            </div>\n' +
+                    '                            <div class="form-group col-md-6">\n' +
+                    '                                <label>File</label>\n' +
+                    '                                <input type="file" name="clientImage[]"  placeholder="insert image" class="form-control" required>\n' +
+                    '                            </div></div>'
+                );
+                newTextBoxDiv.appendTo("#TextBoxesGroup");
+                counter++;
+                // ii++;
+
+            }
+            function removeField(){
+                if(counter==0){
+                    alert(" textbox to remove");
+                    return false;
+                }
+                counter--;
+                $("#TextBoxDiv" + counter).remove();
+
+            }
             $(document).ready( function () {
 
                 $('#datatable').DataTable({
@@ -189,7 +247,7 @@
                     type: 'POST',
                     url: "{!! route('employee.edit') !!}",
                     cache: false,
-                    data: {_token: "{{csrf_token()}}",'id': id,'userId':userId},
+                    data: {_token: "{{csrf_token()}}",'id': id},
                     success: function (data) {
                         $("#editEmpBody").html(data);
                         $('#editEmp').modal();
@@ -197,6 +255,22 @@
                     }
                 });
 
+            }
+
+            function editClientById(id) {
+                // var id=$(x).data('panel-id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{!! route('employee.edit') !!}",
+                    cache: false,
+                    data: {_token: "{{csrf_token()}}",'id': id},
+                    success: function (data) {
+                        $("#editEmpBody").html(data);
+                        $('#editEmp').modal();
+                        // console.log(data);
+                    }
+                });
             }
         </script>
     {{--DataTables--}}

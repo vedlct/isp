@@ -31,6 +31,13 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
+  'renatomarinho/laravel-page-speed' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'RenatoMarinho\\LaravelPageSpeed\\ServiceProvider',
+    ),
+  ),
   'yajra/laravel-datatables-oracle' => 
   array (
     'providers' => 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\EmpFile;
 use App\Employee;
 use App\Report;
 use App\Salary;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
+use Auth;
 
 class EmployeeController extends Controller
 {
@@ -29,9 +31,11 @@ class EmployeeController extends Controller
     public function edit(Request $r){
 
         $employee=Employee::findOrFail($r->id);
-        $user = User::findOrFail($r->userId);
+        $user = User::findOrFail($employee->fkUserId);
+        $documents=EmpFile::where('clienId',$r->id)
+            ->get();
 
-        return view('User.Employee.editEmployee',compact('employee','user'));
+        return view('User.Employee.editEmployee',compact('employee','user','documents'));
     }
 
     public function storeEmployee(Request $r){
@@ -55,6 +59,32 @@ class EmployeeController extends Controller
         $emp->fkUserId = $user->userId;
         $emp->save();
         session()->flash('success', 'Employee Added Successfully');
+
+        $index=0;
+        if($r->clientImage) {
+            foreach ($r->file('clientImage') as $image) {
+                $fileName = $r->clientFile[$index];
+                $index++;
+
+                $name = $fileName . time() . $image->getClientOriginalName();
+
+
+                $empid = $emp->employeeId;
+                $empDir = "documents" . '/emp_files';
+                if (!file_exists(public_path($empDir))) {
+                    mkdir(public_path($empDir), 0777, true);
+                }
+
+
+                $image->move(public_path($empDir), $name);
+                $document = new EmpFile();
+                $document->clienId = $empid;
+                $document->name = $fileName;
+                $document->uploadedBy = Auth::user()->userId;
+                $document->path = $empDir . '/' . $name;
+                $document->save();
+            }
+        }
         return redirect()->route('employee.show');
     }
 
@@ -79,65 +109,101 @@ class EmployeeController extends Controller
         $employee->status=$r->status;
         $employee->save();
         session()->flash('success', 'Employee updated Successfully');
+
+        $index=0;
+        if($r->clientImage) {
+            foreach ($r->file('clientImage') as $image) {
+                $fileName = $r->clientFile[$index];
+                $index++;
+
+                $name = $fileName . time() . $image->getClientOriginalName();
+
+
+                $empid = $employee->employeeId;
+                $empDir = "documents" . '/emp_files';
+                if (!file_exists(public_path($empDir))) {
+                    mkdir(public_path($empDir), 0777, true);
+                }
+
+
+                $image->move(public_path($empDir), $name);
+                $document = new EmpFile();
+                $document->clienId = $empid;
+                $document->name = $fileName;
+                $document->uploadedBy = Auth::user()->userId;
+                $document->path = $empDir . '/' . $name;
+                $document->save();
+            }
+        }
+
+
         return redirect()->route('employee.show');
     }
-public function getSalary(){
-//    $emp = Employee::get();
-//    $salary= Salary::get();
-    $currentMonth = Carbon::now()->format('m');
-    $currentYear = Carbon::now()->format('Y');
-    $salary =  DB::table('employee')->join('salary','salary.fkemployeeId','=','employee.employeeId')
-        ->where(DB::raw('Year(date)'),$currentYear)->where(DB::raw('Month(date)'),$currentMonth)->get();
-
-//        $getDate = Carbon::parse($emp)->format('m');
-//        $monthget = Carbon::now()->format('m');
-
-    return view('User.Employee.getSalary')->with('salary',$salary);
-}
-public function salaryStore(Request $r){
-    $employee = Employee::all();
-    $datatables = DataTables::of($employee);
-    return $datatables->make(true);
-}
-
-public function salaryByMonth(Request $request){
-        $currentMonth = Carbon::parse($request->chooseMonth)->format('m');
-        $currentYear = Carbon::parse($request->chooseMonth)->format('Y');
-        $salary = DB::table('employee')->join('salary','salary.fkemployeeId','=','employee.employeeId')
+    public function getSalary(){
+    //    $emp = Employee::get();
+    //    $salary= Salary::get();
+        $currentMonth = Carbon::now()->format('m');
+        $currentYear = Carbon::now()->format('Y');
+        $salary =  DB::table('employee')->join('salary','salary.fkemployeeId','=','employee.employeeId')
             ->where(DB::raw('Year(date)'),$currentYear)->where(DB::raw('Month(date)'),$currentMonth)->get();
 
-        return view('User.Employee.getSalaryByFilter',compact('salary'));
-//        return response()->json($report);
-}
+    //        $getDate = Carbon::parse($emp)->format('m');
+    //        $monthget = Carbon::now()->format('m');
 
-public function paySalary(Request $r){
-//        return $r;
-$emp = Employee::findOrFail($r->id);
-$report = new Report();
-$report->status = 'debit';
-$report->price = $emp->salary;
-$report->date = Carbon::now()->format('Y-m-d');
-$report->tabelId=$emp->employeeId;
-$report->tableName= "employee";
-$report->save();
-$salary = Salary::where('fkemployeeId',$r->id)->first();
-$salary->status = 'paid';
-$salary->update();
-return back();
-}
-public function unPaySalary(Request $r){
-        $salary = Salary::findOrFail($r->id);
-        $salary->status = 'np';
-        $salary->update();
+        return view('User.Employee.getSalary')->with('salary',$salary);
+    }
+    public function salaryStore(Request $r){
+        $employee = Employee::all();
+        $datatables = DataTables::of($employee);
+        return $datatables->make(true);
     }
 
-public static function salaryStatus($id){
-        $salary = Salary::where('fkemployeeId',$id)->first()->status;
-        return $salary;
-}
+    public function salaryByMonth(Request $request){
+            $currentMonth = Carbon::parse($request->chooseMonth)->format('m');
+            $currentYear = Carbon::parse($request->chooseMonth)->format('Y');
+            $salary = DB::table('employee')->join('salary','salary.fkemployeeId','=','employee.employeeId')
+                ->where(DB::raw('Year(date)'),$currentYear)->where(DB::raw('Month(date)'),$currentMonth)->get();
 
-public function testEmployee(){
+            return view('User.Employee.getSalaryByFilter',compact('salary'));
+    //        return response()->json($report);
+    }
 
-}
+    public function paySalary(Request $r){
+    //        return $r;
+        $emp = Employee::findOrFail($r->id);
+        $report = new Report();
+        $report->status = 'debit';
+        $report->price = $emp->salary;
+        $report->date = Carbon::now()->format('Y-m-d');
+        $report->tabelId=$emp->employeeId;
+        $report->tableName= "employee";
+        $report->save();
+        $salary = Salary::where('fkemployeeId',$r->id)->first();
+        $salary->status = 'paid';
+        $salary->update();
+        return back();
+    }
+    public function unPaySalary(Request $r){
+            $salary = Salary::findOrFail($r->id);
+            $salary->status = 'np';
+            $salary->update();
+        }
+
+    public static function salaryStatus($id){
+            $salary = Salary::where('fkemployeeId',$id)->first()->status;
+            return $salary;
+    }
+
+    public function testEmployee(){
+
+    }
+
+
+    public function deleteFile(Request $r){
+        $clientFile=EmpFile::findOrFail($r->id);
+        $clientId=$clientFile->clienId;
+        $clientFile->delete();
+        return $clientId;
+    }
 
 }
