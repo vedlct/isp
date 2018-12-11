@@ -39,6 +39,63 @@
             <label>Price</label>
             <input type="text" name="price" id="priceedit" placeholder="price" class="form-control" value="{{$client->price}}" >
         </div>
+
+
+
+
+        <div class="form-group col-md-6">
+            <label>Bandwidth Type</label>
+            <select class="form-control" name="bandwidthType" required>
+                <option value="">Select Type</option>
+                @foreach(BANDWIDTH_TYPE as $key => $value)
+                    <option value="{{$key}}" @if($key == $client->bandwidthType) selected @endif>{{$value}}</option>
+
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label>Cable Length</label>
+            <input type="number" name="cableLength" value="{{$client->cableLength}}"  placeholder="meter" class="form-control" >
+        </div>
+
+        <div class="form-group col-md-6">
+            <label>Client Id</label>
+            <input type="text" name="clientSerial" value="{{$client->clientSerial}}"  placeholder="id" class="form-control" >
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label>Connection Date</label>
+            <input type="text" name="conDate"  placeholder="date" value="{{$client->conDate}}" class="form-control datepicker" >
+        </div>
+
+        <div class="form-group col-md-6">
+            <label>Connection Type</label>
+            <select class="form-control" name="connectionType" onchange="connectionTypeChangeEdit(this)" required>
+                <option value="">Select Connection Type</option>
+                @foreach(CONNECTION_TYPE as $key => $value)
+                    <option value="{{$key}}" @if($key==$client->type)selected @endif>{{$value}}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label>Status</label>
+            <select class="form-control" name="status" required>
+                <option value="">Select Status</option>
+                @foreach(USER_STATUS as $key => $value)
+                    <option value="{{$key}}" @if($client->clientStatus == $key) selected @endif>{{$value}}</option>
+                @endforeach
+            </select>
+        </div>
+
+
+        <div class="form-group col-md-6" id="connectionTypeFieldEdit">
+
+        </div>
+
+
         <div class="form-group col-md-6">
             <label>address</label>
             <input type="text" name="address"  placeholder="address" class="form-control" value="{{$client->address}}" >
@@ -77,6 +134,75 @@
 </form>
 <script>
     counter=0;
+    $(document).ready(function() {
+//            $('.empform').parsley();
+
+        $('.datepicker').datepicker({
+            format: 'yyyy/mm/dd',
+            autoclose:true,
+
+
+        })
+        @if($client->type)
+
+        var val={{$client->type}};
+        if(val=='1'){
+            $('#connectionTypeFieldEdit').html('' +
+                ' <label>Connection</label>\n' +
+                '<select class="form-control" name="connectionValue"  required>\n' +
+                '                                    <option value="">Select Connection Type</option>\n' +
+                '                                    @foreach(CONNECTION_FIBER as $key => $value)\n' +
+                '                                        <option value="{{$key}}" @if($key==$client->typeDetails)selected @endif>{{$value}}</option>\n' +
+                '                                    @endforeach\n' +
+                '                                </select>');
+        }
+        else if(val=='2'){
+            $('#connectionTypeFieldEdit').html('' +
+                ' <label>Connection</label>\n' +
+                '<select class="form-control" name="connectionValue"  required>\n' +
+                '                                    <option value="">Select Connection Type</option>\n' +
+                '                                    @foreach(CONNECTION_UTP as $key => $value)\n' +
+                '                                        <option value="{{$key}}" @if($key==$client->typeDetails)selected @endif>{{$value}}</option>\n' +
+                '                                    @endforeach\n' +
+                '                                </select>');
+        }
+        else {
+            $('#connectionTypeFieldEdit').html('');
+        }
+
+        @endif
+    });
+
+
+    function connectionTypeChangeEdit(x) {
+        // alert();
+        var val=$(x).val();
+        if(val=='1'){
+            $('#connectionTypeFieldEdit').html('' +
+                ' <label>Connection</label>\n' +
+                '<select class="form-control" name="connectionValue"  required>\n' +
+                '                                    <option value="">Select Connection Type</option>\n' +
+                '                                    @foreach(CONNECTION_FIBER as $key => $value)\n' +
+                '                                        <option value="{{$key}}">{{$value}}</option>\n' +
+                '                                    @endforeach\n' +
+                '                                </select>');
+        }
+        else if(val=='2'){
+            $('#connectionTypeFieldEdit').html('' +
+                ' <label>Connection</label>\n' +
+                '<select class="form-control" name="connectionValue"  required>\n' +
+                '                                    <option value="">Select Connection Type</option>\n' +
+                '                                    @foreach(CONNECTION_UTP as $key => $value)\n' +
+                '                                        <option value="{{$key}}">{{$value}}</option>\n' +
+                '                                    @endforeach\n' +
+                '                                </select>');
+        }
+        else {
+            $('#connectionTypeFieldEdit').html('');
+        }
+
+
+    }
 
     function addMoreField(){
         // if(counter>10){

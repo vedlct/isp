@@ -67,6 +67,61 @@
                                 <label>Price</label>
                                 <input type="text" name="price" id="price" placeholder="price" class="form-control" >
                             </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Bandwidth Type</label>
+                                <select class="form-control" name="bandwidthType" required>
+                                    <option value="">Select Type</option>
+                                    @foreach(BANDWIDTH_TYPE as $key => $value)
+                                        <option value="{{$key}}">{{$value}}</option>
+
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                            <div class="form-group col-md-6">
+                                <label>Client Id</label>
+                                <input type="text" name="clientSerial"  placeholder="id" class="form-control" >
+                            </div>
+
+
+                            <div class="form-group col-md-6">
+                                <label>Connection Date</label>
+                                <input type="text" name="conDate"  placeholder="date"  class="form-control datepicker" >
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Cable Length</label>
+                                <input type="number" name="cableLength"  placeholder="meter" class="form-control" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Connection Type</label>
+                                <select class="form-control" name="connectionType" onchange="connectionTypeChange(this)" required>
+                                    <option value="">Select Connection Type</option>
+                                    @foreach(CONNECTION_TYPE as $key => $value)
+                                        <option value="{{$key}}">{{$value}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Status</label>
+                                <select class="form-control" name="status" required>
+                                    <option value="">Select Status</option>
+                                    @foreach(USER_STATUS as $key => $value)
+                                        <option value="{{$key}}">{{$value}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-6" id="connectionTypeField">
+
+                            </div>
+
+
+
+
                             <div class="form-group col-md-12">
                                 <label>Address</label>
                                 <textarea name="address"  placeholder="address" class="form-control"></textarea>
@@ -74,16 +129,6 @@
 
                             <div class="col-md-12"><hr></div>
 
-
-
-                            {{--<div class="form-group col-md-6">--}}
-                                {{--<label>Name</label>--}}
-                                {{--<input type="text" name="clientFile[]"  placeholder="insert image" class="form-control" >--}}
-                            {{--</div>--}}
-                            {{--<div class="form-group col-md-6">--}}
-                                {{--<label>File</label>--}}
-                                {{--<input type="file" name="clientImage[]"  placeholder="insert image" class="form-control" >--}}
-                            {{--</div>--}}
 
                             <div id="TextBoxesGroup" class="col-md-12">
 
@@ -119,7 +164,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Update Package</h4>
+                    <h4 class="modal-title">Update Client</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -189,6 +234,46 @@
     <script src="{{url('public/assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
     <script>
         counter=0;
+        $(document).ready(function() {
+//            $('.empform').parsley();
+
+            $('.datepicker').datepicker({
+                format: 'yyyy/mm/dd',
+                autoclose:true,
+
+
+            });
+        });
+
+        function connectionTypeChange(x) {
+            // alert();
+            var val=$(x).val();
+            if(val=='1'){
+                $('#connectionTypeField').html('' +
+                    ' <label>Connection</label>\n' +
+                    '<select class="form-control" name="connectionValue"  required>\n' +
+                    '                                    <option value="">Select Connection Type</option>\n' +
+                    '                                    @foreach(CONNECTION_FIBER as $key => $value)\n' +
+                    '                                        <option value="{{$key}}">{{$value}}</option>\n' +
+                    '                                    @endforeach\n' +
+                    '                                </select>');
+            }
+            else if(val=='2'){
+                $('#connectionTypeField').html('' +
+                    ' <label>Connection</label>\n' +
+                    '<select class="form-control" name="connectionValue"  required>\n' +
+                    '                                    <option value="">Select Connection Type</option>\n' +
+                    '                                    @foreach(CONNECTION_UTP as $key => $value)\n' +
+                    '                                        <option value="{{$key}}">{{$value}}</option>\n' +
+                    '                                    @endforeach\n' +
+                    '                                </select>');
+            }
+            else {
+                $('#connectionTypeField').html('');
+            }
+
+
+        }
 
         function addMore(){
             // if(counter>10){
