@@ -1,7 +1,6 @@
 @extends('layouts.mainLayout')
 @section('css')
 
-
     <!-- DataTables -->
     <link href="{{url('public/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{url('public/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
@@ -46,6 +45,17 @@
             }
         }
 
+        .blinking{
+            animation:blinkingText 2s infinite;
+        }
+        @keyframes blinkingText{
+            0%{		color: red;	}
+            49%{	color: transparent;	}
+            50%{	color: transparent;	}
+            99%{	color:transparent;	}
+            100%{	color: #000;	}
+        }
+
     </style>
 
 @endsection
@@ -60,14 +70,32 @@
                 <div class="card-body">
 
                     <h4 class="mt-0 header-title">All Bill</h4>
-                    <div class="form-group col-md-3">
+                    <div class="row">
+                    <div class="col-md-3">
                         <label>Select Month</label>
                         <input type="text" id="billMonth" class="form-control datepicker" @if(isset($date)) value="{{$date}}" @endif name="selectMonth" onchange="changeDate(this)">
+
                     </div>
-                    <div class="form-group col-md-3">
+                    <div align="right" class="col-md-8">
+                        @if( $json !== "")
+                            <h5><span class="blinking"><i class="fa fa-circle"></i></span>{{$json}}</h5>
+                        @endif
+
+                    </div>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                    <div class="col-md-3">
                         <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
-                        <button id="generateBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>
+                        <button id="generateBill" style="display: none" class="btn btn-info" name="generateBill">Genarate All bill</button>
                     </div>
+                    <div class="col-md-3">
+                        {{--<button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay</button>--}}
+                        <button id="" style="" class="btn btn-success" name="">Send Sms To Bill Pay</button>
+                    </div>
+                    </div>
+                    <br>
 
                     <div class="table table-responsive">
                         <table id="manageapplication" class="table table-striped table-bordered" style="width:100%" >
@@ -332,6 +360,118 @@
             url = url.replace(':date', '{{$date}}');
 
             window.open(url,'_blank')
+
+        });
+        $("#sendBillToPaySms").click(function () {
+
+
+            $.confirm({
+                title: 'Confirm!',
+                content: 'Are You Sure!',
+                buttons: {
+                    confirm: function () {
+
+
+
+                            $.ajax({
+                                type: 'get',
+                                url: "{!! route('sms.billToPay.send') !!}",
+                                cache: false,
+                                data: {_token: "{{csrf_token()}}", },
+                                success: function (data) {
+
+                                    console.log(data);
+
+                                    if (data=="400"){
+
+                                        $.alert({
+                                            title: 'Success!',
+                                            type: 'green',
+                                            content: 'Sms Send SuccessFully',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-blue',
+                                                    action: function () {
+
+
+                                                        location.reload();
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+                                    else if(data=="400") {
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: 'sms Sent cancelled for insufficient balance',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        location.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+                                    else if(data=="1") {
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: 'You Allready Sent Sms once in this month',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        location.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+
+
+
+                                }
+                            });
+
+                    },
+                    cancel: function () {
+
+                        location.reload();
+
+                    },
+
+                }
+            });
+
 
         });
 

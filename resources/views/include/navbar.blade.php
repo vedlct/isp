@@ -29,7 +29,7 @@
 
 
                 @if(Auth::user()->fkusertype=="Admin")
-                <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-briefcase"></i> <span>Employee </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-briefcase"></i> <span>HRM </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         <li>
                             <a href="{{route('employee.show')}}" class="waves-effect">
@@ -38,7 +38,7 @@
                         </li>
                         <li>
                             <a href="{{route('employee.getSalary')}}" class="waves-effect">
-                                <i class="fa fa-empire"></i> <span>Employee Salary</span>
+                                <i class="fa fa-empire"></i> <span>Payrole</span>
                             </a>
                         </li>
                         {{--<li><a href="{{route('report.showSummary')}}" class="waves-effect">Summary</a></li>--}}

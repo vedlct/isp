@@ -11,6 +11,7 @@ use App\Package;
 //use App\Client;
 use App\Company;
 use App\Report;
+use App\SmsCheckMonth;
 use Illuminate\Http\Request;
 use PDF;
 use DB;
@@ -55,6 +56,8 @@ class BillController extends Controller
         $client = Client::select('clientId','clientFirstName','clientLastName','ip','bandWide','client.price as cprice', 'address', 'packageName')
             ->leftjoin('package','packageId','fkpackageId')
             ->get();
+
+
         $bill = Bill::where(DB::raw('month(billdate)'),$currentMonth)->get();
         $package = Package::get();
         return view('bill.show', compact('client', 'bill', 'package','date'));
@@ -87,12 +90,14 @@ class BillController extends Controller
         return  $message;
     }
     public function generatePdf(){
+
         $userName="techcloud";
         $password="tcl@it404$";
         $brand="TECH%20CLOUD";
         $destination="01731893442";
         $sms="Test%20SMS%20From%20TCL%20API";
         $json = file_get_contents('https://msms.techcloudltd.com/msms-new/pages/RequestSMS.php?user_name='.$userName.'&pass_word='.$password.'&brand='.$brand.'&type=1&destination='.$destination.'&sms='.$sms);
+//        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestBalance.php?user_name='.$userName.'&pass_word='.$password.''); /* balance api*/
 //        $json = json_decode(file_get_contents('https://msms.techcloudltd.com/msms-new/pages/RequestSMS.php?user_name=techcloud&pass_word=tcl@it404$&brand=TECH%20CLOUD&type=1&destination=01616404404&sms=Test%20SMS%20From%20TCL%20API'), true);
         return $json;
     }
@@ -101,7 +106,24 @@ class BillController extends Controller
         $date=Carbon::now()->format('F-Y');
         $package = Package::get();
         $internetClient=InternetClient::where('internet_client.clientStatus',2)->count('internet_client.clientId');
-        return view('bill.internet.show', compact('package','date','internetClient'));
+
+
+        $n = SmsCheckMonth::select('deliveryStatus')->where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )->where('type',2)->first();
+
+        if ($n){
+
+            if ($n->deliveryStatus==409){
+                $json="Sms Wasn't Sent Successfully Please contact with Provider";
+            }
+
+        }else{
+
+            $json="";
+        }
+
+        
+        return view('bill.internet.show', compact('package','date','internetClient','json'));
+
     }
     public function internetBillShowWithData(Request $r){
         $bill = InternetBill::select('internet_bill.fkclientId','internet_client.clientFirstName','internet_client.clientLastName','internet_client.phone','internet_bill.price as billprice','internet_bill.billId',DB::raw('DATE_FORMAT(internet_bill.billdate,"%M-%Y") as billdate'),
