@@ -46,13 +46,15 @@
                             {{$salary->where('fkemployeeId',$employee->employeeId)->first()->date}}
                         </td>
                         <td>
-                            @if(\App\Http\Controllers\EmployeeController::salaryStatus($employee->employeeId)=='paid')
+
+                            @if(\App\Http\Controllers\EmployeeController::salaryStatus($employee->employeeId,date('m'))=='paid')
                                 <div class="badge badge-primary">Paid</div>
                                 <button type="button"  data-panel-id="{{$salary->where('fkemployeeId', $employee->employeeId)->first()->id}}" onclick="unpaid(this)" class="btn btn-sm btn-danger" id="unPaid"><i class="fa fa-trash"></i></button>
                                 @else
                                 <form action="{{route('employee.salary.pay')}}" method="post">
                                     @csrf
                                     <input type="hidden" id="id" name="id" value="{{$employee->employeeId}}">
+                                    <input type="hidden" id="id" name="date" value="{{date('m')}}">
                                     <button type="submit" id="payButton" class="btn btn-info">Pay</button>
                                 </form>
                             @endif
@@ -200,9 +202,11 @@
                             cache: false,
                             data: {_token: "{{csrf_token()}}",'id':unPaidId},
                             success: function (data) {
+                                // console.log(data);
+                                location.reload();
                             }
                         });
-                        location.reload();
+                        // location.reload();
                     },
                     cancel: function () {
                         $.alert('Canceled!');
