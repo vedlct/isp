@@ -247,7 +247,6 @@ class BillController extends Controller
         $company=Company::first();
 
 
-
         $pdf = PDF::loadView('bill.internet.allBillPdf',compact('client','company','date'));
 
 
