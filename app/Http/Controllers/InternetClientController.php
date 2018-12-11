@@ -43,6 +43,7 @@ class InternetClientController extends Controller
         $client->bandwidthType=$r->bandwidthType;
         $client->clientSerial=$r->clientSerial;
         $client->conDate=$r->conDate;
+        $client->clientStatus=$r->status;
         $client->save();
 
         if($r->connectionType){
@@ -104,8 +105,8 @@ class InternetClientController extends Controller
         return view('client.edit', compact('client', 'package','documents'));
     }
 
-    public function update(Request $r , $id){
-//        return $r;
+    public function update(Request $r,$id){
+
         $client = InternetClient::findOrFail($id);
         $client->clientFirstName = $r->clientFirstName;
         $client->clientLastName = $r->clientLastName;
@@ -120,6 +121,7 @@ class InternetClientController extends Controller
         $client->bandwidthType=$r->bandwidthType;
         $client->clientSerial=$r->clientSerial;
         $client->conDate=$r->conDate;
+        $client->clientStatus=$r->status;
         $client->save();
 
 

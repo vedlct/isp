@@ -27,9 +27,16 @@ define('CONNECTION_FIBER',array(
     "2"=>'mc',
     "3"=>'mac'
 ));
+
 define('CONNECTION_UTP',array(
     "1"=>'cat-5',
     "2"=>'cat-6'
+));
+
+define('USER_STATUS',array(
+    "1"=>'inactive',
+    "2"=>'active',
+    "3"=>'free',
 ));
 
 
