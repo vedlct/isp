@@ -41,7 +41,7 @@
 
 <body style="background: #fff ">
 
-@for($i=1;$i<6;$i++)
+
 
 <div class="structure" style="margin-left: 20px;">
     {{--Test--}}
@@ -209,9 +209,7 @@
         </table>
         {{--Test Ends--}}
 
-    @if($i%2==1)
-        <hr style="border:2px solid dotted;">
-    @endif
+
 
 
 
@@ -224,7 +222,7 @@
 
 </div>
 
-@endfor
+
 
 </body>
 </html>
