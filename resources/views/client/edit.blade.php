@@ -80,6 +80,16 @@
             </select>
         </div>
 
+        <div class="form-group col-md-6">
+            <label>Status</label>
+            <select class="form-control" name="status" required>
+                <option value="">Select Status</option>
+                @foreach(USER_STATUS as $key => $value)
+                    <option value="{{$key}}" @if($client->clientStatus == $key) selected @endif>{{$value}}</option>
+                @endforeach
+            </select>
+        </div>
+
 
         <div class="form-group col-md-6" id="connectionTypeFieldEdit">
 

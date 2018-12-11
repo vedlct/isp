@@ -79,6 +79,16 @@
                                 <input type="text" name="conDate"  placeholder="date" class="form-control datepicker" >
                             </div>
 
+                            <div class="form-group col-md-6">
+                                <label>Status</label>
+                                <select class="form-control" name="status" required>
+                                    <option value="">Select Status</option>
+                                    @foreach(USER_STATUS as $key => $value)
+                                        <option value="{{$key}}">{{$value}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="col-md-12"><hr></div>
                             <div id="TextBoxesGroup" class="col-md-12">
 

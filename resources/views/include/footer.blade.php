@@ -32,6 +32,5 @@
 
 @yield('js')
 </body>
-<!-- Mirrored from themesdesign.in/drixo/vertical/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 08 Nov 2018 08:38:33 GMT -->
 
 </html>

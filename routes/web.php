@@ -21,6 +21,7 @@ Route::get('/employee-salary','EmployeeController@getSalary')->name('employee.ge
 Route::post('/employee-salary','EmployeeController@salaryStore')->name('employee.salaryStore');
 Route::post('/employee-salary-pay','EmployeeController@paySalary')->name('employee.salary.pay');
 Route::post('/employee-salary-unpay','EmployeeController@unPaySalary')->name('employee.unPaySalary');
+Route::post('employee/deleteFile','EmployeeController@deleteFile')->name('employee.deleteFile');
 
 
 
@@ -172,9 +173,9 @@ Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
 Route::get('test','BillController@generatePdf');
 
 
-Route::get('bill/generate/{id}/{date}','BillController@generatePdf')->name('bill.invoice');
-Route::get('Bill/generate/{id}/{date}','BillController@generateInternetPdf')->name('bill.Internet.invoiceByClient');
 
+Route::get('Bill/generate/{id}/{date}','BillController@generateInternetPdf')->name('bill.Internet.invoiceByClient');
+//Route::get('bill/generate/{id}/{date}','BillController@generatePdf')->name('bill.invoice');
 
 Route::get('Bill/Generate-All/{date}','BillController@generateAllInternetBillPdf')->name('bill.Internet.invoice');
 
