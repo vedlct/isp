@@ -138,7 +138,9 @@ class DashBoardController extends Controller
                 $billcable->fkclientId = $cc->clientId ;
                 $billcable->save();
             }
+
             $employee = Employee::select('employeeId')->where('status',1)->get();
+
             foreach ($employee as $em){
                 $salaryinsert = new Salary();
                 $salaryinsert->fkemployeeId = $em->employeeId;
