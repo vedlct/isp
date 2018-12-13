@@ -1,14 +1,14 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'Laravel',
+    'name' => 'PMS',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
     'timezone' => 'UTC',
     'locale' => 'en',
     'fallback_locale' => 'en',
-    'key' => 'base64:U96rdCUzes5g17nNq6edYMJPP+ucspTIbt5qA6adPOs=',
+    'key' => 'base64:Bh45lK/ezvJuPOzg6HLzahYDgnCvvh3JWpfdV/mm0Lw=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -171,7 +171,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => '/opt/lampp/htdocs/isp/storage/framework/cache/data',
+        'path' => 'C:\\xampp\\htdocs\\isp\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -201,7 +201,7 @@
         'connection' => 'default',
       ),
     ),
-    'prefix' => 'laravel_cache',
+    'prefix' => 'pms_cache',
   ),
   'database' => 
   array (
@@ -322,10 +322,10 @@
     'orientation' => 'portrait',
     'defines' => 
     array (
-      'font_dir' => '/opt/lampp/htdocs/isp/storage/fonts/',
-      'font_cache' => '/opt/lampp/htdocs/isp/storage/fonts/',
-      'temp_dir' => '/tmp',
-      'chroot' => '/opt/lampp/htdocs/isp',
+      'font_dir' => 'C:\\xampp\\htdocs\\isp\\storage\\fonts/',
+      'font_cache' => 'C:\\xampp\\htdocs\\isp\\storage\\fonts/',
+      'temp_dir' => 'C:\\Users\\TCL\\AppData\\Local\\Temp',
+      'chroot' => 'C:\\xampp\\htdocs\\isp',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
       'default_media_type' => 'screen',
@@ -335,7 +335,7 @@
       'enable_php' => false,
       'enable_javascript' => true,
       'enable_remote' => true,
-      'font_height_ratio' => 1.1,
+      'font_height_ratio' => 1.1000000000000001,
       'enable_html5_parser' => false,
     ),
   ),
@@ -348,12 +348,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => '/opt/lampp/htdocs/isp/storage/app',
+        'root' => 'C:\\xampp\\htdocs\\isp\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => '/opt/lampp/htdocs/isp/storage/app/public',
+        'root' => 'C:\\xampp\\htdocs\\isp\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -476,13 +476,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => '/opt/lampp/htdocs/isp/storage/logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\isp\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => '/opt/lampp/htdocs/isp/storage/logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\isp\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 7,
       ),
@@ -534,7 +534,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => '/opt/lampp/htdocs/isp/resources/views/vendor/mail',
+        0 => 'C:\\xampp\\htdocs\\isp\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -615,7 +615,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => '/opt/lampp/htdocs/isp/storage/framework/sessions',
+    'files' => 'C:\\xampp\\htdocs\\isp\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -624,7 +624,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'laravel_session',
+    'cookie' => 'pms_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => false,
@@ -635,9 +635,9 @@
   array (
     'paths' => 
     array (
-      0 => '/opt/lampp/htdocs/isp/resources/views',
+      0 => 'C:\\xampp\\htdocs\\isp\\resources\\views',
     ),
-    'compiled' => '/opt/lampp/htdocs/isp/storage/framework/views',
+    'compiled' => 'C:\\xampp\\htdocs\\isp\\storage\\framework\\views',
   ),
   'trustedproxy' => 
   array (
