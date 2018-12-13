@@ -141,6 +141,9 @@ class BillController extends Controller
         if ($r->pastDue){
             $bill= $bill->where('internet_bill.status','np');
         }
+        if ($r->pastRecieved){
+            $bill= $bill->where('internet_bill.status','ap');
+        }
         $datatables = DataTables::of($bill)->with('total', $bill->count('internet_client.clientId'));
         return $datatables->make(true);
     }
@@ -171,6 +174,7 @@ class BillController extends Controller
         $pdf = PDF::loadView('bill.internet.allBillPdf',compact('client','company','date'));
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
     }
+
     public function internetBillDue(Request $r){
         $month = Carbon::parse($r->date)->format('m');
         $bill=InternetBill::leftjoin('internet_client','internet_bill.fkclientId','internet_client.clientId')->where(DB::raw('month(internet_bill.billdate)'),$month)->where('internet_client.clientId',$r->id)->first();
@@ -181,6 +185,15 @@ class BillController extends Controller
         $message='Monthly Internet bill of '.$r->date.' for client Name '.$bill->clientFirstName.' '.$bill->clientLastName.' has been changed to unpaid';
         return  $message;
     }
+    public function internetBillRecieved(){
+
+        $date=Carbon::now()->format('F-Y');
+
+
+        return view('bill.internet.showBillRecieved', compact('date'));
+    }
+
+
     /*Cable Bill */
     public function cableBillShow(){
         $date=Carbon::now()->subMonth()->format('F-Y');
@@ -203,6 +216,9 @@ class BillController extends Controller
         }
         if ($r->pastDue){
             $bill= $bill->where('cable_bill.status','np');
+        }
+        if ($r->pastRecieved){
+            $bill= $bill->where('cable_bill.status','ap');
         }
         $datatables = DataTables::of($bill)->with('total', $bill->count('cable_client.clientId'));
         return $datatables->make(true);
@@ -287,5 +303,13 @@ class BillController extends Controller
 
 
         return $r;
+    }
+
+    public function cableBillRecieved(){
+
+        $date=Carbon::now()->format('F-Y');
+
+
+        return view('bill.cable.showBillRecieved', compact('date'));
     }
 }

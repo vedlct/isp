@@ -111,6 +111,10 @@ Route::post('/Bill-paid','BillController@paid')->name('bill.paid');
 Route::post('/Bill-due','BillController@due')->name('bill.due');
 
 /*internet */
+
+Route::get('/Internet-Bill-Recieved','BillController@internetBillRecieved')->name('bill.internet.showTotalBillRecieved');
+
+
 Route::get('/Internet-Bill','BillController@internetBillShow')->name('bill.Internet.show');
 
 Route::post('/Internet-Bill','BillController@internetBillShowWithData')->name('bill.internet.show.withData');
@@ -126,6 +130,7 @@ Route::post('/Internet-Bill-approved','BillController@approvedInternet')->name('
 
 
 /*Cable*/
+Route::get('/Cable-Bill-Recieved','BillController@cableBillRecieved')->name('bill.cable.showTotalBillRecieved');
 
 Route::get('/Cable-Bill','BillController@cableBillShow')->name('bill.Cable.show');
 Route::post('/Cable-Bill','BillController@cableBillShowWithData')->name('bill.cable.show.withData');
