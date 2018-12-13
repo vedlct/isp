@@ -55,6 +55,7 @@ class DashBoardController extends Controller
             ->where('expenseFor','Internet')
             ->whereMonth('report.date', ((Carbon::now()->subMonth())->month))
             ->sum('report.price');
+
         $totalOFLastMonthDebit=number_format($totalOFLastMonthDebits,2);
 
         $totalOFLastMonthCredits=Report::where('report.status',ACCOUNT_STATUS['Credit'])
@@ -84,6 +85,7 @@ class DashBoardController extends Controller
             ->where('expenseFor','Cable')
             ->whereMonth('report.date', ((Carbon::now()->subMonth())->month))
             ->sum('report.price');
+
         $totalOFLastMonthDebitcable=number_format($totalOFLastMonthDebitscable,2);
 
         $totalOFLastMonthCreditscable=Report::where('report.status',ACCOUNT_STATUS['Credit'])
