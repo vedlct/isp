@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\CableBill;
 use App\CableClient;
+use App\CheckMonth;
 use App\ClientFile;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Session;
 use Auth;
+use DB;
 class CableClientController extends Controller
 {
     public function index(){
@@ -39,23 +41,29 @@ class CableClientController extends Controller
         $client->clientStatus=$r->status;
         $client->save();
 
-        $n = CheckMonth::where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )->first();
-        if ($n){
+//        if ($r->status==2){
+//
+//            $n = CheckMonth::where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )->first();
+//            if ($n){
+//
+//                $cableBill= new CableBill();
+//                $cableBill->billdate=$r->conDate;
+//                $cableBill->price=$r->price;
+//                $cableBill->status='np';
+//                $cableBill->fkclientId=$client->clientId;
+//                $cableBill->save();
+//
+//            }
+//
+//        }
 
-            $cableBill= new CableBill();
-            $cableBill->billdate=$r->conDate;
-            $cableBill->price=$r->price;
-            $cableBill->status='np';
-            $cableBill->fkclientId=$client->clientId;
-            $cableBill->save();
 
-        }
 
         Session::flash('message', 'Client Insert Successfully!');
 
         $index=0;
         if($r->clientImage){
-            
+
             foreach($r->file('clientImage') as $image){
                 $fileName=$r->clientFile[$index];
                 $index++;

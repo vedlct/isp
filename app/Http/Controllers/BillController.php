@@ -183,10 +183,11 @@ class BillController extends Controller
     }
     /*Cable Bill */
     public function cableBillShow(){
-        $date=Carbon::now()->format('F-Y');
+        $date=Carbon::now()->subMonth()->format('F-Y');
         $package = CablePackage::get();
         $cableClient=CableClient::where('cable_client.clientStatus',2)->count('cable_client.clientId');
         return view('bill.cable.show', compact('package','date','cableClient'));
+
     }
     public function cableBillShowWithData(Request $r){
 
@@ -205,6 +206,7 @@ class BillController extends Controller
         }
         $datatables = DataTables::of($bill)->with('total', $bill->count('cable_client.clientId'));
         return $datatables->make(true);
+
     }
     public function cableBillPaid(Request $r){
         $month = Carbon::parse($r->date)->format('m');

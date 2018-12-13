@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Session;
 use Auth;
+use DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 class InternetClientController extends Controller
 {
@@ -60,19 +61,22 @@ class InternetClientController extends Controller
             $client->save();
         }
 
-        $n = CheckMonth::where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )->first();
-        if ($n){
+        if ($r->status==2) {
+            $n = CheckMonth::where(DB::raw('month(date)'), date('m'))->where(DB::raw('Year(date)'), date('Y'))->first();
+            if ($n) {
 
-            $internetBill= new InternetBill();
-            $internetBill->billdate=$r->conDate;
-            $internetBill->price=$r->price;
-            $internetBill->status='np';
-            $internetBill->fkclientId=$client->clientId;
-            $internetBill->save();
+                $internetBill = new InternetBill();
+                $internetBill->billdate = $r->conDate;
+                $internetBill->price = $r->price;
+                $internetBill->status = 'np';
+                $internetBill->fkclientId = $client->clientId;
+                $internetBill->save();
 
+            }
         }
 
         Session::flash('message', 'Client Insert Successfully!');
+
         $index=0;
         if($r->clientImage) {
             foreach ($r->file('clientImage') as $image) {
