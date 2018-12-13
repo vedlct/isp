@@ -17,6 +17,7 @@ use PDF;
 use DB;
 use Carbon\Carbon;
 use Yajra\DataTables\DataTables;
+use Auth;
 class BillController extends Controller
 {
     //
@@ -63,7 +64,6 @@ class BillController extends Controller
         return view('bill.show', compact('client', 'bill', 'package','date'));
     }
     public function paid(Request $r){
-//        $client = Client::findOrFail($r->id);
         $month = Carbon::parse($r->date)->format('m');
         $bill=Bill::leftjoin('client','bill.fkclientId','client.clientId')->where(DB::raw('month(billdate)'),$month)->where('client.clientId',$r->id)->first();
         $bill->status = 'p';
@@ -126,10 +126,13 @@ class BillController extends Controller
 
     }
     public function internetBillShowWithData(Request $r){
-        $bill = InternetBill::select('internet_bill.fkclientId','internet_client.clientFirstName','internet_client.clientLastName','internet_client.phone','internet_bill.price as billprice','internet_bill.billId',DB::raw('DATE_FORMAT(internet_bill.billdate,"%M-%Y") as billdate'),
-            'internet_client.bandWide', 'package.packageName','internet_bill.status as billStatus')
+        $bill = InternetBill::select('internet_bill.fkclientId','internet_client.clientFirstName',
+            'internet_client.clientLastName','internet_client.phone','internet_bill.price as billprice',
+            'internet_bill.billId',DB::raw('DATE_FORMAT(internet_bill.billdate,"%M-%Y") as billdate'),
+            'internet_client.bandWide', 'package.packageName','internet_bill.status as billStatus','user.name')
             ->leftjoin('internet_client','internet_bill.fkclientId','internet_client.clientId')
             ->leftjoin('package','package.packageId','internet_client.fkpackageId')
+            ->leftjoin('user','user.userId','internet_bill.receivedBy')
             ->where('internet_client.clientStatus',2);
         if ($r->billMonth){
             $month = Carbon::parse($r->billMonth)->format('m');
@@ -142,18 +145,15 @@ class BillController extends Controller
         return $datatables->make(true);
     }
     public function internetBillPaid(Request $r){
-//        $client = Client::findOrFail($r->id);
+
         $month = Carbon::parse($r->date)->format('m');
         $bill=InternetBill::leftjoin('internet_client','internet_bill.fkclientId','internet_client.clientId')->where(DB::raw('month(internet_bill.billdate)'),$month)->where('internet_client.clientId',$r->id)->first();
         $bill->status = 'p';
+        $bill->receivedBy = Auth::user()->userId;
+        $bill->receiveDate=date('Y-m-d');
         $bill->save();
-        $report = new Report();
-        $report->status = ACCOUNT_STATUS['Credit'];
-        $report->price = $bill->price;
-        $report->tabelId = $bill->billId;
-        $report->date = $bill->billdate;
-        $report->tableName = 'internet_bill';
-        $report->save();
+
+
         $message='Monthly Internet bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
         return  $message;
     }
@@ -189,10 +189,12 @@ class BillController extends Controller
         return view('bill.cable.show', compact('package','date','cableClient'));
     }
     public function cableBillShowWithData(Request $r){
+
+
         $bill = CableBill::select('cable_bill.fkclientId','cable_client.clientFirstName','cable_client.clientLastName','cable_client.phone','cable_bill.price as billprice','cable_bill.billId',DB::raw('DATE_FORMAT(cable_bill.billdate,"%M-%Y") as billdate'),
-            'cablepackage.cablepackageName','cable_bill.status as billStatus')
+            'cable_bill.status as billStatus','user.name')
             ->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')
-            ->leftjoin('cablepackage','cablepackage.cablepackageId','cable_client.fkpackageId')
+            ->leftjoin('user','user.userId','cable_bill.receivedBy')
             ->where('cable_client.clientStatus',2);
         if ($r->billMonth){
             $month = Carbon::parse($r->billMonth)->format('m');
@@ -208,14 +210,18 @@ class BillController extends Controller
         $month = Carbon::parse($r->date)->format('m');
         $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
         $bill->status = 'p';
+        $bill->receivedBy = Auth::user()->userId;
+        $bill->receiveDate=date('Y-m-d');
         $bill->save();
-        $report = new Report();
-        $report->status = ACCOUNT_STATUS['Credit'];
-        $report->price = $bill->price;
-        $report->tabelId = $bill->billId;
-        $report->date = $bill->billdate;
-        $report->tableName = 'cable_bill';
-        $report->save();
+
+//        $report = new Report();
+//        $report->status = ACCOUNT_STATUS['Credit'];
+//        $report->price = $bill->price;
+//        $report->tabelId = $bill->billId;
+//        $report->date = $bill->billdate;
+//        $report->tableName = 'cable_bill';
+//        $report->save();
+
         $message='Monthly Cable bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
         return  $message;
     }
@@ -224,8 +230,9 @@ class BillController extends Controller
         $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
         $bill->status = 'np';
         $bill->save();
-        $report = Report::where('tabelId' , $bill->billId)
-            ->where('tableName', 'cable_bill')->delete();
+
+//        $report = Report::where('tabelId' , $bill->billId)
+//            ->where('tableName', 'cable_bill')->delete();
         $message='Monthly Cable bill of '.$r->date.' for client Name '.$bill->clientFirstName.' '.$bill->clientLastName.' has been changed to unpaid';
         return  $message;
     }
@@ -245,5 +252,38 @@ class BillController extends Controller
     }
     public function showCablePastDue(){
         return view('bill.cable.showPastDue');
+    }
+
+    public function approvedCable(Request $r){
+        $bill=CableBill::findOrFail($r->primaryId);
+        $bill->status="ap";
+        $bill->save();
+
+        $report = new Report();
+        $report->status = ACCOUNT_STATUS['Credit'];
+        $report->price = $bill->price;
+        $report->tabelId = $bill->billId;
+        $report->date = $bill->billdate;
+        $report->tableName = 'cable_bill';
+        $report->save();
+
+
+        return $r;
+    }
+    public function approvedInternet(Request $r){
+        $bill=InternetBill::findOrFail($r->primaryId);
+        $bill->status="ap";
+        $bill->save();
+
+        $report = new Report();
+        $report->status = ACCOUNT_STATUS['Credit'];
+        $report->price = $bill->price;
+        $report->tabelId = $bill->billId;
+        $report->date = $bill->billdate;
+        $report->tableName = 'internet_bill';
+        $report->save();
+
+
+        return $r;
     }
 }

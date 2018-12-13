@@ -132,7 +132,7 @@ class DashBoardController extends Controller
             $checkmonthinsert->save();
 
 
-            $client = InternetClient::select('clientId', 'price')->get();
+            $client = InternetClient::select('clientId', 'price')->where('clientStatus',2)->get();
             foreach ($client as $c) {
                 $bill = new InternetBill();
                 $bill->billdate = date('Y-m-d');
@@ -141,7 +141,7 @@ class DashBoardController extends Controller
                 $bill->fkclientId = $c->clientId ;
                 $bill->save();
             }
-            $clientcable = CableClient::select('clientId', 'price')->get();
+            $clientcable = CableClient::select('clientId', 'price')->where('clientStatus',2)->get();
             foreach ($clientcable as $cc) {
                 $billcable = new CableBill();
                 $billcable->billdate = date('Y-m-d');
@@ -150,7 +150,7 @@ class DashBoardController extends Controller
                 $billcable->fkclientId = $cc->clientId ;
                 $billcable->save();
             }
-            $employee = Employee::select('employeeId')->get();
+            $employee = Employee::select('employeeId')->where('clientStatus',2)->get();
             foreach ($employee as $em){
                 $salaryinsert = new Salary();
                 $salaryinsert->fkemployeeId = $em->employeeId;
