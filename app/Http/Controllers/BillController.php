@@ -121,7 +121,7 @@ class BillController extends Controller
             $json="";
         }
 
-        
+
         return view('bill.internet.show', compact('package','date','internetClient','json'));
 
     }

@@ -27,6 +27,7 @@ class ClientController extends Controller
     }
 
     public function insert(Request $r){
+
         $client = new Client();
         $client->clientFirstName = $r->clientFirstName;
         $client->clientLastName = $r->clientLastName;
@@ -40,6 +41,7 @@ class ClientController extends Controller
         $client->save();
         Session::flash('message', 'Client Insert Successfully!');
         return back();
+
     }
     public function edit(Request $r){
         $client = InternetClient::select('internet_client.*', 'packageName')
