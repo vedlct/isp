@@ -36,25 +36,12 @@ class DashBoardController extends Controller
     public function index()
     {
 
-
-//        $totalOFLastMonthDebit=Report::where('report.status',ACCOUNT_STATUS['Debit'])->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->sum('report.price');
-//        $totalOFLastMonthDebit=number_format($totalOFLastMonthDebit,2);
-//
-//        $totalOFLastMonthCredit=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->sum('report.price');
-//        $totalOFLastMonthCredit=number_format($totalOFLastMonthCredit,2);
-//
-//        $totalBillRecievedOFLastMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->where('report.tableName','bill')->whereMonth('report.date', ((Carbon::now()->subMonth())->month))->groupBy('report.tabelId')->count('report.reportId');
-//        $totalBillDueOFLastMonth=Bill::where('bill.status','np')->whereMonth('bill.billdate',((Carbon::now()->subMonth())->month))->count('bill.billId');
-
-
-
-//        return view('index',compact('totalOFLastMonthCredit','totalOFLastMonthDebit','totalBillRecievedOFLastMonth','totalBillDueOFLastMonth'));
-
+        
         ///////////////////////////////internet//////////////////////////////////
 
         $date = new Carbon();
         $this_month = $date->format('m');
-        $totalbilllastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totalbillinternet'))->where('status', 'p')->where(DB::raw('MONTH(billdate)'), $this_month)->first();
+        $totalbilllastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totalbillinternet'))->where('status', 'ap')->where(DB::raw('MONTH(billdate)'), $this_month)->first();
         $totalduelastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totaldueinternet'))->where('status', 'np')->where(DB::raw('MONTH(billdate)'), $this_month)->first();
         $totalpastduelastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totalpastdueinternet'))->where('status', 'np')->first();
 
@@ -83,7 +70,7 @@ class DashBoardController extends Controller
         //////////////////////////////Cable/////////////////////////
 
 
-        $totalbilllastmonthcable =CableBill::select(DB::raw('SUM(price) as totalbillcable'))->where('status', 'p')->where(DB::raw('MONTH(billdate)'), $this_month)->first();
+        $totalbilllastmonthcable =CableBill::select(DB::raw('SUM(price) as totalbillcable'))->where('status', 'ap')->where(DB::raw('MONTH(billdate)'), $this_month)->first();
         $totalduelastmonthcable =CableBill::select(DB::raw('SUM(price) as totalduecable'))->where('status', 'np')->where(DB::raw('MONTH(billdate)'), $this_month)->first();
         $totalpastduelastmonthcable =CableBill::select(DB::raw('SUM(price) as totalpastduecable'))->where('status', 'np')->first();
 
@@ -107,6 +94,7 @@ class DashBoardController extends Controller
 
         $summarycable = $totalOFLastMonthCreditscable - $totalOFLastMonthDebitscable;
         $summarycable = number_format($summarycable,2);
+
 
         return view('index', compact('totalbilllastmonthinternet','totalduelastmonthinternet', 'totalpastduelastmonthinternet', 'totalOFLastMonthDebit', 'totalOFLastMonthCredit' , 'summary'
         ,'totalbilllastmonthcable','totalduelastmonthcable','totalpastduelastmonthcable','totalOFLastMonthDebitcable','totalOFLastMonthCreditcable','summarycable',''));
@@ -132,7 +120,7 @@ class DashBoardController extends Controller
             $checkmonthinsert->save();
 
 
-            $client = InternetClient::select('clientId', 'price')->get();
+            $client = InternetClient::select('clientId', 'price')->where('clientStatus',2)->get();
             foreach ($client as $c) {
                 $bill = new InternetBill();
                 $bill->billdate = date('Y-m-d');
@@ -141,16 +129,16 @@ class DashBoardController extends Controller
                 $bill->fkclientId = $c->clientId ;
                 $bill->save();
             }
-            $clientcable = CableClient::select('clientId', 'price')->get();
+            $clientcable = CableClient::select('clientId', 'price')->where('clientStatus',2)->get();
             foreach ($clientcable as $cc) {
                 $billcable = new CableBill();
-                $billcable->billdate = date('Y-m-d');
+                $billcable->billdate = Carbon::now()->subMonth()->format('Y-m-d');
                 $billcable->price = $cc->price;
                 $billcable->status = 'np';
                 $billcable->fkclientId = $cc->clientId ;
                 $billcable->save();
             }
-            $employee = Employee::select('employeeId')->get();
+            $employee = Employee::select('employeeId')->where('status',1)->get();
             foreach ($employee as $em){
                 $salaryinsert = new Salary();
                 $salaryinsert->fkemployeeId = $em->employeeId;
@@ -158,7 +146,6 @@ class DashBoardController extends Controller
                 $salaryinsert->status = 'np';
                 $salaryinsert->save();
             }
-
 
         }
 
