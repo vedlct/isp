@@ -162,7 +162,6 @@
                             d.billMonth=$('#billMonth').val();
                         }
 
-
                     },
                 },
                 columns: [

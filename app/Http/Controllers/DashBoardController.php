@@ -53,13 +53,13 @@ class DashBoardController extends Controller
             ->where('fkusertype','InternetEmp')
             ->orWhere('tableName', 'expense')
             ->where('expenseFor','Internet')
-            ->whereMonth('report.date', ((Carbon::now()->subMonth())->month))
+            ->whereMonth('report.date', ((Carbon::now())->month))
             ->sum('report.price');
         $totalOFLastMonthDebit=number_format($totalOFLastMonthDebits,2);
 
         $totalOFLastMonthCredits=Report::where('report.status',ACCOUNT_STATUS['Credit'])
-            ->where('tableName', 'internet_bill')
-            ->whereMonth('report.date', ((Carbon::now()->subMonth())->month))
+            ->where('tableName','internet_bill')
+            ->whereMonth('report.date', ((Carbon::now())->month))
             ->sum('report.price');
         $totalOFLastMonthCredit=number_format($totalOFLastMonthCredits,2);
 
@@ -82,13 +82,13 @@ class DashBoardController extends Controller
             ->where('fkusertype','CableEmp')
             ->orWhere('tableName', 'expense')
             ->where('expenseFor','Cable')
-            ->whereMonth('report.date', ((Carbon::now()->subMonth())->month))
+            ->whereMonth('report.date', ((Carbon::now())->month))
             ->sum('report.price');
         $totalOFLastMonthDebitcable=number_format($totalOFLastMonthDebitscable,2);
 
         $totalOFLastMonthCreditscable=Report::where('report.status',ACCOUNT_STATUS['Credit'])
             ->where('tableName', 'cable_bill')
-            ->whereMonth('report.date', ((Carbon::now()->subMonth())->month))
+            ->whereMonth('report.date', ((Carbon::now())->month))
             ->sum('report.price');
         $totalOFLastMonthCreditcable=number_format($totalOFLastMonthCreditscable,2);
 
