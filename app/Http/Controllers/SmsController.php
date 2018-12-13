@@ -17,6 +17,7 @@ use App\Company;
 
 use App\Report;
 use App\SmsCheckMonth;
+use App\SmsConfig;
 use Illuminate\Http\Request;
 use PDF;
 use DB;
@@ -92,6 +93,45 @@ class SmsController extends Controller
 
 
         }
+
+    }
+    public function config()
+    {
+        $smsConfig=SmsConfig::first();
+
+
+        return view('sms.config',compact('smsConfig'));
+
+    }
+    public function addNewconfig(Request $r)
+    {
+        $smsConfig=new SmsConfig();
+
+        $smsConfig->userName=$r->useName;
+        $smsConfig->password=$r->password;
+        $smsConfig->brandName=$r->brandName;
+        $smsConfig->save();
+
+        return back();
+
+    }
+    public function updateconfig(Request $r)
+    {
+        $smsConfig=SmsConfig::findOrFail($r->smsId);
+
+        $smsConfig->userName=$r->useName;
+        $smsConfig->password=$r->password;
+        $smsConfig->brandName=$r->brandName;
+        $smsConfig->save();
+
+        return back();
+
+    }
+    public function editconfig(Request $r)
+    {
+        $smsConfig=SmsConfig::findOrFail($r->id);
+
+        return view('sms.updateSmsConfig',compact('smsConfig'));
 
     }
 

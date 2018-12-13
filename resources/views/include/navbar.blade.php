@@ -45,6 +45,18 @@
                     </ul>
 
                 </li>
+                    <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-briefcase"></i> <span>Settings </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="{{route('sms.config')}}" class="waves-effect">
+                                    <i class="fa fa-empire"></i> <span>SMS-Config</span>
+                                </a>
+                            </li>
+
+                            {{--<li><a href="{{route('report.showSummary')}}" class="waves-effect">Summary</a></li>--}}
+                        </ul>
+
+                    </li>
                 @endif
 
 
