@@ -53,8 +53,13 @@ class SmsController extends Controller
                         ->orWhere('clientStatus', 3);
                 })->get();
 
-            $userName="techcloud";
-            $password="tcl@it404$";
+//            $userName="techcloud";
+//            $password="tcl@it404$";
+//            $brand="TECH%20CLOUD";
+            $smsConfig=SmsConfig::select('userName','password','brandName')->first();
+                        $userName=$smsConfig->userName;
+                        $password=$smsConfig->password;
+                        $brand=$smsConfig->brandName;
 
             $balance = file_get_contents('https://msms.techcloudltd.com/pages/RequestBalance.php?user_name='.$userName.'&pass_word='.$password.''); /* balance api*/
 
@@ -63,7 +68,7 @@ class SmsController extends Controller
                 foreach ($client as $cl){
 
 
-                    $brand="TECH%20CLOUD";
+
                     $destination=$cl;
 
 

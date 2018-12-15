@@ -309,7 +309,6 @@ class BillController extends Controller
 
         $date=Carbon::now()->format('F-Y');
 
-
         return view('bill.cable.showBillRecieved', compact('date'));
     }
 }
