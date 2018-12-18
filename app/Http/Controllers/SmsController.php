@@ -63,37 +63,50 @@ class SmsController extends Controller
 
             $balance = file_get_contents('https://msms.techcloudltd.com/pages/RequestBalance.php?user_name='.$userName.'&pass_word='.$password.''); /* balance api*/
 
-            if ( ($balance*100) < (count($client)*65)){
+            return $balance;
 
-                foreach ($client as $cl){
+            if ($balance != "404 - Wrong Username" || $balance != "405 - Wrong Password"){
+
+                if ( ($balance*100) < (count($client)*65)){
+
+                    foreach ($client as $cl){
 
 
 
-                    $destination=$cl;
+                        $destination=$cl;
 
 
-                    $sms="Dear valued Client, Please Pay your Internet Bill Within 10th ".date('F')." ".date('Y')." Otherwise your connection will disconnect. Please ignore if you already paid.";
+                        $sms="Dear valued Client, Please Pay your Internet Bill Within 10th ".date('F')." ".date('Y')." Otherwise your connection will disconnect. Please ignore if you already paid.";
 
-                    $json = file_get_contents('https://msms.techcloudltd.com/msms-new/pages/RequestSMS.php?user_name='.$userName.'&pass_word='.$password.'&brand='.$brand.'&type=1&destination='.$destination.'&sms='.$sms);
+                        $json = file_get_contents('https://msms.techcloudltd.com/msms-new/pages/RequestSMS.php?user_name='.$userName.'&pass_word='.$password.'&brand='.$brand.'&type=1&destination='.$destination.'&sms='.$sms);
 
+
+                    }
+
+                    $n->deliveryStatus=400;
+                    $n->save();
+
+                    return 400;
 
                 }
+                else{
 
-                $n->deliveryStatus=400;
-                $n->save();
+                    //$n = SmsCheckMonth::where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )->where('type',2)->first();
 
-                return $json;
+                    $n->deliveryStatus=409;
+                    $n->save();
 
+                    return 409;
+                }
+
+
+            }else{
+                return $balance;
             }
-            else{
 
-                //$n = SmsCheckMonth::where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )->where('type',2)->first();
 
-                $n->deliveryStatus=409;
-                $n->save();
 
-                return 409;
-            }
+
 
 
 

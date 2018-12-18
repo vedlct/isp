@@ -91,8 +91,8 @@
                         <button id="generateBill" style="display: none" class="btn btn-info" name="generateBill">Genarate All bill</button>
                     </div>
                     <div class="col-md-3">
-                        {{--<button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay</button>--}}
-                        <button id="" style="" class="btn btn-success" name="">Send Sms To Bill Pay</button>
+                        <button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay</button>
+                        {{--<button id="" style="" class="btn btn-success" name="">Send Sms To Bill Pay</button>--}}
                     </div>
                     </div>
                     <br>
@@ -432,7 +432,82 @@
 
                                     console.log(data);
 
-                                    if (data=="400"){
+                                    if (data == "404 - Wrong Username" || data=="405 - Wrong Password"){
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: 'Wrong User Name or password of Sms Config',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+                                    else if (data=="407"){
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: 'Wrong Brand Name of Sms Config',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }else if (data=="409"){
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: "sms Sent cancelled for insufficient balance",
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+
+                                    else if (data=="400"){
 
                                         $.alert({
                                             title: 'Success!',
@@ -446,31 +521,6 @@
 
 
                                                         table.ajax.reload();
-
-
-
-                                                    }
-                                                }
-
-                                            }
-                                        });
-
-                                    }
-                                    else if(data=="400") {
-
-                                        $.alert({
-                                            title: 'Alert!',
-                                            type: 'red',
-                                            content: 'sms Sent cancelled for insufficient balance',
-                                            buttons: {
-                                                tryAgain: {
-                                                    text: 'Ok',
-                                                    btnClass: 'btn-red',
-                                                    action: function () {
-
-
-                                                        table.ajax.reload();
-
 
 
 
