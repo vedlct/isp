@@ -457,7 +457,7 @@
                                         });
 
                                     }
-                                    else if (data=="407"){
+                                    else if (data=="407 - Wrong Brandname Given"){
 
                                         $.alert({
                                             title: 'Alert!',

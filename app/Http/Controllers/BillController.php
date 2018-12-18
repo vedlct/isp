@@ -91,14 +91,15 @@ class BillController extends Controller
     }
     public function generatePdf(){
 
-        $userName="techcloud";
-        $password="tcl@it404$";
-        $brand="TECH%20CLOUD";
-        $destination="01731893442";
-        $sms="Test%20SMS%20From%20TCL%20API";
-        $json = file_get_contents('https://msms.techcloudltd.com/msms-new/pages/RequestSMS.php?user_name='.$userName.'&pass_word='.$password.'&brand='.$brand.'&type=1&destination='.$destination.'&sms='.$sms);
-//        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestBalance.php?user_name='.$userName.'&pass_word='.$password.''); /* balance api*/
-//        $json = json_decode(file_get_contents('https://msms.techcloudltd.com/msms-new/pages/RequestSMS.php?user_name=techcloud&pass_word=tcl@it404$&brand=TECH%20CLOUD&type=1&destination=01616404404&sms=Test%20SMS%20From%20TCL%20API'), true);
+        $userName='techcloud';
+        $password='tcl@it404$';
+        $brand='TECH CLOUD';
+        $destination='01680674598';
+        $sms='Test SMS From TCL API';
+        $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms));
+//        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestSMS.php?user_name='.$userName.'&pass_word='.$password.'&brand='.$brand.'&type=1&destination='.$destination.'&sms='.$sms);
+//        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestBalance.php?user_name='.$userName.'&pass_word='.$password); /* balance api*/
+//        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=techcloud&pass_word=tcl@it404$&brand=TECH%20CLOUD&type=1&destination=01680674598&sms=Test%20SMS%20From%20TCL%20API');
         return $json;
     }
     /* internet Bill */
