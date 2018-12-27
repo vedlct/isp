@@ -111,6 +111,10 @@ Route::post('/Bill-paid','BillController@paid')->name('bill.paid');
 Route::post('/Bill-due','BillController@due')->name('bill.due');
 
 /*internet */
+
+Route::get('/Internet-Bill-Recieved','BillController@internetBillRecieved')->name('bill.internet.showTotalBillRecieved');
+
+
 Route::get('/Internet-Bill','BillController@internetBillShow')->name('bill.Internet.show');
 
 Route::post('/Internet-Bill','BillController@internetBillShowWithData')->name('bill.internet.show.withData');
@@ -122,14 +126,17 @@ Route::get('/Bill-PastDue-Internet-Client','BillController@showPastDue')->name('
 
 
 Route::post('/Internet-Bill-due','BillController@internetBillDue')->name('bill.Internet.due');
+Route::post('/Internet-Bill-approved','BillController@approvedInternet')->name('bill.internet.approved');
 
 
 /*Cable*/
+Route::get('/Cable-Bill-Recieved','BillController@cableBillRecieved')->name('bill.cable.showTotalBillRecieved');
 
 Route::get('/Cable-Bill','BillController@cableBillShow')->name('bill.Cable.show');
 Route::post('/Cable-Bill','BillController@cableBillShowWithData')->name('bill.cable.show.withData');
 Route::post('/Cable-Bill-paid','BillController@cableBillPaid')->name('bill.Cable.paid');
 Route::post('/Cable-Bill-due','BillController@cableBillDue')->name('bill.Cable.due');
+Route::post('/Cable-Bill-approved','BillController@approvedCable')->name('bill.Cable.approved');
 
 Route::get('Bill/Generate-Cable/{id}/{date}','BillController@generateCablePdf')->name('bill.Cable.invoiceByClient');
 
@@ -181,9 +188,19 @@ Route::get('Bill/Generate-All/{date}','BillController@generateAllInternetBillPdf
 
 
 Route::get('settings/account','AccountController@index')->name('account.index');
+
 Route::post('settings/account','AccountController@changePassword')->name('account.changePassword');
 
 
 //Route::get('status/{id}','EmployeeController@salaryStatus');
+
+/*Sms*/
+
+Route::get('SMS','SmsController@sendBillToPay')->name('sms.billToPay.send');
+Route::get('SMS-Config','SmsController@config')->name('sms.config');
+Route::post('SMS-Add-Config','SmsController@addNewconfig')->name('sms.addConfig');
+Route::post('SMS-Edit-Config','SmsController@editconfig')->name('sms.editSmsConfig');
+Route::post('SMS-Update-Config','SmsController@updateconfig')->name('sms.updateConfig');
+
 
 

@@ -159,12 +159,13 @@ class EmployeeController extends Controller
     }
 
     public function salaryByMonth(Request $request){
+
             $currentMonth = Carbon::parse($request->chooseMonth)->format('m');
             $currentYear = Carbon::parse($request->chooseMonth)->format('Y');
             $salary = DB::table('employee')->join('salary','salary.fkemployeeId','=','employee.employeeId')
                 ->where(DB::raw('Year(date)'),$currentYear)->where(DB::raw('Month(date)'),$currentMonth)->get();
 
-            return view('User.Employee.getSalaryByFilter',compact('salary'));
+            return view('User.Employee.getSalaryByFilter',compact('salary','currentMonth'));
     //        return response()->json($report);
     }
 
@@ -178,19 +179,23 @@ class EmployeeController extends Controller
         $report->tabelId=$emp->employeeId;
         $report->tableName= "employee";
         $report->save();
-        $salary = Salary::where('fkemployeeId',$r->id)->first();
+        $salary = Salary::where('fkemployeeId',$r->id)->where(DB::raw('month(date)'),$r->date)->first();
         $salary->status = 'paid';
         $salary->update();
         return back();
     }
     public function unPaySalary(Request $r){
+//        return $r;
             $salary = Salary::findOrFail($r->id);
             $salary->status = 'np';
             $salary->update();
+
+            return $salary;
         }
 
-    public static function salaryStatus($id){
-            $salary = Salary::where('fkemployeeId',$id)->first()->status;
+    public static function salaryStatus($id,$date){
+//        return $id;
+            $salary = Salary::where('fkemployeeId',$id)->where(DB::raw('month(date)'),$date)->first()->status;
             return $salary;
     }
 

@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\CablePackage;
+use App\CheckMonth;
 use App\ClientFile;
 use App\ConnectionType;
+use App\InternetBill;
 use App\InternetClient;
 use App\Package;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Session;
 use Auth;
+use DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 class InternetClientController extends Controller
 {
@@ -29,22 +32,24 @@ class InternetClientController extends Controller
     }
 
     public function insert(Request $r){
+
         $client = new InternetClient();
-        $client->clientFirstName = $r->clientFirstName;
-        $client->clientLastName = $r->clientLastName;
-        $client->email = $r->email;
-        $client->phone = $r->phone;
-        $client->ip = $r->ip;
-        $client->bandWide = $r->bandWidth;
-        $client->price = $r->price;
-        $client->address = $r->address;
-        $client->fkpackageId = $r->package;
-        $client->cableLength=$r->cableLength;
-        $client->bandwidthType=$r->bandwidthType;
-        $client->clientSerial=$r->clientSerial;
-        $client->conDate=$r->conDate;
-        $client->clientStatus=$r->status;
-        $client->save();
+
+            $client->clientFirstName = $r->clientFirstName;
+            $client->clientLastName = $r->clientLastName;
+            $client->email = $r->email;
+            $client->phone = $r->phone;
+            $client->ip = $r->ip;
+            $client->bandWide = $r->bandWidth;
+            $client->price = $r->price;
+            $client->address = $r->address;
+            $client->fkpackageId = $r->package;
+            $client->cableLength=$r->cableLength;
+            $client->bandwidthType=$r->bandwidthType;
+            $client->clientSerial=$r->clientSerial;
+            $client->conDate=$r->conDate;
+            $client->clientStatus=$r->status;
+            $client->save();
 
         if($r->connectionType){
             $connectionType=new ConnectionType();
@@ -56,10 +61,22 @@ class InternetClientController extends Controller
             $client->save();
         }
 
+        if ($r->status==2) {
+            $n = CheckMonth::where(DB::raw('month(date)'), date('m'))->where(DB::raw('Year(date)'), date('Y'))->first();
+            if ($n) {
 
+                $internetBill = new InternetBill();
+                $internetBill->billdate = $r->conDate;
+                $internetBill->price = $r->price;
+                $internetBill->status = 'np';
+                $internetBill->fkclientId = $client->clientId;
+                $internetBill->save();
 
+            }
+        }
 
         Session::flash('message', 'Client Insert Successfully!');
+
         $index=0;
         if($r->clientImage) {
             foreach ($r->file('clientImage') as $image) {
@@ -86,6 +103,7 @@ class InternetClientController extends Controller
                 $document->save();
             }
         }
+
         return back();
     }
 

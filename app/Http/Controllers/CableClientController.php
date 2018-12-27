@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\CableBill;
 use App\CableClient;
+use App\CheckMonth;
 use App\ClientFile;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Session;
 use Auth;
+use DB;
 class CableClientController extends Controller
 {
     public function index(){
@@ -37,38 +40,54 @@ class CableClientController extends Controller
         $client->price=$r->price;
         $client->clientStatus=$r->status;
         $client->save();
+
+//        if ($r->status==2){
+//
+//            $n = CheckMonth::where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )->first();
+//            if ($n){
+//
+//                $cableBill= new CableBill();
+//                $cableBill->billdate=$r->conDate;
+//                $cableBill->price=$r->price;
+//                $cableBill->status='np';
+//                $cableBill->fkclientId=$client->clientId;
+//                $cableBill->save();
+//
+//            }
+//
+//        }
+
+
+
         Session::flash('message', 'Client Insert Successfully!');
 
         $index=0;
         if($r->clientImage){
 
+            foreach($r->file('clientImage') as $image){
+                $fileName=$r->clientFile[$index];
+                $index++;
 
-        foreach($r->file('clientImage') as $image){
-            $fileName=$r->clientFile[$index];
-            $index++;
-
-            $name=$fileName.time().$image->getClientOriginalName();
+                $name=$fileName.time().$image->getClientOriginalName();
 
 
-            $empid=$client->clientId;
-            $empDir="documents".'/cable_client';
-            if (!file_exists($empDir)){
-                mkdir(public_path($empDir), 0777, true);
+                $empid=$client->clientId;
+                $empDir="documents".'/cable_client';
+                if (!file_exists($empDir)){
+                    mkdir(public_path($empDir), 0777, true);
+                }
+
+
+                $image->move(public_path($empDir), $name);
+                $document = new ClientFile();
+                $document->clienId = $empid;
+                $document->name =$fileName;
+                $document->uploadedBy = Auth::user()->userId;
+                $document->path =$empDir.'/'.$name;
+                $document->tableName="cable_client";
+                $document->save();
             }
-
-
-            $image->move(public_path($empDir), $name);
-            $document = new ClientFile();
-            $document->clienId = $empid;
-            $document->name =$fileName;
-            $document->uploadedBy = Auth::user()->userId;
-            $document->path =$empDir.'/'.$name;
-            $document->tableName="cable_client";
-            $document->save();
         }
-        }
-
-
 
 
         return back();

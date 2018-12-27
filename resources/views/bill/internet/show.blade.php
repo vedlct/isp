@@ -1,7 +1,6 @@
 @extends('layouts.mainLayout')
 @section('css')
 
-
     <!-- DataTables -->
     <link href="{{url('public/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{url('public/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
@@ -46,6 +45,17 @@
             }
         }
 
+        .blinking{
+            animation:blinkingText 2s infinite;
+        }
+        @keyframes blinkingText{
+            0%{		color: red;	}
+            49%{	color: transparent;	}
+            50%{	color: transparent;	}
+            99%{	color:transparent;	}
+            100%{	color: #000;	}
+        }
+
     </style>
 
 @endsection
@@ -60,14 +70,32 @@
                 <div class="card-body">
 
                     <h4 class="mt-0 header-title">All Bill</h4>
-                    <div class="form-group col-md-3">
+                    <div class="row">
+                    <div class="col-md-3">
                         <label>Select Month</label>
                         <input type="text" id="billMonth" class="form-control datepicker" @if(isset($date)) value="{{$date}}" @endif name="selectMonth" onchange="changeDate(this)">
+
                     </div>
-                    <div class="form-group col-md-3">
+                    <div align="right" class="col-md-8">
+                        @if( $json !== "")
+                            <h5><span class="blinking"><i class="fa fa-circle"></i></span>{{$json}}</h5>
+                        @endif
+
+                    </div>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                    <div class="col-md-3">
                         <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
-                        <button id="generateBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>
+                        <button id="generateBill" style="display: none" class="btn btn-info" name="generateBill">Genarate All bill</button>
                     </div>
+                    <div class="col-md-3">
+                        <button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay</button>
+                        {{--<button id="" style="" class="btn btn-success" name="">Send Sms To Bill Pay</button>--}}
+                    </div>
+                    </div>
+                    <br>
 
                     <div class="table table-responsive">
                         <table id="manageapplication" class="table table-striped table-bordered" style="width:100%" >
@@ -80,6 +108,7 @@
                                 <th>Package Name</th>
                                 <th>BandWidth</th>
                                 <th>Price</th>
+                                <th>Received By</th>
                                 <th>Action</th>
                                 <th>Invoice</th>
 
@@ -133,7 +162,6 @@
                             d.billMonth=$('#billMonth').val();
                         }
 
-
                     },
                 },
                 columns: [
@@ -146,20 +174,30 @@
                     { data: 'bandWide', name: 'internet_client.bandWide', "orderable": true, "searchable":true },
                     { data: 'billprice', name: 'internet_bill.price', "orderable": true, "searchable":true },
 
+                    { data: 'name', name: 'user.name', "orderable": true, "searchable":true },
 
 
                     { "data": function(data){
 
                     if (data.billStatus=='np'){
-                        return '<select style="background-color:red;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" onchange="changebillstatus(this)">'+
+                        return '<select style="background-color:red;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
                         '<option  value="paid"  >Paid</option>'+
                         '<option value="due" selected  >Due</option>'+
+                                @if(Auth::user()->fkusertype=='Admin')
+                                    '<option value="approved"  >Approved</option>'+
+                                @endif
                         '</select>';
                     }else if (data.billStatus=='p'){
-                        return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" onchange="changebillstatus(this)">'+
+                        return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
                             '<option  value="paid" selected  >Paid</option>'+
                             '<option value="due"   >Due</option>'+
+                                @if(Auth::user()->fkusertype=='Admin')
+                                    '<option value="approved"  >Approved</option>'+
+                                @endif
                             '</select>';
+                    }
+                    else if(data.billStatus=='ap'){
+                        return "Approved";
                     }
                     ;},
                         "orderable": false, "searchable":false
@@ -226,6 +264,7 @@
                     confirm: function () {
                         var id = $(x).data('panel-id');
                         var date = $(x).data('panel-date');
+                        var primaryId = $(x).data('primary-id');
 
                         var billtype = document.getElementById('billtype'+id).value;
 
@@ -251,7 +290,7 @@
                                                 action: function () {
 
 
-                                                    location.reload();
+                                                    table.ajax.reload();
 
 
 
@@ -286,7 +325,46 @@
                                                 action: function () {
 
 
-                                                    location.reload();
+                                                    table.ajax.reload();
+
+
+
+
+                                                }
+                                            }
+
+                                        }
+                                    });
+
+
+                                }
+                            });
+
+                        }
+
+                        else if(billtype == 'approved'){
+                            $.ajax({
+                                type: 'POST',
+                                url: "{!! route('bill.internet.approved') !!}",
+                                cache: false,
+                                data: {_token: "{{csrf_token()}}", 'id': id,date:date,primaryId:primaryId},
+                                success: function (data) {
+
+                                    console.log(data);
+
+
+                                    $.alert({
+                                        title: 'Success!',
+                                        type: 'green',
+                                        content: "Approved",
+                                        buttons: {
+                                            tryAgain: {
+                                                text: 'Ok',
+                                                btnClass: 'btn-red',
+                                                action: function () {
+
+
+                                                    table.ajax.reload();
 
 
 
@@ -306,7 +384,7 @@
                     },
                     cancel: function () {
 
-                        location.reload();
+                        table.ajax.reload();
 
                     },
 
@@ -332,6 +410,168 @@
             url = url.replace(':date', '{{$date}}');
 
             window.open(url,'_blank')
+
+        });
+        $("#sendBillToPaySms").click(function () {
+
+
+            $.confirm({
+                title: 'Confirm!',
+                content: 'Are You Sure!',
+                buttons: {
+                    confirm: function () {
+
+
+
+                            $.ajax({
+                                type: 'get',
+                                url: "{!! route('sms.billToPay.send') !!}",
+                                cache: false,
+                                data: {_token: "{{csrf_token()}}", },
+                                success: function (data) {
+
+                                    console.log(data);
+
+                                    if (data == "404 - Wrong Username" || data=="405 - Wrong Password"){
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: 'Wrong User Name or password of Sms Config',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+                                    else if (data=="407 - Wrong Brandname Given"){
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: 'Wrong Brand Name of Sms Config',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }else if (data=="409"){
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: "sms Sent cancelled for insufficient balance",
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+
+                                    else if (data=="400"){
+
+                                        $.alert({
+                                            title: 'Success!',
+                                            type: 'green',
+                                            content: 'Sms Send SuccessFully',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-blue',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+                                    else if(data=="1") {
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: 'You Allready Sent Sms once in this month',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+
+
+
+                                }
+                            });
+
+                    },
+                    cancel: function () {
+
+                        table.ajax.reload();
+
+                    },
+
+                }
+            });
+
 
         });
 

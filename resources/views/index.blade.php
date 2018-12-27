@@ -49,7 +49,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title"><a href="#">Total Bill Recieved</a></h4>
+                    <h4 class="card-title"><a href="{{route('bill.internet.showTotalBillRecieved')}}">Total Bill Recieved</a></h4>
                     <div class="row">
                     <div class="text-left col-md-6">
                         {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
@@ -221,7 +221,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title"><a href="#">Total Bill Recieved</a></h4>
+                    <h4 class="card-title"><a href="{{route('bill.cable.showTotalBillRecieved')}}">Total Bill Recieved</a></h4>
                     <div class="row">
                         <div class="text-left col-md-6">
                             {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
