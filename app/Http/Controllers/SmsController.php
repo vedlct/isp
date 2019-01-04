@@ -53,6 +53,8 @@ class SmsController extends Controller
                         ->orWhere('clientStatus', 3);
                 })->get();
 
+
+
 //            $userName="techcloud";
 //            $password="tcl@it404$";
 //            $brand="TECH CLOUD";
@@ -62,7 +64,14 @@ class SmsController extends Controller
                         $password=$smsConfig->password;
                         $brand=$smsConfig->brandName;
 
-            $balance = file_get_contents('https://msms.techcloudltd.com/pages/RequestBalance.php?user_name='.urlencode($userName).'&pass_word='.urlencode($password)); /* balance api*/
+            $arrContextOptions=array(
+                "ssl"=>array(
+                    "verify_peer"=>false,
+                    "verify_peer_name"=>false,
+                ),
+            );
+
+            $balance = file_get_contents('https://msms.techcloudltd.com/pages/RequestBalance.php?user_name='.urlencode($userName).'&pass_word='.urlencode($password),false, stream_context_create($arrContextOptions)); /* balance api*/
 
            // return count($client);
           //  return (((float)$balance)*100);
@@ -74,7 +83,9 @@ class SmsController extends Controller
             }
             else{
 
-                if ( (((float)$balance)*100) >= (count($client)*65)){
+
+
+                if ( (((float)$balance)) >= (count($client)*.65)){
 
                     $error=array();
 
@@ -87,7 +98,7 @@ class SmsController extends Controller
 
                         $sms="Dear valued Client, Please Pay your Internet Bill Within 10th ".date('F')." ".date('Y')." Otherwise your connection will disconnect. Please ignore if you already paid.";
 
-                        $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms));
+                        $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
 
                         if ($json== "407 - Wrong Brandname Given"){
                             $error=array('1'=>$json);
@@ -95,7 +106,7 @@ class SmsController extends Controller
 
                     }
 
-                    return $error;
+                   // return $error;
 
                     if(!empty($error))
                     {
@@ -105,8 +116,8 @@ class SmsController extends Controller
                         return $json_out;
                     }
 
-//                    $n->deliveryStatus=400;
-//                    $n->save();
+                    $n->deliveryStatus=400;
+                    $n->save();
 
                     return 400;
 
@@ -122,12 +133,6 @@ class SmsController extends Controller
                 }
 
             }
-
-
-
-
-
-
 
         }
 
@@ -172,6 +177,8 @@ class SmsController extends Controller
 
     }
 
+
+//////////////////////////sakib/////////////////////////////////////////////
 
 
 
