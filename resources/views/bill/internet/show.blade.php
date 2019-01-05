@@ -91,8 +91,11 @@
                         <button id="generateBill" style="display: none" class="btn btn-info" name="generateBill">Genarate All bill</button>
                     </div>
                     <div class="col-md-3">
-                        <button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay</button>
+                        {{--<button id="sendBillSms" style="" class="btn btn-success" name="sendBillSms">Send Sms To Bill Pay(1st {{date('M')}})</button>--}}
                         {{--<button id="" style="" class="btn btn-success" name="">Send Sms To Bill Pay</button>--}}
+                    </div>
+                        <div class="col-md-3">
+                        {{--<button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay(7th {{date('M')}})</button>--}}
                     </div>
                     </div>
                     <br>
@@ -427,7 +430,169 @@
                                 type: 'get',
                                 url: "{!! route('sms.billToPay.send') !!}",
                                 cache: false,
-                                data: {_token: "{{csrf_token()}}", },
+                                data: {_token: "{{csrf_token()}}",type:"sendBillToPaySms" },
+                                success: function (data) {
+
+                                    console.log(data);
+
+                                    if (data == "404 - Wrong Username" || data=="405 - Wrong Password"){
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: 'Wrong User Name or password of Sms Config',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+                                    else if (data=="407 - Wrong Brandname Given"){
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: 'Wrong Brand Name of Sms Config',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }else if (data=="409"){
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: "sms Sent cancelled for insufficient balance",
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+
+                                    else if (data=="400"){
+
+                                        $.alert({
+                                            title: 'Success!',
+                                            type: 'green',
+                                            content: 'Sms Send SuccessFully',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-blue',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+                                    else if(data=="1") {
+
+                                        $.alert({
+                                            title: 'Alert!',
+                                            type: 'red',
+                                            content: 'You Allready Sent Sms once in this month',
+                                            buttons: {
+                                                tryAgain: {
+                                                    text: 'Ok',
+                                                    btnClass: 'btn-red',
+                                                    action: function () {
+
+
+                                                        table.ajax.reload();
+
+
+
+
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+
+
+
+                                }
+                            });
+
+                    },
+                    cancel: function () {
+
+                        table.ajax.reload();
+
+                    },
+
+                }
+            });
+
+
+        });
+        $("#sendBillSms").click(function () {
+
+
+            $.confirm({
+                title: 'Confirm!',
+                content: 'Are You Sure!',
+                buttons: {
+                    confirm: function () {
+
+
+
+                            $.ajax({
+                                type: 'get',
+                                url: "{!! route('sms.sendBillSms.send') !!}",
+                                cache: false,
+                                data: {_token: "{{csrf_token()}}",type:"sendBillSms"},
                                 success: function (data) {
 
                                     console.log(data);

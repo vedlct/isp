@@ -108,7 +108,7 @@ class BillController extends Controller
         $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
 
 
-     //   $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms) , false, stream_context_create($arrContextOptions));
+        //   $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms) , false, stream_context_create($arrContextOptions));
 //        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestSMS.php?user_name='.$userName.'&pass_word='.$password.'&brand='.$brand.'&type=1&destination='.$destination.'&sms='.$sms);
 //        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestBalance.php?user_name='.$userName.'&pass_word='.$password); /* balance api*/
 //        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=techcloud&pass_word=tcl@it404$&brand=TECH%20CLOUD&type=1&destination=01680674598&sms=Test%20SMS%20From%20TCL%20API');
@@ -120,8 +120,13 @@ class BillController extends Controller
         $package = Package::get();
         $internetClient=InternetClient::where('internet_client.clientStatus',2)->count('internet_client.clientId');
 
-
-        $n = SmsCheckMonth::select('deliveryStatus')->where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )->where('type',2)->first();
+        $json="";
+        $n = SmsCheckMonth::select('deliveryStatus')->where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )
+            ->where(function($query) {
+            $query->where('type',1)
+                ->orWhere('type',2)
+                ->orWhere('type',3);
+        })->first();
 
         if ($n){
 
@@ -212,7 +217,27 @@ class BillController extends Controller
         $date=Carbon::now()->subMonth()->format('F-Y');
         $package = CablePackage::get();
         $cableClient=CableClient::where('cable_client.clientStatus',2)->count('cable_client.clientId');
-        return view('bill.cable.show', compact('package','date','cableClient'));
+
+        $json="";
+        $n = SmsCheckMonth::select('deliveryStatus')->where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )
+            ->where(function($query) {
+                $query->where('type',1)
+                    ->orWhere('type',2)
+                    ->orWhere('type',3);
+            })->first();
+
+        if ($n){
+
+            if ($n->deliveryStatus==409){
+                $json="Sms Wasn't Sent Successfully Please contact with Provider";
+            }
+
+        }else{
+
+            $json="";
+        }
+
+        return view('bill.cable.show', compact('package','date','cableClient','json'));
 
     }
     public function cableBillShowWithData(Request $r){
