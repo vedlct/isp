@@ -427,6 +427,7 @@ class SmsController extends Controller
                         $userName=$smsConfig->userName;
                         $password=$smsConfig->password;
                         $brand=$smsConfig->brandName;
+            $destination="01680674598";
 
                       //  return $smsConfig;
 
@@ -440,10 +441,10 @@ class SmsController extends Controller
 //            $sms="Dear valued Client, Please Pay your Internet Bill Within 10th ".date('F')." ".date('Y')." Otherwise your connection will disconnect. Please ignore if you already paid.";
 //
 //            $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
-//            if (htmlspecialchars($json)== "407 - Wrong Brandname Given"){
-//                return 1;
+//            if ($json== "407 - Wrong Brandname Given"){
+//                return $json;
 //            }
-//            return 2;
+//            return $json;
 
 
 
@@ -548,7 +549,10 @@ class SmsController extends Controller
         $smsConfig=SmsConfig::findOrFail($r->smsId);
 
         $smsConfig->userName=$r->useName;
-        $smsConfig->password=$r->password;
+        if ($r->password){
+            $smsConfig->password=$r->password;
+        }
+
         $smsConfig->brandName=$r->brandName;
         $smsConfig->save();
 
