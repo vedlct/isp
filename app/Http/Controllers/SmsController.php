@@ -383,8 +383,6 @@ class SmsController extends Controller
 
                     }
 
-
-
                 }
                 else{
 

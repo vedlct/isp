@@ -152,7 +152,7 @@ return [
          * Package Service Providers...
          */
 
-        Barryvdh\DomPDF\ServiceProvider::class,
+        ZanySoft\LaravelPDF\PdfServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -213,7 +213,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 //        'PDF' => Barryvdh\DomPDF\Facade::class,
-
+        'PDF' => ZanySoft\LaravelPDF\Facades\PDF::class
     ],
 
 ];

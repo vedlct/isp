@@ -49,4 +49,26 @@
       'DataTables' => 'Yajra\\DataTables\\Facades\\DataTables',
     ),
   ),
+  'zanysoft/laravel-pdf' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'ZanySoft\\LaravelPDF\\PdfServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'PDF' => 'ZanySoft\\LaravelPDF\\Facades\\PDF',
+    ),
+  ),
+  'zanysoft/laravel-zip' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'ZanySoft\\Zip\\ZipServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Zip' => 'ZanySoft\\Zip\\ZipFacade',
+    ),
+  ),
 );
