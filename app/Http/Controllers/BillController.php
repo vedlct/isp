@@ -182,14 +182,18 @@ class BillController extends Controller
         $clientId=$id;
         $client=InternetClient::leftJoin('package','package.packageId','internet_client.fkpackageId')->findOrFail($clientId);
         $company=Company::first();
-        $pdf = PDF::loadView('bill.pdf',compact('client','company','date'));
+        $pdf = PDF::Make();
+        $pdf->SetDirectionality('ltr');
+        $pdf->loadView('bill.internet.pdf',compact('client','company','date'));
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
     }
     public function generateAllInternetBillPdf($date){
         $month = Carbon::parse($date)->format('m');
         $client=InternetBill::leftJoin('internet_client','internet_bill.fkclientId','internet_client.clientId')->leftJoin('package','package.packageId','internet_client.fkpackageId')->where(DB::raw('month(internet_bill.billdate)'),$month)->get();
         $company=Company::first();
-        $pdf = PDF::loadView('bill.internet.allBillPdf',compact('client','company','date'));
+        $pdf = PDF::Make();
+        $pdf->SetDirectionality('ltr');
+        $pdf->loadView('bill.internet.allBillPdf',compact('client','company','date'));
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
     }
 
@@ -297,6 +301,7 @@ class BillController extends Controller
         $client=CableClient::findOrFail($clientId);
         $company=Company::first();
         $pdf = PDF::Make();
+        $pdf->SetDirectionality('ltr');
         $pdf->loadView('bill.cable.pdf',compact('client','company','date'));
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
     }
@@ -305,6 +310,7 @@ class BillController extends Controller
         $client=CableBill::leftJoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->leftJoin('cablepackage','cablepackage.cablepackageId','cable_client.fkpackageId')->where(DB::raw('month(cable_bill.billdate)'),$month)->get();
         $company=Company::first();
         $pdf = PDF::Make();
+        $pdf->SetDirectionality('ltr');
         $pdf->loadView('bill.cable.allBillPdf',compact('client','company','date'));
         return $pdf->stream('bill' . '.pdf');
     }

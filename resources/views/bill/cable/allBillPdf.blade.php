@@ -32,21 +32,6 @@
 
     </style>
 
-    <style>
-
-        @font-face {
-            font-family: 'Helvetica', sans-serif;
-            src: url('public/fonts/HelveticaLt_1.ttf');
-        }
-
-        /*<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300" rel="stylesheet">*/
-        body{
-            font-family: 'Helvetica', sans-serif;
-            font-size: 11px;
-        }
-
-
-    </style>
 
 
 
@@ -80,10 +65,13 @@
 
                         <tr style="margin: 0px;width: 100%">
                             <td style="border: none;padding: 0px;" >
+                                <img style="margin:0px" width="100px" height="60px" src="{{url('public/logo/TCL_logo.png')}}" alt="">
                             </td>
                             <td style="text-align: center; border: none; ">
                                 <h1 style="">
-                                    INVOICE-{{$date}}
+                                    INVOICE<br>
+                                    {{$date}}
+
                                 </h1>
                             </td>
                             <td style="border: none;">
