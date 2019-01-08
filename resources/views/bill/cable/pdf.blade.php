@@ -32,6 +32,22 @@
 
     </style>
 
+    <style>
+
+        @font-face {
+            font-family: 'Helvetica', sans-serif;
+            src: url('public/fonts/HelveticaLt_1.ttf');
+        }
+
+        /*<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300" rel="stylesheet">*/
+        body{
+            font-family: 'Helvetica', sans-serif;
+            font-size: 11px;
+        }
+
+
+    </style>
+
 
 </head>
 

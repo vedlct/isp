@@ -296,15 +296,17 @@ class BillController extends Controller
         $clientId=$id;
         $client=CableClient::findOrFail($clientId);
         $company=Company::first();
-        $pdf = PDF::loadView('bill.cable.pdf',compact('client','company','date'));
+        $pdf = PDF::Make();
+        $pdf->loadView('bill.cable.pdf',compact('client','company','date'));
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
     }
     public function generateAllCableBillPdf($date){
         $month = Carbon::parse($date)->format('m');
         $client=CableBill::leftJoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->leftJoin('cablepackage','cablepackage.cablepackageId','cable_client.fkpackageId')->where(DB::raw('month(cable_bill.billdate)'),$month)->get();
         $company=Company::first();
-        $pdf = PDF::loadView('bill.cable.allBillPdf',compact('client','company','date'));
-        return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
+        $pdf = PDF::Make();
+        $pdf->loadView('bill.cable.allBillPdf',compact('client','company','date'));
+        return $pdf->stream('bill' . '.pdf');
     }
     public function showCablePastDue(){
         return view('bill.cable.showPastDue');

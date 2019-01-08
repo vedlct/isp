@@ -76,7 +76,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
-                            <button id="generateBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>
+                            <button id="generateAllBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>
                         </div>
                         <div class="col-md-3">
                             {{--<button id="sendBillSms" style="" class="btn btn-success" name="sendBillSms">Send Sms To Bill Pay(1st {{date('M')}})</button>--}}
@@ -205,7 +205,7 @@
                     var json = api.ajax.json();
                     if ('{{$cableClient}}'==json.total){
 
-                        $('#generateBill').show();
+                        $('#generateAllBill').show();
                         $('#loding').hide();
 
                     }
@@ -383,7 +383,7 @@
 
 
 
-        $("#generateBill").click(function () {
+        $("#generateAllBill").click(function () {
 
 
             let url = "{{ route('bill.Cable.invoice',[':date']) }}";
