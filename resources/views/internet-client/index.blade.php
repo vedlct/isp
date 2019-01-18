@@ -45,9 +45,10 @@
                                 <label>phone</label>
                                 <input type="text" name="phone" placeholder="phone" class="form-control" >
                             </div>
+
                             <div class="form-group col-md-6">
-                                <label>ip</label>
-                                <input type="text" name="ip" placeholder="ip" class="form-control" >
+                                <label>Client Id</label>
+                                <input type="text" name="clientSerial"  placeholder="id" class="form-control" >
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Internet Package</label>
@@ -80,9 +81,10 @@
                             </div>
 
 
+
                             <div class="form-group col-md-6">
-                                <label>Client Id</label>
-                                <input type="text" name="clientSerial"  placeholder="id" class="form-control" >
+                                <label>ip</label>
+                                <input type="text" name="ip" placeholder="ip" class="form-control" >
                             </div>
 
 
@@ -199,6 +201,7 @@
                         <tr>
                             <th>First Name</th>
                             <th>Last Name</th>
+                            <th>Client Id</th>
                             <th>Email</th>
                             <th>Phone Number</th>
                             <th>IP</th>
@@ -334,6 +337,7 @@
                 columns: [
                     { data: 'clientFirstName', name: 'internet_client.clientFirstName' },
                     { data: 'clientLastName', name: 'internet_client.clientLastName' },
+                    { data: 'clientSerial', name: 'internet_client.clientSerial' },
                     { data: 'email', name: 'internet_client.email'},
                     { data: 'phone', name: 'internet_client.phone'},
                     { data: 'ip', name: 'internet_client.ip'},

@@ -17,6 +17,10 @@ use DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 class InternetClientController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
         $package = Package::get();
         $cablepackage = CablePackage::get();

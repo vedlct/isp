@@ -17,13 +17,15 @@
             <label>phone</label>
             <input type="text" name="phone" placeholder="phone" class="form-control" value="{{$client->phone}}" >
         </div>
+
         <div class="form-group col-md-6">
-            <label>ip</label>
-            <input type="text" name="ip" placeholder="ip" class="form-control" value="{{$client->ip}}" >
+            <label>Client Id</label>
+            <input type="text" name="clientSerial" value="{{$client->clientSerial}}"  placeholder="id" class="form-control" >
         </div>
+
         <div class="form-group col-md-6">
             <label>Package</label>
-            <select class="form-control" id="packageedit" onchange="getpackage()" name="package">
+            <select class="form-control" id="packageedit" onchange="getpackage()" name="package" required>
                 <option>Select a Package</option>
                 @foreach($package as  $p)
                     <option value="{{$p->packageId}}"  @if($p->packageId == $client->fkpackageId) selected @endif >{{$p->packageName}}</option>
@@ -60,8 +62,8 @@
         </div>
 
         <div class="form-group col-md-6">
-            <label>Client Id</label>
-            <input type="text" name="clientSerial" value="{{$client->clientSerial}}"  placeholder="id" class="form-control" >
+            <label>ip</label>
+            <input type="text" name="ip" placeholder="ip" class="form-control" value="{{$client->ip}}" >
         </div>
 
 

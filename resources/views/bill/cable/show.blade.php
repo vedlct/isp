@@ -58,6 +58,7 @@
         <div class="col-12">
             <div class="card m-b-30">
                 <div class="card-body">
+                    <div class="row">
 
                     <h4 class="mt-0 header-title">All Bill</h4>
                     <div class="row">
@@ -65,6 +66,29 @@
                         <label>Select Month</label>
                         <input type="text" id="billMonth" class="form-control datepicker" @if(isset($date)) value="{{$date}}" @endif name="selectMonth" onchange="changeDate(this)">
                     </div>
+
+
+
+                    <div class="col-md-3">
+                        <label>Select Employee</label>
+                        <select class="form-control" onchange="reloadTable()" id="emp">
+                            <option value="">Select Employee</option>
+                            @foreach($users as $user)
+                                <option value="{{$user->name}}">{{$user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Select Status</label>
+                        <select class="form-control" onchange="reloadTable()" id="statusId">
+                            <option value="">Select Status</option>
+                            <option value="np">Not Paid</option>
+                            <option value="p">Paid</option>
+                            <option value="ap">Approved</option>
+                        </select>
+                    </div>
+                    </div>
+
                     <div align="right" class="col-md-8">
                         @if( $json !== "")
                             <h5><span class="blinking"><i class="fa fa-circle"></i></span>{{$json}}</h5>
@@ -72,7 +96,7 @@
 
                     </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-3">
                             <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
@@ -94,6 +118,7 @@
 
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Client Id</th>
                                 <th>Phone</th>
                                 {{--<th>Package Name</th>--}}
                                 <th>Received By</th>
@@ -159,9 +184,8 @@
 
                     { data: 'clientFirstName', name: 'cable_client.clientFirstName',"orderable": false, "searchable":true },
                     { data: 'clientLastName', name: 'cable_client.clientLastName',"orderable": false, "searchable":true },
+                    { data: 'clientSerial', name: 'cable_client.clientSerial',"orderable": false, "searchable":true },
                     { data: 'phone', name: 'cable_client.phone', "orderable": false, "searchable":true },
-                    // { data: 'cablepackageName', name: 'cablepackage.cablepackageName', "orderable": false, "searchable":true },
-//                    { data: 'bandWide', name: 'cable_client.bandWide', "orderable": true, "searchable":true },
                     { data: 'name', name: 'user.name', "orderable": true, "searchable":true },
                     { data: 'billprice', name: 'cable_bill.price', "orderable": true, "searchable":true },
 
