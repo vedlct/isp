@@ -33,6 +33,7 @@
     </style>
 
 
+
 </head>
 
 <style>
@@ -55,10 +56,13 @@
 
                         <tr style="margin: 0px;width: 100%">
                             <td style="border: none;padding: 0px;" >
+                                <img style="margin:0px" width="100px" height="60px" src="{{url('public/logo/TCL_logo.png')}}" alt="">
                             </td>
                             <td style="text-align: center; border: none; ">
                                 <h1 style="">
-                                    INVOICE-{{$date}}
+                                    INVOICE<br>
+                                    {{$date}}
+
                                 </h1>
                             </td>
                             <td style="border: none;">
@@ -210,11 +214,6 @@
         {{--Test Ends--}}
 
 
-
-
-
-
-        {{--Test Ends--}}
 
 
 

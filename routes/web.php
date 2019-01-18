@@ -195,7 +195,14 @@ Route::post('settings/account','AccountController@changePassword')->name('accoun
 
 /*Sms*/
 
-Route::get('SMS','SmsController@sendBillToPay')->name('sms.billToPay.send');
+Route::get('SMS-sendBillToPay','SmsController@sendBillToPay')->name('sms.billToPay.send');
+Route::get('SMS-sendBillSms','SmsController@sendBillSms')->name('sms.sendBillSms.send');
+Route::get('SMS-sendCableBillSms','SmsController@sendCableBillSms')->name('sms.sendCableBillSms.send');
+Route::get('SMS-sendCableBillToPay','SmsController@sendCableBillToPay')->name('sms.cablebillToPay.send');
+Route::get('SMS-Config','SmsController@config')->name('sms.config');
+Route::post('SMS-Add-Config','SmsController@addNewconfig')->name('sms.addConfig');
+Route::post('SMS-Edit-Config','SmsController@editconfig')->name('sms.editSmsConfig');
+Route::post('SMS-Update-Config','SmsController@updateconfig')->name('sms.updateConfig');
 
 
 //Change password

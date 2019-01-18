@@ -92,14 +92,27 @@ class BillController extends Controller
     }
     public function generatePdf(){
 
-        $userName="techcloud";
-        $password="tcl@it404$";
-        $brand="TECH%20CLOUD";
-        $destination="01731893442";
-        $sms="Test%20SMS%20From%20TCL%20API";
-        $json = file_get_contents('https://msms.techcloudltd.com/msms-new/pages/RequestSMS.php?user_name='.$userName.'&pass_word='.$password.'&brand='.$brand.'&type=1&destination='.$destination.'&sms='.$sms);
-//        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestBalance.php?user_name='.$userName.'&pass_word='.$password.''); /* balance api*/
-//        $json = json_decode(file_get_contents('https://msms.techcloudltd.com/msms-new/pages/RequestSMS.php?user_name=techcloud&pass_word=tcl@it404$&brand=TECH%20CLOUD&type=1&destination=01616404404&sms=Test%20SMS%20From%20TCL%20API'), true);
+        $userName='techcloud';
+        $password='tcl@it404$';
+        $brand='TECH CLOUD';
+        $destination='01680674598';
+        $sms='Test SMS From TCL API';
+
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+        $sms="Dear valued Client, Please Pay your Internet Bill Within 10th ".date('F')." ".date('Y')." Otherwise your connection will disconnect. Please ignore if you already paid.";
+
+        $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
+
+
+        //   $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms) , false, stream_context_create($arrContextOptions));
+//        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestSMS.php?user_name='.$userName.'&pass_word='.$password.'&brand='.$brand.'&type=1&destination='.$destination.'&sms='.$sms);
+//        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestBalance.php?user_name='.$userName.'&pass_word='.$password); /* balance api*/
+//        $json = file_get_contents('https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=techcloud&pass_word=tcl@it404$&brand=TECH%20CLOUD&type=1&destination=01680674598&sms=Test%20SMS%20From%20TCL%20API');
         return $json;
     }
     /* internet Bill */
@@ -111,8 +124,13 @@ class BillController extends Controller
 
         $internetClient=InternetClient::where('internet_client.clientStatus',2)->count('internet_client.clientId');
 
-
-        $n = SmsCheckMonth::select('deliveryStatus')->where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )->where('type',2)->first();
+        $json="";
+        $n = SmsCheckMonth::select('deliveryStatus')->where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )
+            ->where(function($query) {
+            $query->where('type',1)
+                ->orWhere('type',2)
+                ->orWhere('type',3);
+        })->first();
 
         if ($n){
 
@@ -178,14 +196,18 @@ class BillController extends Controller
         $clientId=$id;
         $client=InternetClient::leftJoin('package','package.packageId','internet_client.fkpackageId')->findOrFail($clientId);
         $company=Company::first();
-        $pdf = PDF::loadView('bill.pdf',compact('client','company','date'));
+        $pdf = PDF::Make();
+        $pdf->SetDirectionality('ltr');
+        $pdf->loadView('bill.internet.pdf',compact('client','company','date'));
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
     }
     public function generateAllInternetBillPdf($date){
         $month = Carbon::parse($date)->format('m');
         $client=InternetBill::leftJoin('internet_client','internet_bill.fkclientId','internet_client.clientId')->leftJoin('package','package.packageId','internet_client.fkpackageId')->where(DB::raw('month(internet_bill.billdate)'),$month)->get();
         $company=Company::first();
-        $pdf = PDF::loadView('bill.internet.allBillPdf',compact('client','company','date'));
+        $pdf = PDF::Make();
+        $pdf->SetDirectionality('ltr');
+        $pdf->loadView('bill.internet.allBillPdf',compact('client','company','date'));
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
     }
 
@@ -215,10 +237,29 @@ class BillController extends Controller
         $date=Carbon::now()->subMonth()->format('F-Y');
         $package = CablePackage::get();
         $cableClient=CableClient::where('cable_client.clientStatus',2)->count('cable_client.clientId');
-
         $users=User::where('fkusertype','CableEmp')->get();
 
-        return view('bill.cable.show', compact('package','date','cableClient','users'));
+
+        $json="";
+        $n = SmsCheckMonth::select('deliveryStatus')->where(DB::raw('month(date)'), date('m') )->where(DB::raw('Year(date)'), date('Y') )
+            ->where(function($query) {
+                $query->where('type',1)
+                    ->orWhere('type',2)
+                    ->orWhere('type',3);
+            })->first();
+
+        if ($n){
+
+            if ($n->deliveryStatus==409){
+                $json="Sms Wasn't Sent Successfully Please contact with Provider";
+            }
+
+        }else{
+
+            $json="";
+        }
+
+        return view('bill.cable.show', compact('package','date','cableClient','json','users'));
 
     }
     public function cableBillShowWithData(Request $r){
@@ -278,15 +319,19 @@ class BillController extends Controller
         $clientId=$id;
         $client=CableClient::findOrFail($clientId);
         $company=Company::first();
-        $pdf = PDF::loadView('bill.cable.pdf',compact('client','company','date'));
+        $pdf = PDF::Make();
+        $pdf->SetDirectionality('ltr');
+        $pdf->loadView('bill.cable.pdf',compact('client','company','date'));
         return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
     }
     public function generateAllCableBillPdf($date){
         $month = Carbon::parse($date)->format('m');
         $client=CableBill::leftJoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->leftJoin('cablepackage','cablepackage.cablepackageId','cable_client.fkpackageId')->where(DB::raw('month(cable_bill.billdate)'),$month)->get();
         $company=Company::first();
-        $pdf = PDF::loadView('bill.cable.allBillPdf',compact('client','company','date'));
-        return $pdf->stream('bill' . '.pdf', array('Attachment' => 0));
+        $pdf = PDF::Make();
+        $pdf->SetDirectionality('ltr');
+        $pdf->loadView('bill.cable.allBillPdf',compact('client','company','date'));
+        return $pdf->stream('bill' . '.pdf');
     }
     public function showCablePastDue(){
         return view('bill.cable.showPastDue');
@@ -328,7 +373,6 @@ class BillController extends Controller
     public function cableBillRecieved(){
 
         $date=Carbon::now()->format('F-Y');
-
 
         return view('bill.cable.showBillRecieved', compact('date'));
     }
