@@ -51,6 +51,11 @@
         </div>
 
         <div class="form-group col-md-6">
+            <label>address</label>
+            <input type="text" name="other"  placeholder="other" class="form-control" value="{{$client->other}}" >
+        </div>
+
+        <div class="form-group col-md-6">
             <label>Status</label>
             <select class="form-control" name="status" required>
                 <option value="">Select Status</option>

@@ -114,7 +114,6 @@ Route::post('/Bill-due','BillController@due')->name('bill.due');
 
 Route::get('/Internet-Bill-Recieved','BillController@internetBillRecieved')->name('bill.internet.showTotalBillRecieved');
 
-
 Route::get('/Internet-Bill','BillController@internetBillShow')->name('bill.Internet.show');
 
 Route::post('/Internet-Bill','BillController@internetBillShowWithData')->name('bill.internet.show.withData');
@@ -197,6 +196,11 @@ Route::post('settings/account','AccountController@changePassword')->name('accoun
 /*Sms*/
 
 Route::get('SMS','SmsController@sendBillToPay')->name('sms.billToPay.send');
+
+
+//Change password
+Route::get('password','HomeController@password')->name('password');
+Route::post('password','HomeController@changePassword')->name('password.change');
 
 
 

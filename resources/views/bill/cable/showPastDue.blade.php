@@ -30,6 +30,7 @@
 
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Client Id</th>
                                 <th>Phone</th>
                                 {{--<th>BandWidth</th>--}}
                                 <th>Price</th>
@@ -97,6 +98,7 @@
 
                     { data: 'clientFirstName', name: 'cable_client.clientFirstName',"orderable": false, "searchable":true },
                     { data: 'clientLastName', name: 'cable_client.clientLastName',"orderable": false, "searchable":true },
+                    { data: 'clientSerial', name: 'cable_client.clientSerial',"orderable": false, "searchable":true },
                     { data: 'phone', name: 'cable_client.phone', "orderable": false, "searchable":true },
                     // { data: 'cablepackageName', name: 'cablepackage.cablepackageName', "orderable": false, "searchable":true },
 //                    { data: 'bandWide', name: 'internet_client.bandWide', "orderable": true, "searchable":true },

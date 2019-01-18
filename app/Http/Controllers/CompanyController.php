@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 use Session;
 class CompanyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(){
         $company=Company::first();
-
         return view('company',compact('company'));
-
     }
 
     public function edit($id,Request $r)

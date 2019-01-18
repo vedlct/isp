@@ -76,6 +76,26 @@
                         <input type="text" id="billMonth" class="form-control datepicker" @if(isset($date)) value="{{$date}}" @endif name="selectMonth" onchange="changeDate(this)">
 
                     </div>
+                        <div class="col-md-3">
+                            <label>Select Employee</label>
+                            <select class="form-control" onchange="reloadTable()" id="emp">
+                                <option value="">Select Employee</option>
+                                @foreach($users as $user)
+                                    <option value="{{$user->name}}">{{$user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Select Status</label>
+                            <select class="form-control" onchange="reloadTable()" id="statusId">
+                                <option value="">Select Status</option>
+                                <option value="np">Not Paid</option>
+                                <option value="p">Paid</option>
+                                <option value="ap">Approved</option>
+                            </select>
+                        </div>
+
+
                     <div align="right" class="col-md-8">
                         @if( $json !== "")
                             <h5><span class="blinking"><i class="fa fa-circle"></i></span>{{$json}}</h5>
@@ -104,6 +124,7 @@
 
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Client Id</th>
                                 <th>Phone</th>
                                 <th>Package Name</th>
                                 <th>BandWidth</th>
@@ -161,6 +182,9 @@
                         if ($('#billMonth').val()!=""){
                             d.billMonth=$('#billMonth').val();
                         }
+                        d.emp=$('#emp').val();
+                        d.statusId=$('#statusId').val();
+
 
                     },
                 },
@@ -169,6 +193,7 @@
 
                     { data: 'clientFirstName', name: 'internet_client.clientFirstName',"orderable": false, "searchable":true },
                     { data: 'clientLastName', name: 'internet_client.clientLastName',"orderable": false, "searchable":true },
+                    { data: 'clientSerial', name: 'internet_client.clientSerial',"orderable": false, "searchable":true },
                     { data: 'phone', name: 'internet_client.phone', "orderable": false, "searchable":true },
                     { data: 'packageName', name: 'package.packageName', "orderable": false, "searchable":true },
                     { data: 'bandWide', name: 'internet_client.bandWide', "orderable": true, "searchable":true },
@@ -227,6 +252,10 @@
 
 
         } );
+
+        function reloadTable() {
+            table.ajax.reload();
+        }
 
         function generateBill(x) {
             var id = $(x).data('panel-id');

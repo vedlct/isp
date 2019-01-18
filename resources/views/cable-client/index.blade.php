@@ -79,6 +79,12 @@
                                 <input type="text" name="conDate"  placeholder="date" class="form-control datepicker" >
                             </div>
 
+
+                            <div class="form-group col-md-6">
+                                <label>Other</label>
+                                <input type="text" name="other"  placeholder="other" class="form-control" >
+                            </div>
+
                             <div class="form-group col-md-6">
                                 <label>Status</label>
                                 <select class="form-control" name="status" required>
@@ -158,6 +164,7 @@
                         <tr>
                             <th>First Name</th>
                             <th>Last Name</th>
+                            <th>Client Id</th>
                             <th>Email</th>
                             <th>Phone Number</th>
                             <th>Price</th>
@@ -262,11 +269,9 @@
                 columns: [
                     { data: 'clientFirstName', name: 'clientFirstName' },
                     { data: 'clientLastName', name: 'clientLastName' },
+                    { data: 'clientSerial', name: 'clientSerial' },
                     { data: 'email', name: 'email'},
                     { data: 'phone', name: 'phone'},
-                    // { data: 'ip', name: 'internet_client.ip'},
-                    // { data: 'packageName', name: 'package.packageName'},
-                    // { data: 'bandWide', name: 'internet_client.bandWide'},
                     { data: 'price', name: 'price'},
                     { data: 'address', name: 'address'},
                     { "data": function(data){
