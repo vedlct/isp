@@ -58,7 +58,7 @@
         <div class="col-12">
             <div class="card m-b-30">
                 <div class="card-body">
-                    <div class="row">
+
 
                     <h4 class="mt-0 header-title">All Bill</h4>
                     <div class="row">
@@ -95,13 +95,14 @@
                         @endif
 
                     </div>
-                    </div>
+
 
                     <div class="row">
                         <div class="col-md-3">
                             <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
                             <button id="generateAllBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>
                         </div>
+
                         <div class="col-md-3">
                             {{--<button id="sendBillSms" style="" class="btn btn-success" name="sendBillSms">Send Sms To Bill Pay(1st {{date('M')}})</button>--}}
                             {{--<button id="" style="" class="btn btn-success" name="">Send Sms To Bill Pay</button>--}}
@@ -110,7 +111,7 @@
                             {{--<button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay(7th {{date('M')}})</button>--}}
                         </div>
                     </div>
-
+                    <br>
                     <div class="table table-responsive">
                         <table id="manageapplication" class="table table-striped table-bordered" style="width:100%" >
                             <thead>
