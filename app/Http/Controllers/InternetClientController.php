@@ -31,6 +31,10 @@ class InternetClientController extends Controller
     public function getData(Request $r){
         $client = InternetClient::select('internet_client.*', 'packageName')
             ->leftjoin('package','fkpackageId','packageId');
+        if($r->status){
+            $client=$client->where('internet_client.clientStatus',$r->status);
+        }
+
         $datatables = Datatables::of($client);
         return $datatables->make(true);
     }
