@@ -24,6 +24,11 @@ class CableClientController extends Controller
 
     public function getData(Request $r){
         $client=CableClient::get();
+
+        if($r->status){
+            $client=$client->where('clientStatus',$r->status);
+        }
+
         $datatables = Datatables::of($client);
         return $datatables->make(true);
     }

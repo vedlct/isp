@@ -21,6 +21,8 @@ class ClientController extends Controller
     }
 
     public function show(){
+
+
         $package = Package::get();
         $cablepackage = CablePackage::get();
         return view('client.show', compact('package','cablepackage'));

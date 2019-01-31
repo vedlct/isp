@@ -130,6 +130,7 @@
         <div class="col-12">
             <div class="card m-b-30">
                 <div class="card-body">
+
                     <div class="text-right mb-2 mr-2">
                         <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#myModal">
                             Add Client
@@ -263,7 +264,7 @@
                     // console.log(data);
                  //   $('bandwidth').val(data.bandwidth);
                   //  $('price').val(data.price);
-              
+
                     var price = document.getElementById('price').value ;
 
                     document.getElementById('price').value =   parseFloat(price) + parseFloat(data.price);
