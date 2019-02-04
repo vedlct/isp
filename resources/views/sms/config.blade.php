@@ -48,6 +48,13 @@
                             <input class="form-control" maxlength="11" name="brandName" required type="text">
 
                         </div>
+                        <div class="form-group">
+
+                            <label for="">Rate<span style="color: red">*</span></label>
+
+                            <input class="form-control" maxlength="20" name="sms_rate" required type="text">
+
+                        </div>
 
                         <div class="form-group">
 
@@ -129,6 +136,7 @@
                                 <th>User Name</th>
                                 {{--<th>Password</th>--}}
                                 <th>BrandName</th>
+                                <th>rate</th>
                                 <th width="30%">Action</th>
                             </tr>
                             </thead>
@@ -140,6 +148,7 @@
                                     <td width="40%">{{$smsConfig->userName}}</td>
                                     {{--<td width="20">{{$smsConfig->password}}</td>--}}
                                     <td width="20">{{$smsConfig->brandName}}</td>
+                                    <td width="20">{{$smsConfig->sms_rate}}</td>
 
 
 

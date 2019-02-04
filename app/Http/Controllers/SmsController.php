@@ -303,10 +303,11 @@ class SmsController extends Controller
 //            $password="tcl@it404$";
 //            $brand="TECH CLOUD";
 
-            $smsConfig=SmsConfig::select('userName','password','brandName')->first();
+            $smsConfig=SmsConfig::select('userName','password','brandName','sms_rate')->first();
             $userName=$smsConfig->userName;
             $password=$smsConfig->password;
             $brand=$smsConfig->brandName;
+            $rate= (float)($smsConfig->sms_rate);
 
             //  return $smsConfig;
 
@@ -332,7 +333,7 @@ class SmsController extends Controller
             // return $balance;
             //  return (((float)$balance)*100);
 
-            if (($balance == "404 - Wrong Username") || ($balance == "405 - Wrong Password")){
+            if ((substr($balance,0,3) == "404") || (substr($balance,0,3) == "405")){
 
                 return $balance;
 
@@ -341,7 +342,7 @@ class SmsController extends Controller
 
 
 
-                if ( (((float)$balance)) >= (count($client)*.65)){
+                if ( (((float)$balance)) >= (count($client)*$rate)){
 
                     $error=array();
 
@@ -356,7 +357,7 @@ class SmsController extends Controller
 
                         $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
 
-                        if ($json== "407 - Wrong Brandname Given"){
+                        if (substr($json,0,3)== "407"){
                             $error=array('1'=>$json);
                         }
 
@@ -421,11 +422,12 @@ class SmsController extends Controller
 
 
 
-            $smsConfig=SmsConfig::select('userName','password','brandName')->first();
+            $smsConfig=SmsConfig::select('userName','password','brandName','sms_rate')->first();
                         $userName=$smsConfig->userName;
                         $password=$smsConfig->password;
                         $brand=$smsConfig->brandName;
-            $destination="01680674598";
+                        $rate=$smsConfig->sms_rate;
+//            $destination="01680674598";
 
                       //  return $smsConfig;
 
@@ -451,7 +453,9 @@ class SmsController extends Controller
            // return $balance;
           //  return (((float)$balance)*100);
 
-            if (($balance == "404 - Wrong Username") || ($balance == "405 - Wrong Password")){
+
+
+            if ((substr($balance,0,3) == "404") || (substr($balance,0,3) == "405")){
 
                 return $balance;
 
@@ -460,7 +464,7 @@ class SmsController extends Controller
 
 
 
-                if ( (((float)$balance)) >= (count($client)*.65)){
+                if ( (((float)$balance)) >= (count($client)*$rate)){
 
                     $error=array();
 
@@ -475,7 +479,7 @@ class SmsController extends Controller
 
                         $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
 
-                        if ($json== "407 - Wrong Brandname Given"){
+                        if (substr($json,0,3)== "407"){
                             $error=array('1'=>$json);
                         }
 
@@ -537,6 +541,7 @@ class SmsController extends Controller
         $smsConfig->userName=$r->useName;
         $smsConfig->password=$r->password;
         $smsConfig->brandName=$r->brandName;
+        $smsConfig->sms_rate=$r->sms_rate;
         $smsConfig->save();
 
         return back();
@@ -552,6 +557,7 @@ class SmsController extends Controller
         }
 
         $smsConfig->brandName=$r->brandName;
+        $smsConfig->sms_rate=$r->sms_rate;
         $smsConfig->save();
 
         return back();
