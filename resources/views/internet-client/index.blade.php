@@ -45,9 +45,10 @@
                                 <label>phone</label>
                                 <input type="text" name="phone" placeholder="phone" class="form-control" >
                             </div>
+
                             <div class="form-group col-md-6">
-                                <label>ip</label>
-                                <input type="text" name="ip" placeholder="ip" class="form-control" >
+                                <label>Client Id</label>
+                                <input type="text" name="clientSerial"  placeholder="id" class="form-control" >
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Internet Package</label>
@@ -80,9 +81,10 @@
                             </div>
 
 
+
                             <div class="form-group col-md-6">
-                                <label>Client Id</label>
-                                <input type="text" name="clientSerial"  placeholder="id" class="form-control" >
+                                <label>ip</label>
+                                <input type="text" name="ip" placeholder="ip" class="form-control" >
                             </div>
 
 
@@ -187,11 +189,31 @@
         <div class="col-12">
             <div class="card m-b-30">
                 <div class="card-body">
-                    <div class="text-right mb-2 mr-2">
-                        <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#myModal">
-                            Add Client
-                        </button>
+                    <div class="row">
+
+                        <div class="col-md-4 pull-left">
+                            <label>Status</label>
+                            <select class="form-control" id="status1" onchange="changeStatus(this)">
+                                <option value="">Select Status</option>
+                                <option value="1">Inactive</option>
+                                <option value="2">Active</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4"></div>
+                        <div  class="text-right col-md-4">
+
+                            <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#myModal">
+                                Add Client
+                            </button>
+                        </div>
+
                     </div>
+                    <br>
+
+
+
+
                     <h4 class="mt-0 header-title">Internet Clients</h4>
 
                     <table id="datatable" class="table table-bordered  dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -199,6 +221,7 @@
                         <tr>
                             <th>First Name</th>
                             <th>Last Name</th>
+                            <th>Client Id</th>
                             <th>Email</th>
                             <th>Phone Number</th>
                             <th>IP</th>
@@ -320,7 +343,7 @@
 
         $(document).ready( function () {
 
-            $('#datatable').DataTable({
+            datatable=  $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 Filter: true,
@@ -329,11 +352,17 @@
                 "ajax":{
                     "url": "{!! route('internet.client.getData') !!}",
                     "type": "POST",
-                    "data":{ _token: "{{csrf_token()}}"},
+                    data:function (d){
+
+                        d._token="{{csrf_token()}}";
+                        d.status=$('#status1').val();
+
+                    },
                 },
                 columns: [
                     { data: 'clientFirstName', name: 'internet_client.clientFirstName' },
                     { data: 'clientLastName', name: 'internet_client.clientLastName' },
+                    { data: 'clientSerial', name: 'internet_client.clientSerial' },
                     { data: 'email', name: 'internet_client.email'},
                     { data: 'phone', name: 'internet_client.phone'},
                     { data: 'ip', name: 'internet_client.ip'},
@@ -430,6 +459,14 @@
 
                 }
             });
+        }
+        function changeStatus(x) {
+            var value=$(x).val();
+            datatable.ajax.reload();
+
+
+
+
         }
     </script>
 

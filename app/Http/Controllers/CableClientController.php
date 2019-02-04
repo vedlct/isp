@@ -13,6 +13,10 @@ use Auth;
 use DB;
 class CableClientController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
 
         return view('cable-client.index');
@@ -20,6 +24,11 @@ class CableClientController extends Controller
 
     public function getData(Request $r){
         $client=CableClient::get();
+
+        if($r->status){
+            $client=$client->where('clientStatus',$r->status);
+        }
+
         $datatables = Datatables::of($client);
         return $datatables->make(true);
     }
@@ -39,6 +48,7 @@ class CableClientController extends Controller
         $client->conDate=$r->conDate;
         $client->price=$r->price;
         $client->clientStatus=$r->status;
+        $client->other=$r->other;
         $client->save();
 
 //        if ($r->status==2){
@@ -115,6 +125,7 @@ class CableClientController extends Controller
         $client->conDate=$r->conDate;
         $client->price=$r->price;
         $client->clientStatus=$r->status;
+        $client->other=$r->other;
         $client->save();
         Session::flash('message', 'Client Updated Successfully!');
 
