@@ -437,9 +437,9 @@
                             data: {_token: "{{csrf_token()}}",type:"sendBillToPaySms" },
                             success: function (data) {
 
-                                console.log(data);
+                               // console.log(data);
 
-                                if (data == "404 - Wrong Username" || data=="405 - Wrong Password"){
+                                if (substr.data == "404" || substr.data=="405"){
 
                                     $.alert({
                                         title: 'Alert!',
@@ -464,7 +464,7 @@
                                     });
 
                                 }
-                                else if (data=="407 - Wrong Brandname Given"){
+                                else if (substr.data=="407"){
 
                                     $.alert({
                                         title: 'Alert!',
