@@ -99,6 +99,9 @@ Route::post('/Package-cable-getpackage','PackageController@cablegetpackage')->na
  * Bill Routes
  */
 
+Route::view('report/all','report.all');
+
+
 Route::get('/Bill','BillController@show')->name('bill.show');
 Route::post('/Bill','BillController@showWithData')->name('bill.show.withData');
 
