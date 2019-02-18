@@ -164,7 +164,7 @@ class BillController extends Controller
 
     }
     public function internetBillShowWithData(Request $r){
-        $bill = InternetBill::select('internet_bill.fkclientId','internet_client.clientFirstName',
+        $bill = InternetBill::select('internet_bill.billId as internetBillId','internet_bill.fkclientId','internet_client.clientFirstName',
             'internet_client.clientLastName','internet_client.phone','internet_client.clientSerial','internet_bill.price as billprice',
             'internet_bill.billId',DB::raw('DATE_FORMAT(internet_bill.billdate,"%M-%Y") as billdate'),
             'internet_client.bandWide', 'package.packageName','internet_bill.status as billStatus','user.name')
@@ -181,6 +181,10 @@ class BillController extends Controller
         }
         if ($r->pastRecieved){
             $bill= $bill->where('internet_bill.status','ap');
+        }
+        if ($r->pastDueClient){
+
+            $bill= $bill->where('internet_bill.fkclientId',$r->pastDueClient);
         }
 
         if($r->emp){
@@ -391,5 +395,21 @@ class BillController extends Controller
         $date=Carbon::now()->format('F-Y');
 
         return view('bill.cable.showBillRecieved', compact('date'));
+    }
+    public function clientPastDueMonth(Request $r){
+
+         $clientId=$r->clientId;
+
+        return view('bill.internet.showPastDueForClient',compact('clientId'));
+
+
+    }
+    public function clientBillPay(Request $r){
+
+         return $r;
+
+
+
+
     }
 }

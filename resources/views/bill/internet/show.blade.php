@@ -214,7 +214,9 @@
                                 @if(Auth::user()->fkusertype=='Admin')
                                     '<option value="approved"  >Approved</option>'+
                                 @endif
-                        '</select>';
+                        '</select>'+
+                            '<button class="btn btn-smbtn-info" onclick="payBill('+data.fkclientId+')"><i class="fa fa-money"></i></button>'
+                            ;
                     }else if (data.billStatus=='p'){
                         return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
                             '<option  value="paid" selected  >Paid</option>'+
@@ -227,6 +229,7 @@
                     else if(data.billStatus=='ap'){
                         return "Approved";
                     }
+
                     ;},
                         "orderable": false, "searchable":false
                     },
@@ -258,6 +261,31 @@
 
         function reloadTable() {
             table.ajax.reload();
+        }
+        function payBill(x) {
+
+
+            $.ajax({
+                type: 'POST',
+                url: "{!! route('bill.Internet.pastDueMonthForClient') !!}",
+                cache: false,
+                data: {_token: "{{csrf_token()}}", 'clientId': x},
+
+
+                success: function (data) {
+                    //console.log(data);
+
+
+                    $('.modal-body').html(data);
+                    $('#myModalLabel').html("test");
+                    $('#myModal').modal({show: true});
+                },
+
+            });
+
+
+
+
         }
 
         function generateBill(x) {
@@ -375,6 +403,7 @@
                         }
 
                         else if(billtype == 'approved'){
+
                             $.ajax({
                                 type: 'POST',
                                 url: "{!! route('bill.internet.approved') !!}",

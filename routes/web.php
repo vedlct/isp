@@ -128,6 +128,10 @@ Route::post('/Internet-Bill-due','BillController@internetBillDue')->name('bill.I
 Route::post('/Internet-Bill-approved','BillController@approvedInternet')->name('bill.internet.approved');
 
 
+Route::post('/Internet-Bill-Past-Due','BillController@clientPastDueMonth')->name('bill.Internet.pastDueMonthForClient');
+Route::post('/Internet-Bill-update-Pay','BillController@clientBillPay')->name('bill.Internet.updateBillPay');
+
+
 /*Cable*/
 Route::get('/Cable-Bill-Recieved','BillController@cableBillRecieved')->name('bill.cable.showTotalBillRecieved');
 
