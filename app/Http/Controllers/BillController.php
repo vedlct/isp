@@ -12,6 +12,7 @@ use App\Package;
 use App\Company;
 use App\Report;
 use App\SmsCheckMonth;
+use App\SmsConfig;
 use App\User;
 use Illuminate\Http\Request;
 use PDF;
@@ -92,11 +93,25 @@ class BillController extends Controller
     }
     public function generatePdf(){
 
-        $userName='techcloud';
-        $password='tcl@it404$';
-        $brand='TECH CLOUD';
+//        $userName='techcloud';
+//        $password='tcl@it404$';
+//        $brand='TECH CLOUD';
         $destination='01680674598';
         $sms='Test SMS From TCL API';
+
+//        $arrContextOptions=array(
+//            "ssl"=>array(
+//                "verify_peer"=>false,
+//                "verify_peer_name"=>false,
+//            ),
+//        );
+
+        $smsConfig=SmsConfig::select('userName','password','brandName','sms_rate')->first();
+        $userName=$smsConfig->userName;
+        $password=$smsConfig->password;
+        $brand=$smsConfig->brandName;
+        $rate= (float)($smsConfig->sms_rate);
+        //  return $smsConfig;
 
         $arrContextOptions=array(
             "ssl"=>array(
@@ -104,6 +119,7 @@ class BillController extends Controller
                 "verify_peer_name"=>false,
             ),
         );
+
         $sms="Dear valued Client, Please Pay your Internet Bill Within 10th ".date('F')." ".date('Y')." Otherwise your connection will disconnect. Please ignore if you already paid.";
 
         $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));

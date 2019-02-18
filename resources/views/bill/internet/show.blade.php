@@ -106,16 +106,16 @@
                     <br>
 
                     <div class="row">
+                    {{--<div class="col-md-3">--}}
+                        {{--<div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>--}}
+                        {{--<button id="generateAllBill" style="display: none" class="btn btn-info" name="generateBill">Genarate All bill</button>--}}
+                    {{--</div>--}}
                     <div class="col-md-3">
-                        <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
-                        <button id="generateAllBill" style="display: none" class="btn btn-info" name="generateBill">Genarate All bill</button>
-                    </div>
-                    <div class="col-md-3">
-                        {{--<button id="sendBillSms" style="" class="btn btn-success" name="sendBillSms">Send Sms To Bill Pay(1st {{date('M')}})</button>--}}
+                        <button id="sendBillSms" style="" class="btn btn-success" name="sendBillSms">Send Sms To Bill Pay(1st {{date('M')}})</button>
                         {{--<button id="" style="" class="btn btn-success" name="">Send Sms To Bill Pay</button>--}}
                     </div>
                         <div class="col-md-3">
-                        {{--<button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay(7th {{date('M')}})</button>--}}
+                        <button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay(7th {{date('M')}})</button>
                     </div>
                     </div>
                     <br>
@@ -238,18 +238,18 @@
 
 
                 ],
-                "fnDrawCallback": function() {
-                    var api = this.api()
-                    var json = api.ajax.json();
-                    if ('{{$internetClient}}'==json.total){
+                {{--"fnDrawCallback": function() {--}}
+                    {{--var api = this.api()--}}
+                    {{--var json = api.ajax.json();--}}
+                    {{--if ('{{$internetClient}}'==json.total){--}}
 
-                        $('#generateAllBill').show();
-                        $('#loding').hide();
+                        {{--$('#generateAllBill').show();--}}
+                        {{--$('#loding').hide();--}}
 
-                    }
+                    {{--}--}}
 
 
-                }
+                {{--}--}}
             });
 
 

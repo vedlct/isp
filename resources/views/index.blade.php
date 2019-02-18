@@ -177,7 +177,7 @@
 
 
               //  $("#duepayment").html(data);
-                 console.log(data);
+               //  console.log(data);
             }
         });
 
