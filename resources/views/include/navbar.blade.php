@@ -111,6 +111,11 @@
                         <i class="fa fa-shopping-basket"></i> <span>Expense</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('personal.expense.show')}}" class="waves-effect">
+                        <i class="fa fa-shopping-basket"></i> <span>Personal Expense</span>
+                    </a>
+                </li>
                 @if(Auth::user()->fkusertype=="Admin")
 
                 <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="dripicons-briefcase"></i> <span>Report </span><span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
