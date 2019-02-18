@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Expense;
+use App\ExpensePerson;
+use App\PersonalExpense;
 use App\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -70,15 +72,36 @@ public function expenseEdit(Request $r){
         return back();
     }
 
-//    public function filterByType(Request $request)
-//    {
-//        if($request->status) {
-//            $expense = Expense::where('expenseType',$request->status)->get();
-//            return response()->json(['data' => $expense]);
-//        } else {
-//            $expense = Expense::get();
-//            return response()->json(['data' => $expense]);
+
+    public function personalExpenseShow(){
+        $expensePerson=ExpensePerson::get();
+
+        return view('expense.personalExpense',compact('expensePerson'));
+    }
+
+    public function personalExpenseStore(Request $r){
+//        return $r;
+        $personalExpense=new PersonalExpense();
+        $personalExpense->price=$r->price;
+        $personalExpense->cause=$r->cause;
+        $personalExpense->personId=$r->expensefor;
+        $personalExpense->date=date('Y-m-d');
+        $personalExpense->save();
+        session()->flash('success', 'Expense added successfully');
+        return back();
+
+    }
+
+    public function getPersonalExpenseData(Request $r){
+        $expense = PersonalExpense::leftJoin('expense_person','expense_person.id','personal_expense.personId')
+            ->get();
+//        if ($r->statusFilter){
+//            $expense=$expense->where('expenseType',$r->statusFilter);
 //        }
-//    }
+
+        $datatables = DataTables::of($expense);
+        return $datatables->make(true);
+
+    }
 
 }
