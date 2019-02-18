@@ -41,6 +41,9 @@ Route::post('/expense/filterByType', 'ExpenseController@filterByType')->name('ex
 Route::get('/expense-show/personal','ExpenseController@personalExpenseShow')->name('personal.expense.show');
 Route::post('/expense-show/personal/store','ExpenseController@personalExpenseStore')->name('personal.expense.store');
 Route::post('personal/expense-getData','ExpenseController@getPersonalExpenseData')->name('personal.expense.getData');
+Route::post('personal/expense-edit','ExpenseController@editPersonalExpenseData')->name('personal.expense.edit');
+Route::post('personal/expense-update/{id}','ExpenseController@updatePersonalExpenseData')->name('personal.expense.update');
+Route::post('personal/expense-delete','ExpenseController@deletePersonalExpenseData')->name('perosnal.expense.deleteExpense');
 
 
 

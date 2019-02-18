@@ -8,7 +8,7 @@
     'timezone' => 'UTC',
     'locale' => 'en',
     'fallback_locale' => 'en',
-    'key' => 'base64:U96rdCUzes5g17nNq6edYMJPP+ucspTIbt5qA6adPOs=',
+    'key' => 'base64:e9ued6DxD+UscnnuEmiDp+XbKSYWYmvNZRvGkvpF2PI=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -172,7 +172,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => '/opt/lampp/htdocs/isp/storage/framework/cache/data',
+        'path' => 'F:\\xampp\\htdocs\\isp\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -218,7 +218,7 @@
       'mysql' => 
       array (
         'driver' => 'mysql',
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
         'database' => 'isp',
         'username' => 'root',
@@ -233,7 +233,7 @@
       'pgsql' => 
       array (
         'driver' => 'pgsql',
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
         'database' => 'isp',
         'username' => 'root',
@@ -246,7 +246,7 @@
       'sqlsrv' => 
       array (
         'driver' => 'sqlsrv',
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
         'database' => 'isp',
         'username' => 'root',
@@ -323,10 +323,10 @@
     'orientation' => 'portrait',
     'defines' => 
     array (
-      'font_dir' => '/opt/lampp/htdocs/isp/storage/fonts/',
-      'font_cache' => '/opt/lampp/htdocs/isp/storage/fonts/',
-      'temp_dir' => '/tmp',
-      'chroot' => '/opt/lampp/htdocs/isp',
+      'font_dir' => 'F:\\xampp\\htdocs\\isp\\storage\\fonts/',
+      'font_cache' => 'F:\\xampp\\htdocs\\isp\\storage\\fonts/',
+      'temp_dir' => 'C:\\Users\\Farzad\\AppData\\Local\\Temp',
+      'chroot' => 'F:\\xampp\\htdocs\\isp',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
       'default_media_type' => 'screen',
@@ -349,12 +349,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => '/opt/lampp/htdocs/isp/storage/app',
+        'root' => 'F:\\xampp\\htdocs\\isp\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => '/opt/lampp/htdocs/isp/storage/app/public',
+        'root' => 'F:\\xampp\\htdocs\\isp\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -477,13 +477,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => '/opt/lampp/htdocs/isp/storage/logs/laravel.log',
+        'path' => 'F:\\xampp\\htdocs\\isp\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => '/opt/lampp/htdocs/isp/storage/logs/laravel.log',
+        'path' => 'F:\\xampp\\htdocs\\isp\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 7,
       ),
@@ -535,7 +535,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => '/opt/lampp/htdocs/isp/resources/views/vendor/mail',
+        0 => 'F:\\xampp\\htdocs\\isp\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -545,7 +545,7 @@
     'format' => 'A4',
     'default_font_size' => '13',
     'default_font' => 'sans-serif',
-    'custom_font_path' => '/opt/lampp/htdocs/isp//resources/fonts/',
+    'custom_font_path' => 'F:\\xampp\\htdocs\\isp\\/resources/fonts/',
     'direction' => 'rtl',
     'margin_left' => 10,
     'margin_right' => 10,
@@ -639,7 +639,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => '/opt/lampp/htdocs/isp/storage/framework/sessions',
+    'files' => 'F:\\xampp\\htdocs\\isp\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -659,9 +659,9 @@
   array (
     'paths' => 
     array (
-      0 => '/opt/lampp/htdocs/isp/resources/views',
+      0 => 'F:\\xampp\\htdocs\\isp\\resources\\views',
     ),
-    'compiled' => '/opt/lampp/htdocs/isp/storage/framework/views',
+    'compiled' => 'F:\\xampp\\htdocs\\isp\\storage\\framework\\views',
   ),
   'trustedproxy' => 
   array (

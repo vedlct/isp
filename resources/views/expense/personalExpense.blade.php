@@ -21,9 +21,10 @@
                 <div class="text-left">
 
                     <label for="Start Date">Expense From</label>
-                    <input class="form-group datepicker" name="fromdate" id="dataChange" type="text">
+                    <input class="form-group datepicker" name="fromdate" id="fromdate" value="{{Carbon\Carbon::now()->startOfMonth()->format('Y-m-d')}}" type="text">
                     <label for="Start Date">To</label>
-                    <input class="form-group datepicker" name="toDate" id="dataChange" type="text">
+                    <input class="form-group datepicker" name="toDate" id="toDate" type="text" value="{{Carbon\Carbon::now()->endOfMonth()->format('Y-m-d')}}">
+                    <button class="btn btn-sm btn-info" onclick="filter()">Search</button>
                 </div>
 
                 <div class="text-right mb-2 mr-2">
@@ -106,7 +107,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Add Employee</h5>
+                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Edit Expense</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body" id="editEmpBody">
@@ -136,7 +137,8 @@
                 autoclose:true,
 
             });
-
+            // fromdate
+            // toDate
             datatable =  $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -149,6 +151,8 @@
                     data:function (d){
 
                         d._token="{{csrf_token()}}";
+                        d.fromdate=$('#fromdate').val();
+                        d.toDate=$('#toDate').val();
 
                         if ($('#statusFilter').val()!=""){
                             d.statusFilter=$('#statusFilter').val();
@@ -163,8 +167,8 @@
                     { data: 'cause', name: 'cause'},
                     { "data": function(data){
 
-                            return '<a class="btn btn-info btn-sm" data-panel-id="'+data.expenseId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>' +
-                                '<a class="btn btn-danger btn-sm ml-3" data-panel-id="'+data.expenseId+'" onclick="deleteExpense(this)"><i class="fa fa-trash"></i></a>'
+                            return '<a class="btn btn-info btn-sm" data-panel-id="'+data.id+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>' +
+                                '<a class="btn btn-danger btn-sm ml-3" data-panel-id="'+data.id+'" onclick="deleteExpense(this)"><i class="fa fa-trash"></i></a>'
                                 ;},
                         "orderable": false, "searchable":false, "name":"selected_rows" },
 
@@ -179,9 +183,11 @@
         function editClient(x) {
             var id=$(x).data('panel-id');
 
+
+
             $.ajax({
                 type: 'POST',
-                url: "{!! route('expense.edit') !!}",
+                url: "{!! route('personal.expense.edit') !!}",
                 cache: false,
                 data: {_token: "{{csrf_token()}}",'id': id},
                 success: function (data) {
@@ -201,9 +207,9 @@
                     confirm: function () {
                         $.ajax({
                             type: 'POST',
-                            url: "{!! route('expense.deleteExpense') !!}",
+                            url: "{!! route('perosnal.expense.deleteExpense') !!}",
                             cache: false,
-                            data: {_token: "{{csrf_token()}}",'expenseId': id},
+                            data: {_token: "{{csrf_token()}}",'id': id},
                             success: function (data) {
                                 $.alert('Expense Deleted Successfully');
                                 datatable.ajax.reload();
@@ -218,6 +224,10 @@
 
 
 
+        }
+
+        function filter(){
+            datatable.ajax.reload();
         }
 
     </script>
