@@ -58,11 +58,13 @@
         <div class="col-12">
             <div class="card m-b-30">
                 <div class="card-body">
-                    <div class="row">
+
+
 
                     <h4 class="mt-0 header-title">All Bill</h4>
+
                     <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="col-md-3">
                         <label>Select Month</label>
                         <input type="text" id="billMonth" class="form-control datepicker" @if(isset($date)) value="{{$date}}" @endif name="selectMonth" onchange="changeDate(this)">
                     </div>
@@ -87,7 +89,7 @@
                             <option value="ap">Approved</option>
                         </select>
                     </div>
-                    </div>
+
 
                     <div align="right" class="col-md-8">
                         @if( $json !== "")
@@ -96,18 +98,21 @@
 
                     </div>
                     </div>
+                    <br>
+
+
 
                     <div class="row">
+                        {{--<div class="col-md-3">--}}
+                            {{--<div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>--}}
+                            {{--<button id="generateAllBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>--}}
+                        {{--</div>--}}
                         <div class="col-md-3">
-                            <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
-                            <button id="generateAllBill" style="display: none" class="btn-info" name="generateBill">Genarate All bill</button>
-                        </div>
-                        <div class="col-md-3">
-                            {{--<button id="sendBillSms" style="" class="btn btn-success" name="sendBillSms">Send Sms To Bill Pay(1st {{date('M')}})</button>--}}
+                            <button id="sendBillSms" style="" class="btn btn-success" name="sendBillSms">Send Sms To Bill Pay(1st {{date('M')}})</button>
                             {{--<button id="" style="" class="btn btn-success" name="">Send Sms To Bill Pay</button>--}}
                         </div>
                         <div class="col-md-3">
-                            {{--<button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay(7th {{date('M')}})</button>--}}
+                            <button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay(7th {{date('M')}})</button>
                         </div>
                     </div>
 
@@ -224,18 +229,18 @@
 
 
                 ],
-                "fnDrawCallback": function() {
-                    var api = this.api()
-                    var json = api.ajax.json();
-                    if ('{{$cableClient}}'==json.total){
+                {{--"fnDrawCallback": function() {--}}
+                    {{--var api = this.api()--}}
+                    {{--var json = api.ajax.json();--}}
+                    {{--if ('{{$cableClient}}'==json.total){--}}
 
-                        $('#generateAllBill').show();
-                        $('#loding').hide();
+                        {{--$('#generateAllBill').show();--}}
+                        {{--$('#loding').hide();--}}
 
-                    }
+                    {{--}--}}
 
 
-                }
+                {{--}--}}
             });
 
 
@@ -439,7 +444,7 @@
 
                                // console.log(data);
 
-                                if (substr.data == "404" || substr.data=="405"){
+                                if (data.substr(0,3) == "404" || data.substr(0,3)=="405"){
 
                                     $.alert({
                                         title: 'Alert!',
@@ -464,7 +469,7 @@
                                     });
 
                                 }
-                                else if (substr.data=="407"){
+                                else if (data.substr(0,3)=="407"){
 
                                     $.alert({
                                         title: 'Alert!',

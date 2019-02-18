@@ -121,7 +121,7 @@ class DashBoardController extends Controller
             $checkmonthinsert->save();
 
             DB::select(DB::raw("INSERT INTO cable_bill (`billdate`, `price`, `status`, `fkclientId`)  
-                    SELECT '". date('Y-m-d')."',`price`,'np',`clientId` FROM `cable_client` where cable_client.clientStatus=2"));
+                    SELECT '".Carbon::now()->subMonth()->format('Y-m-d')."',`price`,'np',`clientId` FROM `cable_client` where cable_client.clientStatus=2"));
 
 //            $client = InternetClient::select('clientId', 'price')->where('clientStatus',2)->get();
 //            foreach ($client as $c) {
@@ -142,7 +142,7 @@ class DashBoardController extends Controller
 //                $billcable->save();
 //            }
             DB::select(DB::raw("INSERT INTO internet_bill (`billdate`, `price`, `status`, `fkclientId`)
-              SELECT '". Carbon::now()->subMonth()->format('Y-m-d')."',`price`,'np',`clientId` FROM `internet_client` where internet_client.clientStatus=2"));
+              SELECT '".  date('Y-m-d')."',`price`,'np',`clientId` FROM `internet_client` where internet_client.clientStatus=2"));
 
             $employee = Employee::select('employeeId')->where('status',1)->get();
 
