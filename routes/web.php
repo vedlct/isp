@@ -186,6 +186,12 @@ Route::get('/Report-Summary','ReportController@showSummary')->name('report.showS
 Route::get('company-info','CompanyController@index')->name('company');
 Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
 
+Route::get('expense-person','CompanyController@expense_person')->name('expense_person');
+Route::post('expense-person-insert','CompanyController@expense_person_insert')->name('person.insert');
+
+Route::post('/expense-person-edit', 'CompanyController@editPerson')->name('person.edit');
+Route::post('/expense-person-update', 'CompanyController@updatePerson')->name('person.update');
+
 /*
  * Bill Info
  */

@@ -97,8 +97,7 @@ class DashBoardController extends Controller
         $summarycable = number_format($summarycable,2);
 
 
-        return view('index', compact('totalbilllastmonthinternet','totalduelastmonthinternet', 'totalpastduelastmonthinternet', 'totalOFLastMonthDebit', 'totalOFLastMonthCredit' , 'summary'
-        ,'totalbilllastmonthcable','totalduelastmonthcable','totalpastduelastmonthcable','totalOFLastMonthDebitcable','totalOFLastMonthCreditcable','summarycable',''));
+        return view('index', compact('totalbilllastmonthinternet','totalduelastmonthinternet', 'totalpastduelastmonthinternet', 'totalOFLastMonthDebit', 'totalOFLastMonthCredit' , 'summary','totalbilllastmonthcable','totalduelastmonthcable','totalpastduelastmonthcable','totalOFLastMonthDebitcable','totalOFLastMonthCreditcable','summarycable'));
     }
 
     public function previousdue(){

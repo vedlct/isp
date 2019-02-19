@@ -1,14 +1,14 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'Laravel',
+    'name' => 'ISP',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
     'timezone' => 'UTC',
     'locale' => 'en',
     'fallback_locale' => 'en',
-    'key' => 'base64:e9ued6DxD+UscnnuEmiDp+XbKSYWYmvNZRvGkvpF2PI=',
+    'key' => 'base64:2UmFzGasHUuvMA+dv3KJaS4eNcBMwuVuW7uup7yuVTo=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -172,7 +172,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'F:\\xampp\\htdocs\\isp\\storage\\framework/cache/data',
+        'path' => '/opt/lampp/htdocs/isp/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -202,7 +202,7 @@
         'connection' => 'default',
       ),
     ),
-    'prefix' => 'laravel_cache',
+    'prefix' => 'isp_cache',
   ),
   'database' => 
   array (
@@ -218,7 +218,7 @@
       'mysql' => 
       array (
         'driver' => 'mysql',
-        'host' => 'localhost',
+        'host' => '127.0.0.1',
         'port' => '3306',
         'database' => 'isp',
         'username' => 'root',
@@ -233,7 +233,7 @@
       'pgsql' => 
       array (
         'driver' => 'pgsql',
-        'host' => 'localhost',
+        'host' => '127.0.0.1',
         'port' => '3306',
         'database' => 'isp',
         'username' => 'root',
@@ -246,7 +246,7 @@
       'sqlsrv' => 
       array (
         'driver' => 'sqlsrv',
-        'host' => 'localhost',
+        'host' => '127.0.0.1',
         'port' => '3306',
         'database' => 'isp',
         'username' => 'root',
@@ -323,10 +323,10 @@
     'orientation' => 'portrait',
     'defines' => 
     array (
-      'font_dir' => 'F:\\xampp\\htdocs\\isp\\storage\\fonts/',
-      'font_cache' => 'F:\\xampp\\htdocs\\isp\\storage\\fonts/',
-      'temp_dir' => 'C:\\Users\\Farzad\\AppData\\Local\\Temp',
-      'chroot' => 'F:\\xampp\\htdocs\\isp',
+      'font_dir' => '/opt/lampp/htdocs/isp/storage/fonts/',
+      'font_cache' => '/opt/lampp/htdocs/isp/storage/fonts/',
+      'temp_dir' => '/tmp',
+      'chroot' => '/opt/lampp/htdocs/isp',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
       'default_media_type' => 'screen',
@@ -349,12 +349,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'F:\\xampp\\htdocs\\isp\\storage\\app',
+        'root' => '/opt/lampp/htdocs/isp/storage/app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'F:\\xampp\\htdocs\\isp\\storage\\app/public',
+        'root' => '/opt/lampp/htdocs/isp/storage/app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -477,13 +477,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'F:\\xampp\\htdocs\\isp\\storage\\logs/laravel.log',
+        'path' => '/opt/lampp/htdocs/isp/storage/logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'F:\\xampp\\htdocs\\isp\\storage\\logs/laravel.log',
+        'path' => '/opt/lampp/htdocs/isp/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 7,
       ),
@@ -526,16 +526,16 @@
       'address' => 'hello@example.com',
       'name' => 'Example',
     ),
-    'encryption' => NULL,
-    'username' => NULL,
-    'password' => NULL,
+    'encryption' => 'tls',
+    'username' => '939db56664c1de',
+    'password' => '77f7067d187645',
     'sendmail' => '/usr/sbin/sendmail -bs',
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'F:\\xampp\\htdocs\\isp\\resources\\views/vendor/mail',
+        0 => '/opt/lampp/htdocs/isp/resources/views/vendor/mail',
       ),
     ),
   ),
@@ -545,7 +545,7 @@
     'format' => 'A4',
     'default_font_size' => '13',
     'default_font' => 'sans-serif',
-    'custom_font_path' => 'F:\\xampp\\htdocs\\isp\\/resources/fonts/',
+    'custom_font_path' => '/opt/lampp/htdocs/isp//resources/fonts/',
     'direction' => 'rtl',
     'margin_left' => 10,
     'margin_right' => 10,
@@ -639,7 +639,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'F:\\xampp\\htdocs\\isp\\storage\\framework/sessions',
+    'files' => '/opt/lampp/htdocs/isp/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -648,7 +648,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'laravel_session',
+    'cookie' => 'isp_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => false,
@@ -659,9 +659,9 @@
   array (
     'paths' => 
     array (
-      0 => 'F:\\xampp\\htdocs\\isp\\resources\\views',
+      0 => '/opt/lampp/htdocs/isp/resources/views',
     ),
-    'compiled' => 'F:\\xampp\\htdocs\\isp\\storage\\framework\\views',
+    'compiled' => '/opt/lampp/htdocs/isp/storage/framework/views',
   ),
   'trustedproxy' => 
   array (

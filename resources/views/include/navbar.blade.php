@@ -126,6 +126,11 @@
                     </ul>
                 </li>
 
+                <li>
+                    <a href="{{route('expense_person')}}" class="waves-effect">
+                        <i class="fa fa-bar-chart"></i> <span>Expense Person</span>
+                    </a>
+                </li>
 
                 <li>
                     <a href="{{route('company')}}" class="waves-effect">
