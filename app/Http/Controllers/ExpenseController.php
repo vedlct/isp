@@ -93,15 +93,37 @@ public function expenseEdit(Request $r){
     }
 
     public function getPersonalExpenseData(Request $r){
-        $expense = PersonalExpense::leftJoin('expense_person','expense_person.id','personal_expense.personId')
-            ->get();
-//        if ($r->statusFilter){
-//            $expense=$expense->where('expenseType',$r->statusFilter);
-//        }
-
-        $datatables = DataTables::of($expense);
+        $expense = PersonalExpense::select('personal_expense.*','expense_person.name')
+            ->leftJoin('expense_person','expense_person.id','personal_expense.personId');
+        if($r->fromdate && $r->toDate){
+            $expense=$expense->whereBetween('personal_expense.date',[$r->fromdate,$r->toDate]);
+        }
+        $datatables = DataTables::of($expense->get());
         return $datatables->make(true);
 
+    }
+
+    public function editPersonalExpenseData(Request $r){
+        $expense=PersonalExpense::findOrFail($r->id);
+        $expensePerson=ExpensePerson::get();
+        return view('expense.editPersonalExpense',compact('expense','expensePerson'));
+    }
+
+    public function updatePersonalExpenseData($id,Request $r){
+
+        $personalExpense=PersonalExpense::findOrFail($r->id);
+        $personalExpense->price=$r->price;
+        $personalExpense->cause=$r->cause;
+        $personalExpense->personId=$r->expensefor;
+        $personalExpense->date=$r->date;
+        $personalExpense->save();
+        session()->flash('success', 'Expense updated successfully');
+        return back();
+
+    }
+
+    public function deletePersonalExpenseData(Request $r){
+        PersonalExpense::destroy($r->id);
     }
 
 }

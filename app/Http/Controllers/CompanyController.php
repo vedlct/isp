@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Company;
 use Illuminate\Http\Request;
 use Session;
+use App\ExpensePerson;
 class CompanyController extends Controller
 {
     public function __construct()
@@ -28,5 +29,34 @@ class CompanyController extends Controller
         $company->save();
 
         return back();
+    }
+
+    public function expense_person(){
+        $person = ExpensePerson::get();
+        return view('expense_person',compact('person'));
+    }
+
+    public function expense_person_insert(Request $r){
+        $person = new ExpensePerson();
+        $person->name = $r->name;
+        $person->save();
+
+        Session::flash('message', 'New Person Added!');
+        return back();
+    }
+
+    public function editPerson(Request $r){
+        $person = ExpensePerson::where('id', $r->id)->first();
+        return view('edit_expense_person',compact('person'));
+    }
+
+    public function updatePerson(Request $r){
+        $person = ExpensePerson::findOrFail($r->id);
+        $person->name = $r->name;
+        $person->save();
+
+        Session::flash('message', 'Person Updated!');
+        return back();
+
     }
 }
