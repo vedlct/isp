@@ -128,7 +128,7 @@
 
                 <li>
                     <a href="{{route('expense_person')}}" class="waves-effect">
-                        <i class="fa fa-bar-chart"></i> <span>Expense Person</span>
+                        <i class="fa fa-user"></i> <span>Expense Person</span>
                     </a>
                 </li>
 
