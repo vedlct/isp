@@ -85,14 +85,32 @@
 //                    { data: 'address', name: 'client.address', "orderable": true, "searchable":true },
 
                     { "data": function(data){
-                        return '<input type="hidden" class="form-control" id="rowid" name="rowid[]" value="'+data.internetBillId+'">' +
-                            '<input type="text"class="form-control" id="discount" name="discount[]" value="">'
-                            ;},
+                        if (data.discount != null){
+
+                            return '<input type="hidden" class="form-control" id="rowid" name="rowid[]" value="'+data.internetBillId+'">' +
+                                '<input type="text"class="form-control" id="discount" name="discount[]" value="'+data.discount+'">'
+                                ;
+
+                        }else {
+                            return '<input type="hidden" class="form-control" id="rowid" name="rowid[]" value="'+data.internetBillId+'">' +
+                                '<input type="text"class="form-control" id="discount" name="discount[]" value="">'
+                                ;
+                        }
+                        },
                         "orderable": false, "searchable":false
                     },
                     { "data": function(data){
-                        return '<input type="text"class="form-control date" id="amount" name="amount[]" value="">'
-                            ;},
+
+                        if (data.partial != null){
+
+                            return '<input type="text"class="form-control date" id="amount" name="amount[]" value="'+data.partial+'">'
+                                ;
+
+                        }else {
+                            return '<input type="text"class="form-control date" id="amount" name="amount[]" value="">'
+                                ;
+                        }
+                        },
                         "orderable": false, "searchable":false
                     },
 

@@ -133,6 +133,8 @@
                                 <th>BandWidth</th>
                                 <th>Price</th>
                                 <th>Received By</th>
+                                <th>Discount</th>
+                                <th>Received Ammount</th>
                                 <th>Action</th>
                                 <th>Invoice</th>
 
@@ -203,6 +205,8 @@
                     { data: 'billprice', name: 'internet_bill.price', "orderable": true, "searchable":true },
 
                     { data: 'name', name: 'user.name', "orderable": true, "searchable":true },
+                    { data: 'discount', name: 'internet_bill.discount', "orderable": true, "searchable":true },
+                    { data: 'partial', name: 'internet_bill.partial', "orderable": true, "searchable":true },
 
 
                     { "data": function(data){
@@ -224,7 +228,9 @@
                                 @if(Auth::user()->fkusertype=='Admin')
                                     '<option value="approved"  >Approved</option>'+
                                 @endif
-                            '</select>';
+                            '</select>'+
+                            '<button class="btn btn-smbtn-info" onclick="payBill('+data.fkclientId+')"><i class="fa fa-money"></i></button>'
+                            ;
                     }
                     else if(data.billStatus=='ap'){
                         return "Approved";

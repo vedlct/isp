@@ -164,7 +164,9 @@ class BillController extends Controller
 
     }
     public function internetBillShowWithData(Request $r){
-        $bill = InternetBill::select('internet_bill.billId as internetBillId','internet_bill.fkclientId','internet_client.clientFirstName',
+
+        $bill = InternetBill::select('internet_bill.billId as internetBillId','internet_bill.fkclientId','internet_bill.partial',
+            'internet_bill.discount','internet_client.clientFirstName',
             'internet_client.clientLastName','internet_client.phone','internet_client.clientSerial','internet_bill.price as billprice',
             'internet_bill.billId',DB::raw('DATE_FORMAT(internet_bill.billdate,"%M-%Y") as billdate'),
             'internet_client.bandWide', 'package.packageName','internet_bill.status as billStatus','user.name')
@@ -306,6 +308,7 @@ class BillController extends Controller
 
     }
     public function cableBillPaid(Request $r){
+
         $month = Carbon::parse($r->date)->format('m');
         $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
         $bill->status = 'p';
@@ -325,6 +328,7 @@ class BillController extends Controller
         return  $message;
     }
     public function cableBillDue(Request $r){
+
         $month = Carbon::parse($r->date)->format('m');
         $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
         $bill->status = 'np';
@@ -332,6 +336,7 @@ class BillController extends Controller
 
 //        $report = Report::where('tabelId' , $bill->billId)
 //            ->where('tableName', 'cable_bill')->delete();
+
         $message='Monthly Cable bill of '.$r->date.' for client Name '.$bill->clientFirstName.' '.$bill->clientLastName.' has been changed to unpaid';
         return  $message;
     }
@@ -406,9 +411,40 @@ class BillController extends Controller
     }
     public function clientBillPay(Request $r){
 
-         return $r;
+       // return $r;
+
+        for ($i=0;$i<count($r->rowid);$i++){
+
+            $bill=InternetBill::findOrFail($r->rowid[$i]);
+            $bill->status = 'p';
+            $bill->partial = $r->amount[$i];
+            $bill->discount = $r->discount[$i];
+            $bill->receivedBy = Auth::user()->userId;
+            $bill->receiveDate=date('Y-m-d');
+            $bill->save();
 
 
+
+            $report=Report::where('date',$bill->billdate)->where('tabelId',$bill->billId)
+                ->where('tableName','internet_bill')->where('status',ACCOUNT_STATUS['Credit'])->first();
+
+            if (!$report) {
+                $report = new Report();
+            }
+
+        $report->status = ACCOUNT_STATUS['Credit'];
+        $report->price = $bill->price;
+        $report->tabelId = $bill->billId;
+        $report->date = $bill->billdate;
+        $report->partial = $r->amount[$i];
+        $report->discount = $r->discount[$i];
+        $report->tableName = 'internet_bill';
+        $report->save();
+
+        }
+
+
+         return back();
 
 
     }
