@@ -158,6 +158,12 @@ Route::get('Bill/Generate-Cable-All/{date}','BillController@generateAllCableBill
 
 Route::get('/Bill-PastDue-Cable-Client','BillController@showCablePastDue')->name('bill.Cable.showPastDue');
 
+Route::post('/Cable-Bill-Past-Due','BillController@cableClientPastDueMonth')->name('bill.Cable.pastDueMonthForClient');
+
+
+Route::post('/Cable-Bill-update-Pay','BillController@cableClientBillPay')->name('bill.cable.updateBillPay');
+
+
  /* Report Routes
 
  */

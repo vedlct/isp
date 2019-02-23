@@ -205,8 +205,34 @@
                     { data: 'billprice', name: 'internet_bill.price', "orderable": true, "searchable":true },
 
                     { data: 'name', name: 'user.name', "orderable": true, "searchable":true },
-                    { data: 'discount', name: 'internet_bill.discount', "orderable": true, "searchable":true },
-                    { data: 'partial', name: 'internet_bill.partial', "orderable": true, "searchable":true },
+
+                    { "data": function(data){
+                        if (data.discount != null){
+                            return data.discount+"="+totalPaid(data.discount);
+                        }else {
+                            return data.discount;
+                        }
+
+                    },
+                        "orderable": false, "searchable":false
+                    },
+
+
+//                    { data: 'discount', name: 'internet_bill.discount', "orderable": true, "searchable":true },
+
+//                    { data: 'partial', name: 'internet_bill.partial', "orderable": true, "searchable":true },
+
+                    { "data": function(data){
+                        if (data.partial !=null){
+                            return data.partial+"="+totalPaid(data.partial);
+                        }else {
+                            return data.partial;
+                        }
+
+                    },
+                        "orderable": false, "searchable":false
+                    },
+
 
 
                     { "data": function(data){
@@ -803,6 +829,17 @@
 
 
         });
+
+        function totalPaid(amount) {
+
+            sumofnums = 0;
+            nums = amount.split("+");
+            for (i = 0; i < nums.length; i++) {
+                sumofnums += parseInt(nums[i]);
+            }
+            return sumofnums;
+
+        }
 
 
 
