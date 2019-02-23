@@ -17,9 +17,11 @@
                             <tr style="text-align: center">
 
                                 <th>Month</th>
+                                <th>Total Bill</th>
+                                <th>Total Paid</th>
                                 <th>Due</th>
                                 <th>Discount</th>
-                                <th>Amount</th>
+                                <th>Amount(Full/Partial)</th>
 
 
 
@@ -29,7 +31,7 @@
                             <tfoot>
                             <tr>
 
-                                <th colspan="4"><button id="test321"  class="btn btn-sm btn-success pull-right">
+                                <th colspan="6"><button id="test321"  class="btn btn-sm btn-success pull-right">
                                         Submit
                                     </button>
                                 </th>
@@ -82,34 +84,88 @@
 
                     { data: 'billdate', name: 'internet_bill.billdate', "orderable": true, "searchable":true },
                     { data: 'billprice', name: 'internet_bill.price', "orderable": true, "searchable":true },
-//                    { data: 'address', name: 'client.address', "orderable": true, "searchable":true },
 
                     { "data": function(data){
-                        if (data.discount != null){
-
-                            return '<input type="hidden" class="form-control" id="rowid" name="rowid[]" value="'+data.internetBillId+'">' +
-                                '<input type="text"class="form-control" id="discount" name="discount[]" value="'+data.discount+'">'
-                                ;
-
+                        if (data.partial !=null){
+                            return data.partial+"="+totalPaid(data.partial);
                         }else {
-                            return '<input type="hidden" class="form-control" id="rowid" name="rowid[]" value="'+data.internetBillId+'">' +
-                                '<input type="text"class="form-control" id="discount" name="discount[]" value="">'
-                                ;
+                            return data.partial;
                         }
+
+                    },
+                        "orderable": false, "searchable":false
+                    },
+
+                    { "data": function(data){
+
+                        if(data.billprice != null) {
+
+                            if (data.partial != null) {
+                                return (data.billprice) + "-" + (data.partial) + "=" + totalDue(data.billprice, data.partial);
+                            } else {
+                                return data.billprice;
+                            }
+                        }else {
+
+                            if (data.partial != null) {
+                                return (0) + "-" + (data.partial) + "=" + totalDue(0, data.partial);
+                            } else {
+                                return data.billprice;
+                            }
+
+                        }
+
+                    },
+                        "orderable": false, "searchable":false
+                    },
+
+//                    { data: 'billprice', name: 'internet_bill.price', "orderable": true, "searchable":true },
+//                    { data: 'address', name: 'client.address', "orderable": true, "searchable":true },
+
+//                    { "data": function(data){
+//                        if (data.discount != null){
+//
+//                            return '<input type="hidden" class="form-control" id="rowid" name="rowid[]" value="'+data.internetBillId+'">' +
+//                                '<input type="text"class="form-control" id="discount" name="discount[]" value="'+data.discount+'">'
+//                                ;
+//
+//                        }else {
+//                            return '<input type="hidden" class="form-control" id="rowid" name="rowid[]" value="'+data.internetBillId+'">' +
+//                                '<input type="text"class="form-control" id="discount" name="discount[]" value="">'
+//                                ;
+//                        }
+//                        },
+//                        "orderable": false, "searchable":false
+//                    },
+                    { "data": function(data){
+
+                            return '<input type="hidden" class="form-control" id="rowid" name="rowid[]" value="'+data.internetBillId+'">' +
+                                '<input type="number" class="form-control" id="discount" name="discount[]" value="">'
+                                ;
+
                         },
                         "orderable": false, "searchable":false
                     },
+//                    { "data": function(data){
+//
+//                        if (data.partial != null){
+//
+//                            return '<input type="text"class="form-control date" id="amount" name="amount[]" value="'+data.partial+'">'
+//                                ;
+//
+//                        }else {
+//                            return '<input type="text"class="form-control date" id="amount" name="amount[]" value="">'
+//                                ;
+//                        }
+//                        },
+//                        "orderable": false, "searchable":false
+//                    },
                     { "data": function(data){
 
-                        if (data.partial != null){
 
-                            return '<input type="text"class="form-control date" id="amount" name="amount[]" value="'+data.partial+'">'
+                            return '<input type="number" class="form-control date" id="amount" name="amount[]" value="">'
                                 ;
 
-                        }else {
-                            return '<input type="text"class="form-control date" id="amount" name="amount[]" value="">'
-                                ;
-                        }
                         },
                         "orderable": false, "searchable":false
                     },
@@ -281,6 +337,33 @@
                 }
             });
 
+
+        }
+
+        function totalPaid(amount) {
+
+            sumofnums = 0;
+            nums = amount.split("+");
+            for (i = 0; i < nums.length; i++) {
+                sumofnums += parseInt(nums[i]);
+            }
+            return sumofnums;
+
+        }
+        function totalDue(amountdue,amountpaid) {
+
+            sumofnums = 0;
+            nums = amountpaid.split("+");
+            for (i = 0; i < nums.length; i++) {
+                sumofnums += parseInt(nums[i]);
+            }
+            if (amountdue != null){
+                total=parseInt(parseInt(amountdue)-sumofnums);
+            }else {
+                total=parseInt(parseInt(0)-sumofnums);
+            }
+
+            return total;
 
         }
 
