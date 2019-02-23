@@ -132,6 +132,12 @@
                     </a>
                 </li>
 
+                    <li>
+                        <a href="{{route('other')}}" class="waves-effect">
+                            <i class="fa fa-plus"></i> <span>Other</span>
+                        </a>
+                    </li>
+
                 <li>
                     <a href="{{route('company')}}" class="waves-effect">
                         <i class="fa fa-bar-chart"></i> <span>Company Info</span>
