@@ -29,10 +29,10 @@
                         <div id="totalSumDiv" style="font-weight: bold">Total Sum of Amount : &nbsp;&nbsp;<span id="totalSum" style="color: red">{{$totalOFCurrentMonth}}</span></div>
                     </div>
                     <div class="text-left mb-2 mr-2">
-                        <div id="totalDiscountSumDiv" style="font-weight: bold">Total Sum of Discount : &nbsp;&nbsp;<span id="totalSum" style="color: red">{{$totalDiscountOFCurrentMonth}}</span></div>
+                        <div id="totalDiscountSumDiv" style="font-weight: bold">Total Sum of Discount : &nbsp;&nbsp;<span id="totalDiscountSum" style="color: red">{{$totalDiscountOFCurrentMonth}}</span></div>
                     </div>
                     <div class="text-left mb-2 mr-2">
-                        <div id="totalRecievedSumDiv" style="font-weight: bold">Total Sum of Discount : &nbsp;&nbsp;<span id="totalSum" style="color: red">{{$totalRecievedOFCurrentMonth}}</span></div>
+                        <div id="totalRecievedSumDiv" style="font-weight: bold">Total Sum of Discount : &nbsp;&nbsp;<span id="totalRecievedSum" style="color: red">{{$totalRecievedOFCurrentMonth}}</span></div>
                     </div>
 
                 </div>
@@ -166,6 +166,7 @@
                     $('.modal-body').html(data);
                     $('#myModalLabel').html("Details-Report");
                     $('#myModal').modal();
+//                    console.log(data);
 
                 }
             });
@@ -182,8 +183,8 @@
                 data: {_token: "{{csrf_token()}}",'dateFilterTo':$('#dateFilterTo').val(),'dateFilterFrom':$('#dateFilterFrom').val()},
                 success: function (data) {
                     $("#totalSum").html(data.totalAmountSum);
-                    $("#totalDiscountSumDiv").html(data.totalDiscountSum);
-                    $("#totalRecievedSumDiv").html(data.totalRecievedSum);
+                    $("#totalDiscountSum").html(data.totalDiscountSum);
+                    $("#totalRecievedSum").html(data.totalRecievedSum);
 //                        console.log(data);
                 }
             });
