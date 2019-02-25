@@ -31,8 +31,12 @@ class ReportController extends Controller
     public function showCredit(){
 
         $totalOFCurrentMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', Carbon::now()->month)->sum('report.price');
+        $totalDiscountOFCurrentMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', Carbon::now()->month)->sum('report.discount');
+        $totalRecievedOFCurrentMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', Carbon::now()->month)->sum('report.partial');
         $totalOFCurrentMonth=number_format($totalOFCurrentMonth,2);
-        return view('report.showCredit',compact('totalOFCurrentMonth'));
+        $totalDiscountOFCurrentMonth=number_format($totalDiscountOFCurrentMonth,2);
+        $totalRecievedOFCurrentMonth=number_format($totalRecievedOFCurrentMonth,2);
+        return view('report.showCredit',compact('totalOFCurrentMonth','totalDiscountOFCurrentMonth','totalRecievedOFCurrentMonth'));
     }
 
     public function getTotalDebitSum(Request $r){
@@ -56,6 +60,7 @@ class ReportController extends Controller
 
         $credit=Report::where('report.status',ACCOUNT_STATUS['Credit']);
 
+
         if ($r->dateFilterFrom){
             $credit=$credit->where('report.date','>=',$r->dateFilterFrom);
         }
@@ -63,9 +68,22 @@ class ReportController extends Controller
             $credit=$credit->where('report.date','<=',$r->dateFilterTo);
         }
         $credit=$credit->sum('report.price');
+        $creditDiscount=$credit->sum('report.discount');
+        $creditRecievedAmount=$credit->sum('report.partial');
+
+        $credit=number_format($credit,2);
+        $creditDiscount=number_format($creditDiscount,2);
+        $creditRecievedAmount=number_format($creditRecievedAmount,2);
+
+        $data=array(
+          'totalAmountSum'=>$credit,
+          'totalDiscountSum'=>$creditDiscount,
+          'totalRecievedSum'=>$creditRecievedAmount,
+        );
 
 
-        return number_format($credit,2);
+
+        return $data;
     }
 
     public function getDebitData(Request $r){
@@ -102,9 +120,10 @@ class ReportController extends Controller
     }
     public function getCreditData(Request $r){
 
-        $credit=Report::select('report.reportId','report.price','report.date','report.status')
-
-            ->where('report.status',ACCOUNT_STATUS['Credit']);
+        $credit=Report::select('report.reportId',DB::raw('SUM(report.price) as price'),DB::raw('SUM(report.partial) as partial'),DB::raw('SUM(report.discount) as discount'),'report.date','report.status')
+            ->where('report.status',ACCOUNT_STATUS['Credit'])
+            ->groupBy("report.tableName",'report.tabelId')
+        ;
 
         if ($r->currentMonth){
             $credit=$credit->whereMonth('report.date', Carbon::now()->month);
@@ -170,5 +189,13 @@ class ReportController extends Controller
 
 
     }
+    /* summary */
+
+    public function showSummary(){
+
+
+        return view('report.showSummary');
+    }
+
 
 }
