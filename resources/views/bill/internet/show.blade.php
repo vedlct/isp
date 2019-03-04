@@ -433,7 +433,7 @@
                                     $.alert({
                                         title: 'Alert!',
                                         type: 'red',
-                                        content: data,
+                                        content: data.message,
                                         buttons: {
                                             tryAgain: {
                                                 text: 'Ok',

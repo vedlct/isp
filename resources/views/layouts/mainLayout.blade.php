@@ -20,7 +20,7 @@
 <!-- modal -->
 
 @if(Session::has('message'))
-    <p class="alert alert-success">{{ Session::get('message') }}</p>
+    <p class="alert alert-danger">{{ Session::get('message') }}</p>
 @endif
 
 @include('include.footer')

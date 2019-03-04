@@ -208,11 +208,98 @@ class BillController extends Controller
         $bill->status = 'p';
         $bill->receivedBy = Auth::user()->userId;
         $bill->receiveDate=date('Y-m-d');
+        $bill->partial = $bill->price;
+        $bill->discount = 0;
         $bill->save();
 
+        $report=Report::where('date',$bill->billdate)->where('tabelId',$bill->billId)
+            ->where('tableName','internet_bill')->where('status',ACCOUNT_STATUS['Credit'])->first();
 
-        $message='Monthly Internet bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
-        return  $message;
+        if (!$report) {
+            $report = new Report();
+        }
+
+        // $report = new Report();
+        $report->status = ACCOUNT_STATUS['Credit'];
+        $report->price = $bill->price;
+        $report->tabelId = $bill->billId;
+        $report->date = $bill->billdate;
+        $report->tableName = 'internet_bill';
+        $report->partial = $bill->price;
+        $report->discount = 0;
+        $report->save();
+
+
+        $smsConfig=SmsConfig::select('userName','password','brandName','sms_rate')->first();
+        $userName=$smsConfig->userName;
+        $password=$smsConfig->password;
+        $brand=$smsConfig->brandName;
+        $rate= (float)($smsConfig->sms_rate);
+        //  return $smsConfig;
+
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+
+        $sms="Dear valued Client, Your Internet Bill of ".date('F')." ".date('Y'). "-" . $bill->price ." has been paid successfully.";
+
+        $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($bill->phone)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
+
+        //return $json;
+        $data=array();
+
+        if (substr($json, 0, 3)== "404" || substr($json, 0, 3)== "405" ){
+
+            $data=array(
+                'message'=>'Wrong User Name or password of Sms Config!',
+            );
+
+            //  return back()->with('message', 'Wrong User Name or password of Sms Config!');
+        }elseif (substr($json, 0, 3)== "407"){
+
+            $data=array(
+                'message'=>'Wrong Brand Name of Sms Config!',
+            );
+
+            // return back()->with('message', 'Wrong Brand Name of Sms Config!');
+        }elseif (substr($json, 0, 3)== "409"){
+
+            $data=array(
+                'message'=>'sms Sent cancelled for insufficient balance!',
+            );
+
+            // return back()->with('message', 'sms Sent cancelled for insufficient balance!');
+        }elseif (substr($json, 0, 3)== "400"){
+
+            $data=array(
+                'message'=>'Sms Send SuccessFully!',
+            );
+            // return back()->with('message', 'Sms Send SuccessFully!');
+        }elseif (substr($json, 0, 3)== "408"){
+
+            $data=array(
+                'message'=>'Invalid number!',
+            );
+            // return back()->with('message', 'Invalid number!');
+        }else{
+
+            $data=array(
+                'message'=>'bill paid',
+            );
+
+            // $message='Monthly Cable bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
+            //return  $data;
+
+        }
+
+        return $data;
+
+
+//        $message='Monthly Internet bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
+//        return  $message;
     }
     public function generateInternetPdf($id,$date){
         $clientId=$id;
@@ -239,6 +326,8 @@ class BillController extends Controller
             ->where(DB::raw('month(internet_bill.billdate)'),$month)
             ->where('internet_client.clientId',$r->id)->first();
         $bill->status = 'np';
+        $bill->partial = null;
+        $bill->discount = null;
         $bill->save();
         $report = Report::where('tabelId' , $bill->billId)
             ->where('tableName', 'internet_bill')->delete();
@@ -322,32 +411,113 @@ class BillController extends Controller
     public function cableBillPaid(Request $r){
 
         $month = Carbon::parse($r->date)->format('m');
-        $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
+        $bill=CableBill::select('cable_bill.*','cable_client.clientId','cable_client.phone','cable_client.clientFirstName','cable_client.clientLastName')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
         $bill->status = 'p';
         $bill->receivedBy = Auth::user()->userId;
         $bill->receiveDate=date('Y-m-d');
+        $bill->partial = $bill->price;
+        $bill->discount = 0;
         $bill->save();
 
-//        $report = new Report();
-//        $report->status = ACCOUNT_STATUS['Credit'];
-//        $report->price = $bill->price;
-//        $report->tabelId = $bill->billId;
-//        $report->date = $bill->billdate;
-//        $report->tableName = 'cable_bill';
-//        $report->save();
+        $report=Report::where('date',$bill->billdate)->where('tabelId',$bill->billId)
+            ->where('tableName','cable_bill')->where('status',ACCOUNT_STATUS['Credit'])->first();
 
-        $message='Monthly Cable bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
-        return  $message;
+        if (!$report) {
+            $report = new Report();
+        }
+
+       // $report = new Report();
+        $report->status = ACCOUNT_STATUS['Credit'];
+        $report->price = $bill->price;
+        $report->tabelId = $bill->billId;
+        $report->date = $bill->billdate;
+        $report->tableName = 'cable_bill';
+        $report->partial = $bill->price;
+        $report->discount = 0;
+        $report->save();
+
+        $smsConfig=SmsConfig::select('userName','password','brandName','sms_rate')->first();
+        $userName=$smsConfig->userName;
+        $password=$smsConfig->password;
+        $brand=$smsConfig->brandName;
+        $rate= (float)($smsConfig->sms_rate);
+        //  return $smsConfig;
+
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+
+        $sms="Dear valued Client, Your Cable Bill of ".date('F')." ".date('Y'). "-" . $bill->price ." has been paid successfully.";
+
+        $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($bill->phone)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
+
+        //return $json;
+        $data=array();
+
+        if (substr($json, 0, 3)== "404" || substr($json, 0, 3)== "405" ){
+
+            $data=array(
+                'message'=>'Wrong User Name or password of Sms Config!',
+            );
+
+          //  return back()->with('message', 'Wrong User Name or password of Sms Config!');
+        }elseif (substr($json, 0, 3)== "407"){
+
+            $data=array(
+                'message'=>'Wrong Brand Name of Sms Config!',
+            );
+
+           // return back()->with('message', 'Wrong Brand Name of Sms Config!');
+        }elseif (substr($json, 0, 3)== "409"){
+
+            $data=array(
+                'message'=>'sms Sent cancelled for insufficient balance!',
+            );
+
+           // return back()->with('message', 'sms Sent cancelled for insufficient balance!');
+        }elseif (substr($json, 0, 3)== "400"){
+
+            $data=array(
+                'message'=>'Sms Send SuccessFully!',
+            );
+           // return back()->with('message', 'Sms Send SuccessFully!');
+        }elseif (substr($json, 0, 3)== "408"){
+
+            $data=array(
+                'message'=>'Invalid number!',
+            );
+           // return back()->with('message', 'Invalid number!');
+        }else{
+
+            $data=array(
+                'message'=>'bill paid',
+            );
+
+            // $message='Monthly Cable bill of '.$r->date.' has been paid successfully for client Name '.$bill->clientFirstName.' '.$bill->clientLastName;
+            //return  $data;
+
+        }
+
+        return $data;
+
+
+
+
     }
     public function cableBillDue(Request $r){
 
         $month = Carbon::parse($r->date)->format('m');
         $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
         $bill->status = 'np';
+        $bill->partial = null;
+        $bill->discount = null;
         $bill->save();
 
-//        $report = Report::where('tabelId' , $bill->billId)
-//            ->where('tableName', 'cable_bill')->delete();
+        $report = Report::where('tabelId' , $bill->billId)
+            ->where('tableName', 'cable_bill')->delete();
 
         $message='Monthly Cable bill of '.$r->date.' for client Name '.$bill->clientFirstName.' '.$bill->clientLastName.' has been changed to unpaid';
         return  $message;
@@ -442,11 +612,16 @@ class BillController extends Controller
             $par=array_sum($partialArr);
             $dis=array_sum($discountArr);
 
-            if (($par+$dis) >= $bill->price){
-                $bill->status = 'p';
+            if ($bill->price !=null){
+                if ((float)($par+$dis) >= $bill->price){
+                    $bill->status = 'p';
+                }else{
+                    $bill->status = 'np';
+                }
             }else{
                 $bill->status = 'np';
             }
+
 
             if ($r->amount[$i] != null){
                 if ($bill->partial != null){
@@ -551,8 +726,12 @@ class BillController extends Controller
             $par=array_sum($partialArr);
             $dis=array_sum($discountArr);
 
-            if (($par+$dis) >= $bill->price){
-                $bill->status = 'p';
+            if ($bill->price !=null) {
+                if ((float)($par + $dis) >= $bill->price) {
+                    $bill->status = 'p';
+                } else {
+                    $bill->status = 'np';
+                }
             }else{
                 $bill->status = 'np';
             }
