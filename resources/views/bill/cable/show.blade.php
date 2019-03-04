@@ -373,12 +373,12 @@
                                 data: {_token: "{{csrf_token()}}", 'id': id,date:date},
                                 success: function (data) {
 
-                                    console.log(data);
+                                   // console.log(data);
 
                                     $.alert({
                                         title: 'Success!',
                                         type: 'green',
-                                        content: data,
+                                        content: data.message,
                                         buttons: {
                                             tryAgain: {
                                                 text: 'Ok',
