@@ -435,9 +435,19 @@ class BillController extends Controller
 
         for ($i=0;$i<count($r->rowid);$i++){
 
-            $bill=InternetBill::findOrFail($r->rowid[$i]);
+            $bill=InternetBill::leftJoin('internet_client','internet_bill.fkclientId','internet_client.clientId')->findOrFail($r->rowid[$i]);
 
-            $bill->status = 'p';
+            $partialArr=explode("+",$bill->partial);
+            $discountArr=explode("+",$bill->discount);
+            $par=array_sum($partialArr);
+            $dis=array_sum($discountArr);
+
+            if (($par+$dis) >= $bill->price){
+                $bill->status = 'p';
+            }else{
+                $bill->status = 'np';
+            }
+
             if ($r->amount[$i] != null){
                 if ($bill->partial != null){
                     $bill->partial = $bill->partial."+".$r->amount[$i];
@@ -485,20 +495,69 @@ class BillController extends Controller
 
         }
 
+        $smsConfig=SmsConfig::select('userName','password','brandName','sms_rate')->first();
+        $userName=$smsConfig->userName;
+        $password=$smsConfig->password;
+        $brand=$smsConfig->brandName;
+        $rate= (float)($smsConfig->sms_rate);
+        //  return $smsConfig;
 
-         return back();
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+
+        $sms="Dear valued Client, Your Internet Bill of ".date('F')." ".date('Y'). "-" . $par ." has been paid successfully with discount $dis. Total due remaining this month is ".($bill->price-($par+$dis)).".";
+
+        $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($bill->phone)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
+
+
+        if (substr($json, 0, 3)== "404" || substr($json, 0, 3)== "405" ){
+
+            return back()->with('message', 'Wrong User Name or password of Sms Config!');
+        }elseif (substr($json, 0, 3)== "407"){
+
+            return back()->with('message', 'Wrong Brand Name of Sms Config!');
+        }elseif (substr($json, 0, 3)== "409"){
+
+            return back()->with('message', 'sms Sent cancelled for insufficient balance!');
+        }elseif (substr($json, 0, 3)== "400"){
+
+            return back()->with('message', 'Sms Send SuccessFully!');
+        }elseif (substr($json, 0, 3)== "408"){
+
+            return back()->with('message', 'Invalid number!');
+        }else{
+            return back();
+        }
+
+
+        // return back();
 
 
     }
     public function cableClientBillPay(Request $r){
 
-       // return $r;
+
 
         for ($i=0;$i<count($r->rowid);$i++){
 
-            $bill=CableBill::findOrFail($r->rowid[$i]);
+            $bill=CableBill::leftJoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->findOrFail($r->rowid[$i]);
 
-            $bill->status = 'p';
+            $partialArr=explode("+",$bill->partial);
+            $discountArr=explode("+",$bill->discount);
+            $par=array_sum($partialArr);
+            $dis=array_sum($discountArr);
+
+            if (($par+$dis) >= $bill->price){
+                $bill->status = 'p';
+            }else{
+                $bill->status = 'np';
+            }
+
+
             if ($r->amount[$i] != null){
                 if ($bill->partial != null){
                     $bill->partial = $bill->partial."+".$r->amount[$i];
@@ -546,8 +605,46 @@ class BillController extends Controller
 
         }
 
+        $smsConfig=SmsConfig::select('userName','password','brandName','sms_rate')->first();
+        $userName=$smsConfig->userName;
+        $password=$smsConfig->password;
+        $brand=$smsConfig->brandName;
+        $rate= (float)($smsConfig->sms_rate);
+        //  return $smsConfig;
 
-         return back();
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+
+        $sms="Dear valued Client, Your Cable Bill of ".date('F')." ".date('Y'). "-" . $par ." has been paid successfully with discount $dis.Total due remaining this month is ".($bill->price-($par+$dis)).".";
+
+        $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($bill->phone)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
+
+        //return $json;
+
+        if (substr($json, 0, 3)== "404" || substr($json, 0, 3)== "405" ){
+
+            return back()->with('message', 'Wrong User Name or password of Sms Config!');
+        }elseif (substr($json, 0, 3)== "407"){
+
+            return back()->with('message', 'Wrong Brand Name of Sms Config!');
+        }elseif (substr($json, 0, 3)== "409"){
+
+            return back()->with('message', 'sms Sent cancelled for insufficient balance!');
+        }elseif (substr($json, 0, 3)== "400"){
+
+            return back()->with('message', 'Sms Send SuccessFully!');
+        }elseif (substr($json, 0, 3)== "408"){
+
+            return back()->with('message', 'Invalid number!');
+        }else{
+            return back();
+        }
+
+        //return back();
 
 
     }

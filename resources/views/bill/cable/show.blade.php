@@ -129,6 +129,7 @@
                                 <th>Received By</th>
 
                                 <th>Discount</th>
+                                <th>Due</th>
                                 <th>Received Ammount</th>
 
                                 <th>Price</th>
@@ -203,6 +204,29 @@
                             return data.discount+"="+totalPaid(data.discount);
                         }else {
                             return data.discount;
+                        }
+
+                    },
+                        "orderable": false, "searchable":false
+                    },
+
+                    { "data": function(data){
+
+                        if(data.billprice != null) {
+
+                            if (data.partial != null) {
+                                return (data.billprice) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(data.billprice,data.discount, data.partial);
+                            } else {
+                                return data.billprice;
+                            }
+                        }else {
+
+                            if (data.partial != null) {
+                                return (0) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(0,data.discount, data.partial);
+                            } else {
+                                return data.billprice;
+                            }
+
                         }
 
                     },
@@ -821,6 +845,29 @@
                 sumofnums += parseInt(nums[i]);
             }
             return sumofnums;
+
+        }
+
+        function totalDue(amountdue,amountdiscount,amountpaid) {
+
+            sumofnums = 0;
+            sumoft = 0;
+            nums = amountpaid.split("+");
+            for (i = 0; i < nums.length; i++) {
+                sumofnums += parseInt(nums[i]);
+            }
+            if (amountdue != null){
+                total=parseInt(parseInt(amountdue)-sumofnums);
+            }else {
+                total=parseInt(parseInt(0)-sumofnums);
+            }
+            t = amountdiscount.split("+");
+            for (i = 0; i < t.length; i++) {
+                sumoft += parseInt(t[i]);
+            }
+            total=parseInt(total-sumoft);
+
+            return total;
 
         }
 
