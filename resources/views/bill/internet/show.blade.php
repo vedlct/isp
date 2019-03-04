@@ -106,16 +106,16 @@
                     <br>
 
                     <div class="row">
+                    {{--<div class="col-md-3">--}}
+                        {{--<div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>--}}
+                        {{--<button id="generateAllBill" style="display: none" class="btn btn-info" name="generateBill">Genarate All bill</button>--}}
+                    {{--</div>--}}
                     <div class="col-md-3">
-                        <div id="loding" class="lds-facebook"><div></div><div></div><div></div></div>
-                        <button id="generateAllBill" style="display: none" class="btn btn-info" name="generateBill">Genarate All bill</button>
-                    </div>
-                    <div class="col-md-3">
-                        {{--<button id="sendBillSms" style="" class="btn btn-success" name="sendBillSms">Send Sms To Bill Pay(1st {{date('M')}})</button>--}}
+                        <button id="sendBillSms" style="" class="btn btn-success" name="sendBillSms">Send Sms To Bill Pay(1st {{date('M')}})</button>
                         {{--<button id="" style="" class="btn btn-success" name="">Send Sms To Bill Pay</button>--}}
                     </div>
                         <div class="col-md-3">
-                        {{--<button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay(7th {{date('M')}})</button>--}}
+                        <button id="sendBillToPaySms" style="" class="btn btn-success" name="sendBillToPaySms">Send Sms To Bill Pay(7th {{date('M')}})</button>
                     </div>
                     </div>
                     <br>
@@ -133,6 +133,8 @@
                                 <th>BandWidth</th>
                                 <th>Price</th>
                                 <th>Received By</th>
+                                <th>Discount</th>
+                                <th>Received Ammount</th>
                                 <th>Action</th>
                                 <th>Invoice</th>
 
@@ -203,6 +205,8 @@
                     { data: 'billprice', name: 'internet_bill.price', "orderable": true, "searchable":true },
 
                     { data: 'name', name: 'user.name', "orderable": true, "searchable":true },
+                    { data: 'discount', name: 'internet_bill.discount', "orderable": true, "searchable":true },
+                    { data: 'partial', name: 'internet_bill.partial', "orderable": true, "searchable":true },
 
 
                     { "data": function(data){
@@ -214,7 +218,9 @@
                                 @if(Auth::user()->fkusertype=='Admin')
                                     '<option value="approved"  >Approved</option>'+
                                 @endif
-                        '</select>';
+                        '</select>'+
+                            '<button class="btn btn-smbtn-info" onclick="payBill('+data.fkclientId+')"><i class="fa fa-money"></i></button>'
+                            ;
                     }else if (data.billStatus=='p'){
                         return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
                             '<option  value="paid" selected  >Paid</option>'+
@@ -222,11 +228,14 @@
                                 @if(Auth::user()->fkusertype=='Admin')
                                     '<option value="approved"  >Approved</option>'+
                                 @endif
-                            '</select>';
+                            '</select>'+
+                            '<button class="btn btn-smbtn-info" onclick="payBill('+data.fkclientId+')"><i class="fa fa-money"></i></button>'
+                            ;
                     }
                     else if(data.billStatus=='ap'){
                         return "Approved";
                     }
+
                     ;},
                         "orderable": false, "searchable":false
                     },
@@ -238,18 +247,18 @@
 
 
                 ],
-                "fnDrawCallback": function() {
-                    var api = this.api()
-                    var json = api.ajax.json();
-                    if ('{{$internetClient}}'==json.total){
+                {{--"fnDrawCallback": function() {--}}
+                    {{--var api = this.api()--}}
+                    {{--var json = api.ajax.json();--}}
+                    {{--if ('{{$internetClient}}'==json.total){--}}
 
-                        $('#generateAllBill').show();
-                        $('#loding').hide();
+                        {{--$('#generateAllBill').show();--}}
+                        {{--$('#loding').hide();--}}
 
-                    }
+                    {{--}--}}
 
 
-                }
+                {{--}--}}
             });
 
 
@@ -258,6 +267,31 @@
 
         function reloadTable() {
             table.ajax.reload();
+        }
+        function payBill(x) {
+
+
+            $.ajax({
+                type: 'POST',
+                url: "{!! route('bill.Internet.pastDueMonthForClient') !!}",
+                cache: false,
+                data: {_token: "{{csrf_token()}}", 'clientId': x},
+
+
+                success: function (data) {
+                    //console.log(data);
+
+
+                    $('.modal-body').html(data);
+                    $('#myModalLabel').html("test");
+                    $('#myModal').modal({show: true});
+                },
+
+            });
+
+
+
+
         }
 
         function generateBill(x) {
@@ -375,6 +409,7 @@
                         }
 
                         else if(billtype == 'approved'){
+
                             $.ajax({
                                 type: 'POST',
                                 url: "{!! route('bill.internet.approved') !!}",

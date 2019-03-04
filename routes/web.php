@@ -37,6 +37,14 @@ Route::post('/expense-delete','ExpenseController@deleteExpense')->name('expense.
 Route::post('/expense/filterByType', 'ExpenseController@filterByType')->name('expense.filterByType');
 
 
+//========Personal Expense
+Route::get('/expense-show/personal','ExpenseController@personalExpenseShow')->name('personal.expense.show');
+Route::post('/expense-show/personal/store','ExpenseController@personalExpenseStore')->name('personal.expense.store');
+Route::post('personal/expense-getData','ExpenseController@getPersonalExpenseData')->name('personal.expense.getData');
+Route::post('personal/expense-edit','ExpenseController@editPersonalExpenseData')->name('personal.expense.edit');
+Route::post('personal/expense-update/{id}','ExpenseController@updatePersonalExpenseData')->name('personal.expense.update');
+Route::post('personal/expense-delete','ExpenseController@deletePersonalExpenseData')->name('perosnal.expense.deleteExpense');
+
 
 
 /*
@@ -99,6 +107,9 @@ Route::post('/Package-cable-getpackage','PackageController@cablegetpackage')->na
  * Bill Routes
  */
 
+Route::view('report/all','report.all');
+
+
 Route::get('/Bill','BillController@show')->name('bill.show');
 Route::post('/Bill','BillController@showWithData')->name('bill.show.withData');
 
@@ -126,6 +137,10 @@ Route::get('/Bill-PastDue-Internet-Client','BillController@showPastDue')->name('
 
 Route::post('/Internet-Bill-due','BillController@internetBillDue')->name('bill.Internet.due');
 Route::post('/Internet-Bill-approved','BillController@approvedInternet')->name('bill.internet.approved');
+
+
+Route::post('/Internet-Bill-Past-Due','BillController@clientPastDueMonth')->name('bill.Internet.pastDueMonthForClient');
+Route::post('/Internet-Bill-update-Pay','BillController@clientBillPay')->name('bill.Internet.updateBillPay');
 
 
 /*Cable*/
@@ -170,6 +185,12 @@ Route::get('/Report-Summary','ReportController@showSummary')->name('report.showS
  */
 Route::get('company-info','CompanyController@index')->name('company');
 Route::post('company-info/{id}','CompanyController@edit')->name('company.edit');
+
+// Person Info
+Route::get('expense-person','CompanyController@expense_person')->name('expense_person');
+Route::post('expense-person-insert','CompanyController@expense_person_insert')->name('person.insert');
+Route::post('/expense-person-edit', 'CompanyController@editPerson')->name('person.edit');
+Route::post('/expense-person-update', 'CompanyController@updatePerson')->name('person.update');
 
 /*
  * Bill Info

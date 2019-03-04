@@ -25,6 +25,13 @@
         <input class="form-control" maxlength="11" value="{{$smsConfig->brandName}}" name="brandName" required type="text">
 
     </div>
+    <div class="form-group">
+
+        <label for="">Rate<span style="color: red">*</span></label>
+
+        <input class="form-control" value="{{$smsConfig->sms_rate}}" maxlength="20" name="sms_rate" required type="text">
+
+    </div>
 
     <div class="form-group">
 

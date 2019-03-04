@@ -42,349 +42,113 @@
 
     </style>
 
+
+    <div class="card">
+        <div class="card-body">
+            <h3>All Report  ( {{date('M')}} )</h3>
+            <div class="row">
     @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="InternetEmp")
-    <h3>Internet</h3>
-    <div class="row">
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="{{route('bill.internet.showTotalBillRecieved')}}">Total Bill Recieved</a></h4>
-                    <div class="row">
-                    <div class="text-left col-md-6">
-                        {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                        {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalBillRecievedOFLastMonth}} </span></h2>--}}
-
-
-                    </div>
-                    <div class="text-right col-md-6">
-                        <h4 class="font-light m-b-0">{{$totalbilllastmonthinternet->totalbillinternet}}</h4>
-
-                        <span class="text-muted">This Month</span>
-
-                    </div>
-                    </div>
-
-
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="{{route('bill.showPastDueLastMonth')}}">Total Bill Due</a></h4>
-
-                    <div class="row">
-
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalBillDueOFLastMonth}}</span></h2>--}}
-
-
-
-                        </div>
-
-                    <div class="text-right col-md-6">
-                        <h4 class="font-light m-b-0">{{$totalduelastmonthinternet->totaldueinternet}}</h4>
-
-                        <span class="text-muted">This Month</span>
-
-                    </div>
-
-                    </div>
-
+                <div class="table-responsive col-md-6">
+                    <table class="table table-striped table-bordered ">
+                        <tbody>
+                        <tr>
+                            <td colspan="2" style="text-align: center"><h3>Internet</h3></td>
+                        </tr>
+                        <tr>
+                            <td> <a href="{{route('bill.internet.showTotalBillRecieved')}}">Total Bill Recieved</a></td>
+                            <td>@if($totalbilllastmonthinternet->totalbillinternet){{$totalbilllastmonthinternet->totalbillinternet}} @else 0 @endif</td>
+                        </tr>
+                        <tr>
+                            <td><a href="{{route('bill.showPastDueLastMonth')}}">Total Bill Due</a></td>
+                            <td>@if($totalduelastmonthinternet->totaldueinternet){{$totalduelastmonthinternet->totaldueinternet}} @else 0 @endif</td>
+                        </tr>
+                        <tr>
+                            <td><a href="{{route('bill.showPastDue')}}">Past Bill Due</a></td>
+                            <td>@if($totalpastduelastmonthinternet->totalpastdueinternet){{$totalpastduelastmonthinternet->totalpastdueinternet}} @else 0 @endif</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Total Expense</a></td>
+                            <td>@if($totalOFLastMonthDebit){{$totalOFLastMonthDebit}} @else 0 @endif</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Total Earning</a></td>
+                            <td>@if($totalOFLastMonthCredit){{$totalOFLastMonthCredit}} @else 0 @endif</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Total(Summary)</a></td>
+                            <td>@if($summary){{$summary }} @else 0 @endif</td>
+                        </tr>
+                        </tbody>
+                    </table>
 
                 </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="{{route('bill.showPastDue')}}">Past Bill Due</a></h4>
+                @endif
+@if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="CableEmp")
 
-                    <div class="row">
-
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-
-
-
-
-                        </div>
-
-                    <div class="text-right col-md-6">
-                        <h4 class="font-light m-b-0">{{$totalpastduelastmonthinternet->totalpastdueinternet}}</h4>
-
-                        <span class="text-muted">Total Previous Months</span>
-
-                    </div>
-
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="#">Total Expense</a></h4>
-
-                    <div class="row">
-
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthDebit}} </span></h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">35000.00 </span></h2>--}}
-
-
-                        </div>
-
-                    <div class="text-right col-md-6">
-                        <h5 class="font-light m-b-0">{{$totalOFLastMonthDebit}}</h5>
-
-                        <span class="text-muted">This Month</span>
-
-                    </div>
-
-                    </div>
-
+                <div class="table-responsive col-md-6">
+                    <table class="table table-striped table-bordered ">
+                        <tbody>
+                        <tr>
+                            <td colspan="2" style="text-align: center"><h3>Cable</h3></td>
+                        </tr>
+                        <tr>
+                            <td><a href="{{route('bill.cable.showTotalBillRecieved')}}">Total Bill Recieved</a></td>
+                            <td>@if($totalbilllastmonthcable->totalbillcable){{$totalbilllastmonthcable->totalbillcable}} @else 0 @endif</td>
+                        </tr>
+                        <tr>
+                            <td><a href="{{route('bill.showPastDueLastMonth')}}">Total Bill Due</a></td>
+                            <td>@if($totalduelastmonthcable->totalduecable){{$totalduelastmonthcable->totalduecable}} @else 0 @endif</td>
+                        </tr>
+                        <tr>
+                            <td><a href="{{route('bill.showPastDue')}}">Past Bill Due</a></td>
+                            <td>@if($totalpastduelastmonthcable->totalpastduecable){{$totalpastduelastmonthcable->totalpastduecable}} @else 0 @endif</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Total Expense</a></td>
+                            <td>{{$totalOFLastMonthDebit}}</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Total Earning</a></td>
+                            <td>{{$totalOFLastMonthCredit}}</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Total(Summary)</a></td>
+                            <td>{{$summarycable }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
 
                 </div>
-            </div>
+@endif
+        <hr class="col-md-12">
+        <div class="table-responsive col-md-6">
+            <table class="table table-striped table-bordered ">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="text-align: center"><h3>Salary Expense</h3></td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
-        <div style="margin-top: 10px;margin-bottom: 10px" class="col-md-12"></div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="#">Total Earning</a></h4>
-                    <div class="row">
 
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthCredit}}</span></h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">100000.00</span></h2>--}}
+        <div class="table-responsive col-md-6">
+            <table class="table table-striped table-bordered ">
+                <tbody>
+                <tr>
+                    <td colspan="2" style="text-align: center"><h3>Personal Expense</h3></td>
+                </tr>
+                </tbody>
+            </table>
 
-
-                        </div>
-
-                    <div class="text-right col-md-6">
-                        <h5 class="font-light m-b-0">{{$totalOFLastMonthCredit}}</h5>
-
-                        <span class="text-muted">This Month</span>
-
-                    </div>
-
-                    </div>
-
-
-                </div>
-            </div>
         </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="#">Total(Summary)</a></h4>
-                    <div class="row">
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{(number_format(str_replace(',','',$totalOFLastMonthCredit)-str_replace(',','',$totalOFLastMonthDebit),2))}}</span></h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">65000.00</span></h2>--}}
-
-
-                        </div>
-                    <div class="text-right col-md-6">
-                        <h5 class="font-light m-b-0">{{$summary }}</h5>
-
-                        <span class="text-muted">This Month</span>
-
-                    </div>
-
-                    </div>
-
-
-                </div>
             </div>
+
         </div>
+
 
     </div>
 
-    @endif
-    <br>
-    @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="CableEmp")
-    <h3>Cable</h3>
-    <div class="row">
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="{{route('bill.cable.showTotalBillRecieved')}}">Total Bill Recieved</a></h4>
-                    <div class="row">
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalBillRecievedOFLastMonth}} </span></h2>--}}
-
-
-                        </div>
-                        <div class="text-right col-md-6">
-                            <h4 class="font-light m-b-0">{{$totalbilllastmonthcable->totalbillcable}}</h4>
-
-                            <span class="text-muted">This Month</span>
-
-                        </div>
-                    </div>
-
-
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="{{route('bill.showPastDueLastMonth')}}">Total Bill Due</a></h4>
-
-                    <div class="row">
-
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalBillDueOFLastMonth}}</span></h2>--}}
-
-
-
-                        </div>
-
-                        <div class="text-right col-md-6">
-                            <h4 class="font-light m-b-0">{{$totalduelastmonthcable->totalduecable}}</h4>
-
-                            <span class="text-muted">This Month</span>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="{{route('bill.showPastDue')}}">Past Bill Due</a></h4>
-
-                    <div class="row">
-
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-
-
-
-
-                        </div>
-
-                        <div class="text-right col-md-6">
-                            <h4 class="font-light m-b-0">{{$totalpastduelastmonthcable->totalpastduecable}}</h4>
-
-                            <span class="text-muted">Total Previous Months</span>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="#">Total Expense</a></h4>
-
-                    <div class="row">
-
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthDebit}} </span></h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">35000.00 </span></h2>--}}
-
-
-                        </div>
-
-                        <div class="text-right col-md-6">
-                            <h5 class="font-light m-b-0">{{$totalOFLastMonthDebitcable}}</h5>
-
-                            <span class="text-muted">This Month</span>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-        <div style="margin-top: 10px;margin-bottom: 10px" class="col-md-12"></div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="#">Total Earning</a></h4>
-                    <div class="row">
-
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{$totalOFLastMonthCredit}}</span></h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">100000.00</span></h2>--}}
-
-
-                        </div>
-
-                        <div class="text-right col-md-6">
-                            <h5 class="font-light m-b-0">{{$totalOFLastMonthCreditcable}}</h5>
-
-                            <span class="text-muted">This Month</span>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="#">Total(Summary)</a></h4>
-                    <div class="row">
-                        <div class="text-left col-md-6">
-                            {{--<h2 class="font-light m-b-0"> {{$lastDayCalled}} | {{$target->targetCall}}</h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">{{(number_format(str_replace(',','',$totalOFLastMonthCredit)-str_replace(',','',$totalOFLastMonthDebit),2))}}</span></h2>--}}
-                            {{--<h2 class="font-light m-b-0"><span class="text-success">65000.00</span></h2>--}}
-
-
-                        </div>
-                        <div class="text-right col-md-6">
-                            <h5 class="font-light m-b-0">{{$summarycable }}</h5>
-
-                            <span class="text-muted">This Month</span>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    @endif
 @endsection
 @section('js')
     <script>
@@ -413,7 +177,7 @@
 
 
               //  $("#duepayment").html(data);
-                 console.log(data);
+               //  console.log(data);
             }
         });
 

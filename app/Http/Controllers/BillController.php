@@ -12,6 +12,7 @@ use App\Package;
 use App\Company;
 use App\Report;
 use App\SmsCheckMonth;
+use App\SmsConfig;
 use App\User;
 use Illuminate\Http\Request;
 use PDF;
@@ -92,11 +93,25 @@ class BillController extends Controller
     }
     public function generatePdf(){
 
-        $userName='techcloud';
-        $password='tcl@it404$';
-        $brand='TECH CLOUD';
+//        $userName='techcloud';
+//        $password='tcl@it404$';
+//        $brand='TECH CLOUD';
         $destination='01680674598';
         $sms='Test SMS From TCL API';
+
+//        $arrContextOptions=array(
+//            "ssl"=>array(
+//                "verify_peer"=>false,
+//                "verify_peer_name"=>false,
+//            ),
+//        );
+
+        $smsConfig=SmsConfig::select('userName','password','brandName','sms_rate')->first();
+        $userName=$smsConfig->userName;
+        $password=$smsConfig->password;
+        $brand=$smsConfig->brandName;
+        $rate= (float)($smsConfig->sms_rate);
+        //  return $smsConfig;
 
         $arrContextOptions=array(
             "ssl"=>array(
@@ -104,6 +119,7 @@ class BillController extends Controller
                 "verify_peer_name"=>false,
             ),
         );
+
         $sms="Dear valued Client, Please Pay your Internet Bill Within 10th ".date('F')." ".date('Y')." Otherwise your connection will disconnect. Please ignore if you already paid.";
 
         $json = file_get_contents("https://msms.techcloudltd.com/pages/RequestSMS.php?user_name=".urlencode($userName)."&pass_word=".urlencode($password)."&brand=".urlencode($brand)."&type=1&destination=".urlencode($destination)."&sms=".urlencode($sms), false, stream_context_create($arrContextOptions));
@@ -148,7 +164,9 @@ class BillController extends Controller
 
     }
     public function internetBillShowWithData(Request $r){
-        $bill = InternetBill::select('internet_bill.fkclientId','internet_client.clientFirstName',
+
+        $bill = InternetBill::select('internet_bill.billId as internetBillId','internet_bill.fkclientId','internet_bill.partial',
+            'internet_bill.discount','internet_client.clientFirstName',
             'internet_client.clientLastName','internet_client.phone','internet_client.clientSerial','internet_bill.price as billprice',
             'internet_bill.billId',DB::raw('DATE_FORMAT(internet_bill.billdate,"%M-%Y") as billdate'),
             'internet_client.bandWide', 'package.packageName','internet_bill.status as billStatus','user.name')
@@ -165,6 +183,10 @@ class BillController extends Controller
         }
         if ($r->pastRecieved){
             $bill= $bill->where('internet_bill.status','ap');
+        }
+        if ($r->pastDueClient){
+
+            $bill= $bill->where('internet_bill.fkclientId',$r->pastDueClient);
         }
 
         if($r->emp){
@@ -286,6 +308,7 @@ class BillController extends Controller
 
     }
     public function cableBillPaid(Request $r){
+
         $month = Carbon::parse($r->date)->format('m');
         $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
         $bill->status = 'p';
@@ -305,6 +328,7 @@ class BillController extends Controller
         return  $message;
     }
     public function cableBillDue(Request $r){
+
         $month = Carbon::parse($r->date)->format('m');
         $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
         $bill->status = 'np';
@@ -312,6 +336,7 @@ class BillController extends Controller
 
 //        $report = Report::where('tabelId' , $bill->billId)
 //            ->where('tableName', 'cable_bill')->delete();
+
         $message='Monthly Cable bill of '.$r->date.' for client Name '.$bill->clientFirstName.' '.$bill->clientLastName.' has been changed to unpaid';
         return  $message;
     }
@@ -375,5 +400,52 @@ class BillController extends Controller
         $date=Carbon::now()->format('F-Y');
 
         return view('bill.cable.showBillRecieved', compact('date'));
+    }
+    public function clientPastDueMonth(Request $r){
+
+         $clientId=$r->clientId;
+
+        return view('bill.internet.showPastDueForClient',compact('clientId'));
+
+
+    }
+    public function clientBillPay(Request $r){
+
+       // return $r;
+
+        for ($i=0;$i<count($r->rowid);$i++){
+
+            $bill=InternetBill::findOrFail($r->rowid[$i]);
+            $bill->status = 'p';
+            $bill->partial = $r->amount[$i];
+            $bill->discount = $r->discount[$i];
+            $bill->receivedBy = Auth::user()->userId;
+            $bill->receiveDate=date('Y-m-d');
+            $bill->save();
+
+
+
+            $report=Report::where('date',$bill->billdate)->where('tabelId',$bill->billId)
+                ->where('tableName','internet_bill')->where('status',ACCOUNT_STATUS['Credit'])->first();
+
+            if (!$report) {
+                $report = new Report();
+            }
+
+        $report->status = ACCOUNT_STATUS['Credit'];
+        $report->price = $bill->price;
+        $report->tabelId = $bill->billId;
+        $report->date = $bill->billdate;
+        $report->partial = $r->amount[$i];
+        $report->discount = $r->discount[$i];
+        $report->tableName = 'internet_bill';
+        $report->save();
+
+        }
+
+
+         return back();
+
+
     }
 }

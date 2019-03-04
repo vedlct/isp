@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Expense;
+use App\ExpensePerson;
+use App\PersonalExpense;
 use App\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -70,15 +72,58 @@ public function expenseEdit(Request $r){
         return back();
     }
 
-//    public function filterByType(Request $request)
-//    {
-//        if($request->status) {
-//            $expense = Expense::where('expenseType',$request->status)->get();
-//            return response()->json(['data' => $expense]);
-//        } else {
-//            $expense = Expense::get();
-//            return response()->json(['data' => $expense]);
-//        }
-//    }
+
+    public function personalExpenseShow(){
+        $expensePerson=ExpensePerson::get();
+
+        return view('expense.personalExpense',compact('expensePerson'));
+    }
+
+    public function personalExpenseStore(Request $r){
+//        return $r;
+        $personalExpense=new PersonalExpense();
+        $personalExpense->price=$r->price;
+        $personalExpense->cause=$r->cause;
+        $personalExpense->personId=$r->expensefor;
+        $personalExpense->date=date('Y-m-d');
+        $personalExpense->save();
+        session()->flash('success', 'Expense added successfully');
+        return back();
+
+    }
+
+    public function getPersonalExpenseData(Request $r){
+        $expense = PersonalExpense::select('personal_expense.*','expense_person.name')
+            ->leftJoin('expense_person','expense_person.id','personal_expense.personId');
+        if($r->fromdate && $r->toDate){
+            $expense=$expense->whereBetween('personal_expense.date',[$r->fromdate,$r->toDate]);
+        }
+        $datatables = DataTables::of($expense->get());
+        return $datatables->make(true);
+
+    }
+
+    public function editPersonalExpenseData(Request $r){
+        $expense=PersonalExpense::findOrFail($r->id);
+        $expensePerson=ExpensePerson::get();
+        return view('expense.editPersonalExpense',compact('expense','expensePerson'));
+    }
+
+    public function updatePersonalExpenseData($id,Request $r){
+
+        $personalExpense=PersonalExpense::findOrFail($r->id);
+        $personalExpense->price=$r->price;
+        $personalExpense->cause=$r->cause;
+        $personalExpense->personId=$r->expensefor;
+        $personalExpense->date=$r->date;
+        $personalExpense->save();
+        session()->flash('success', 'Expense updated successfully');
+        return back();
+
+    }
+
+    public function deletePersonalExpenseData(Request $r){
+        PersonalExpense::destroy($r->id);
+    }
 
 }

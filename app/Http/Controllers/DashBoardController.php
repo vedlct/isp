@@ -97,8 +97,7 @@ class DashBoardController extends Controller
         $summarycable = number_format($summarycable,2);
 
 
-        return view('index', compact('totalbilllastmonthinternet','totalduelastmonthinternet', 'totalpastduelastmonthinternet', 'totalOFLastMonthDebit', 'totalOFLastMonthCredit' , 'summary'
-        ,'totalbilllastmonthcable','totalduelastmonthcable','totalpastduelastmonthcable','totalOFLastMonthDebitcable','totalOFLastMonthCreditcable','summarycable',''));
+        return view('index', compact('totalbilllastmonthinternet','totalduelastmonthinternet', 'totalpastduelastmonthinternet', 'totalOFLastMonthDebit', 'totalOFLastMonthCredit' , 'summary','totalbilllastmonthcable','totalduelastmonthcable','totalpastduelastmonthcable','totalOFLastMonthDebitcable','totalOFLastMonthCreditcable','summarycable'));
     }
 
     public function previousdue(){
@@ -120,29 +119,29 @@ class DashBoardController extends Controller
             $checkmonthinsert->date = date('Y-m-d');
             $checkmonthinsert->save();
 
-            DB::select(DB::raw("INSERT INTO cable_bill (`billdate`, `price`, `status`, `fkclientId`)  
-                    SELECT '". date('Y-m-d')."',`price`,'np',`clientId` FROM `cable_client` where cable_client.clientStatus=2"));
+//            DB::select(DB::raw("INSERT INTO cable_bill (`billdate`, `price`, `status`, `fkclientId`)
+//                    SELECT '".Carbon::now()->subMonth()->format('Y-m-d')."',`price`,'np',`clientId` FROM `cable_client` where cable_client.clientStatus=2"));
 
-//            $client = InternetClient::select('clientId', 'price')->where('clientStatus',2)->get();
-//            foreach ($client as $c) {
-//                $bill = new InternetBill();
-//                $bill->billdate = date('Y-m-d');
-//                $bill->price = $c->price;
-//                $bill->status = 'np';
-//                $bill->fkclientId = $c->clientId ;
-//                $bill->save();
-//            }
-//            $clientcable = CableClient::select('clientId', 'price')->where('clientStatus',2)->get();
-//            foreach ($clientcable as $cc) {
-//                $billcable = new CableBill();
-//                $billcable->billdate = Carbon::now()->subMonth()->format('Y-m-d');
-//                $billcable->price = $cc->price;
-//                $billcable->status = 'np';
-//                $billcable->fkclientId = $cc->clientId ;
-//                $billcable->save();
-//            }
-            DB::select(DB::raw("INSERT INTO internet_bill (`billdate`, `price`, `status`, `fkclientId`)
-              SELECT '". Carbon::now()->subMonth()->format('Y-m-d')."',`price`,'np',`clientId` FROM `internet_client` where internet_client.clientStatus=2"));
+            $client = InternetClient::select('clientId', 'price')->where('clientStatus',2)->get();
+            foreach ($client as $c) {
+                $bill = new InternetBill();
+                $bill->billdate = date('Y-m-d');
+                $bill->price = $c->price;
+                $bill->status = 'np';
+                $bill->fkclientId = $c->clientId ;
+                $bill->save();
+            }
+            $clientcable = CableClient::select('clientId', 'price')->where('clientStatus',2)->get();
+            foreach ($clientcable as $cc) {
+                $billcable = new CableBill();
+                $billcable->billdate = Carbon::now()->subMonth()->format('Y-m-d');
+                $billcable->price = $cc->price;
+                $billcable->status = 'np';
+                $billcable->fkclientId = $cc->clientId ;
+                $billcable->save();
+            }
+//            DB::select(DB::raw("INSERT INTO internet_bill (`billdate`, `price`, `status`, `fkclientId`)
+//              SELECT '".  date('Y-m-d')."',`price`,'np',`clientId` FROM `internet_client` where internet_client.clientStatus=2"));
 
             $employee = Employee::select('employeeId')->where('status',1)->get();
 
