@@ -126,6 +126,10 @@
                                 <th>Phone</th>
                                 {{--<th>Package Name</th>--}}
                                 <th>Received By</th>
+                                
+                                <th>Discount</th>
+                                <th>Received Ammount</th>
+
                                 <th>Price</th>
                                 <th>Action</th>
                                 <th>Invoice</th>
@@ -174,6 +178,8 @@
                         if ($('#billMonth').val()!=""){
                             d.billMonth=$('#billMonth').val();
                         }
+                        d.emp=$('#emp').val();
+                        d.statusId=$('#statusId').val();
                     },
                 },
                 columns: [
@@ -182,6 +188,24 @@
                     { data: 'clientSerial', name: 'cable_client.clientSerial',"orderable": false, "searchable":true },
                     { data: 'phone', name: 'cable_client.phone', "orderable": false, "searchable":true },
                     { data: 'name', name: 'user.name', "orderable": true, "searchable":true },
+                    { "data": function(data){
+                            if (data.discount != null){
+                                return data.discount+"="+totalPaid(data.discount);
+                            }else {
+                                return data.discount;
+                            }
+                        },
+                        "orderable": false, "searchable":false
+                    },
+                    { "data": function(data){
+                            if (data.partial !=null){
+                                return data.partial+"="+totalPaid(data.partial);
+                            }else {
+                                return data.partial;
+                            }
+                        },
+                        "orderable": false, "searchable":false
+                    },
                     { data: 'billprice', name: 'cable_bill.price', "orderable": true, "searchable":true },
                     { "data": function(data){
                             if (data.billStatus=='np'){
@@ -191,7 +215,9 @@
                                         @if(Auth::user()->fkusertype=='Admin')
                                             '<option value="approved"  >Approved</option>'+
                                         @endif
-                                            '</select>';
+                                            '</select>'+
+                                    '<button class="btn btn-smbtn-info" onclick="payBill('+data.fkclientId+')"><i class="fa fa-money"></i></button>'
+                                    ;
                             }else if (data.billStatus=='p'){
                                 return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
                                     '<option  value="paid" selected  >Paid</option>'+
@@ -199,7 +225,9 @@
                                         @if(Auth::user()->fkusertype=='Admin')
                                             '<option value="approved"  >Approved</option>'+
                                         @endif
-                                            '</select>';
+                                            '</select>'+
+                                    '<button class="btn btn-smbtn-info" onclick="payBill('+data.fkclientId+')"><i class="fa fa-money"></i></button>'
+                                    ;
                             }
                             else if(data.billStatus=='ap'){
                                 return "Approved";
@@ -233,6 +261,20 @@
         }
         function changeDate(x) {
             table.ajax.reload();
+        }
+        function payBill(x) {
+            $.ajax({
+                type: 'POST',
+                url: "{!! route('bill.Cable.pastDueMonthForClient') !!}",
+                cache: false,
+                data: {_token: "{{csrf_token()}}", 'clientId': x},
+                success: function (data) {
+                    //console.log(data);
+                    $('.modal-body').html(data);
+                    $('#myModalLabel').html("test");
+                    $('#myModal').modal({show: true});
+                },
+            });
         }
         function changebillstatus(x) {
             $.confirm({
@@ -532,6 +574,17 @@
                 }
             });
         });
+        function reloadTable() {
+            table.ajax.reload();
+        }
+        function totalPaid(amount) {
+            sumofnums = 0;
+            nums = amount.split("+");
+            for (i = 0; i < nums.length; i++) {
+                sumofnums += parseInt(nums[i]);
+            }
+            return sumofnums;
+        }
     </script>
 
 @endsection

@@ -26,7 +26,13 @@
                     <input class="btn btn-sm btn-info" id="Submit" name="Submit" value="Submit" onclick="getCreditData()" type="button">
 
                     <div class="text-left mb-2 mr-2">
-                        <div id="totalSumDiv" style="font-weight: bold">Total Sum : &nbsp;&nbsp;<span id="totalSum" style="color: red">{{$totalOFCurrentMonth}}</span></div>
+                        <div id="totalSumDiv" style="font-weight: bold">Total Sum of Amount : &nbsp;&nbsp;<span id="totalSum" style="color: red">{{$totalOFCurrentMonth}}</span></div>
+                    </div>
+                    <div class="text-left mb-2 mr-2">
+                        <div id="totalDiscountSumDiv" style="font-weight: bold">Total Sum of Discount : &nbsp;&nbsp;<span id="totalDiscountSum" style="color: red">{{$totalDiscountOFCurrentMonth}}</span></div>
+                    </div>
+                    <div class="text-left mb-2 mr-2">
+                        <div id="totalRecievedSumDiv" style="font-weight: bold">Total Sum of Discount : &nbsp;&nbsp;<span id="totalRecievedSum" style="color: red">{{$totalRecievedOFCurrentMonth}}</span></div>
                     </div>
 
                 </div>
@@ -37,6 +43,8 @@
                     <tr>
                         <th>Date</th>
                         <th>Amount</th>
+                        <th>Discount</th>
+                        <th>Amount Recieved</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -44,7 +52,10 @@
                     <tfoot>
                     <tr>
                         <th style="text-align:right">Total:</th>
-                        <th colspan="2"><span id="pageTotal"></span></th>
+                        <th ><span id="pageTotal"></span></th>
+                        <th ><span id="discountTotal"></span></th>
+                        <th ><span id="recievedTotal"></span></th>
+                        <th ><span id=""></span></th>
 
                     </tr>
                     </tfoot>
@@ -92,6 +103,8 @@
                 drawCallback: function () {
                     var api = this.api();
                     $('#pageTotal').html(api.column( 1, {page:'current'}).data().sum());
+                    $('#discountTotal').html(api.column( 2, {page:'current'}).data().sum());
+                    $('#recievedTotal').html(api.column( 3, {page:'current'}).data().sum());
 
                 },
 
@@ -124,6 +137,8 @@
                 columns: [
                     { data: 'date', name: 'date' },
                     { data: 'price', name: 'price' },
+                    { data: 'discount', name: 'discount' },
+                    { data: 'partial', name: 'partial' },
 
                     { "data": function(data){
 
@@ -151,6 +166,7 @@
                     $('.modal-body').html(data);
                     $('#myModalLabel').html("Details-Report");
                     $('#myModal').modal();
+//                    console.log(data);
 
                 }
             });
@@ -166,7 +182,9 @@
                 cache: false,
                 data: {_token: "{{csrf_token()}}",'dateFilterTo':$('#dateFilterTo').val(),'dateFilterFrom':$('#dateFilterFrom').val()},
                 success: function (data) {
-                    $("#totalSum").html(data);
+                    $("#totalSum").html(data.totalAmountSum);
+                    $("#totalDiscountSum").html(data.totalDiscountSum);
+                    $("#totalRecievedSum").html(data.totalRecievedSum);
 //                        console.log(data);
                 }
             });
@@ -196,6 +214,8 @@
                 return a + b;
             }, 0 );
         } );
+
+
     </script>
 
 @endsection

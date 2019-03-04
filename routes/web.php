@@ -158,6 +158,12 @@ Route::get('Bill/Generate-Cable-All/{date}','BillController@generateAllCableBill
 
 Route::get('/Bill-PastDue-Cable-Client','BillController@showCablePastDue')->name('bill.Cable.showPastDue');
 
+Route::post('/Cable-Bill-Past-Due','BillController@cableClientPastDueMonth')->name('bill.Cable.pastDueMonthForClient');
+
+
+Route::post('/Cable-Bill-update-Pay','BillController@cableClientBillPay')->name('bill.cable.updateBillPay');
+
+
  /* Report Routes
 
  */
@@ -229,6 +235,19 @@ Route::post('SMS-Update-Config','SmsController@updateconfig')->name('sms.updateC
 //Change password
 Route::get('password','HomeController@password')->name('password');
 Route::post('password','HomeController@changePassword')->name('password.change');
+
+//Other
+Route::get('other','OtherController@index')->name('other');
+Route::post('other/get-data','OtherController@getData')->name('other.getdata');
+
+Route::post('other/create','OtherController@create')->name('create.other');
+Route::post('other/insert','OtherController@insert')->name('insert.other');
+
+Route::post('other/edit','OtherController@edit')->name('other.edit');
+Route::post('other/update','OtherController@update')->name('other.update');
+
+Route::post('other/delete-confirm','OtherController@delete')->name('other.confirm.delete');
+
 
 
 

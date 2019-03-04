@@ -31,8 +31,12 @@ class ReportController extends Controller
     public function showCredit(){
 
         $totalOFCurrentMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', Carbon::now()->month)->sum('report.price');
+        $totalDiscountOFCurrentMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', Carbon::now()->month)->sum('report.discount');
+        $totalRecievedOFCurrentMonth=Report::where('report.status',ACCOUNT_STATUS['Credit'])->whereMonth('report.date', Carbon::now()->month)->sum('report.partial');
         $totalOFCurrentMonth=number_format($totalOFCurrentMonth,2);
-        return view('report.showCredit',compact('totalOFCurrentMonth'));
+        $totalDiscountOFCurrentMonth=number_format($totalDiscountOFCurrentMonth,2);
+        $totalRecievedOFCurrentMonth=number_format($totalRecievedOFCurrentMonth,2);
+        return view('report.showCredit',compact('totalOFCurrentMonth','totalDiscountOFCurrentMonth','totalRecievedOFCurrentMonth'));
     }
 
     public function getTotalDebitSum(Request $r){
@@ -56,16 +60,30 @@ class ReportController extends Controller
 
         $credit=Report::where('report.status',ACCOUNT_STATUS['Credit']);
 
+
         if ($r->dateFilterFrom){
             $credit=$credit->where('report.date','>=',$r->dateFilterFrom);
         }
         if ($r->dateFilterTo){
             $credit=$credit->where('report.date','<=',$r->dateFilterTo);
         }
-        $credit=$credit->sum('report.price');
+        $credit1=$credit->sum('report.price');
+        $creditDiscount=$credit->sum('report.discount');
+        $creditRecievedAmount=$credit->sum('report.partial');
+
+        $credit2=number_format($credit1,2);
+        $creditDiscount=number_format($creditDiscount,2);
+        $creditRecievedAmount=number_format($creditRecievedAmount,2);
+
+        $data=array(
+          'totalAmountSum'=>$credit2,
+          'totalDiscountSum'=>$creditDiscount,
+          'totalRecievedSum'=>$creditRecievedAmount,
+        );
 
 
-        return number_format($credit,2);
+
+        return $data;
     }
 
     public function getDebitData(Request $r){
@@ -102,9 +120,11 @@ class ReportController extends Controller
     }
     public function getCreditData(Request $r){
 
-        $credit=Report::select('report.reportId','report.price','report.date','report.status')
+        $credit=Report::select('report.reportId',DB::raw('SUM(report.price) as price'),DB::raw('SUM(report.partial) as partial'),DB::raw('SUM(report.discount) as discount'),'report.date','report.status')
+            ->where('report.status',ACCOUNT_STATUS['Credit'])
 
-            ->where('report.status',ACCOUNT_STATUS['Credit']);
+            ->groupBy("report.tableName",'report.tabelId')
+        ;
 
         if ($r->currentMonth){
             $credit=$credit->whereMonth('report.date', Carbon::now()->month);
@@ -133,22 +153,29 @@ class ReportController extends Controller
 
         if ($report->tableName == 'cable_bill'){
 
-            $report=$report->select('report.*','cable_client.clientFirstName','cable_client.clientLastName',
+            $report=Report::select('report.*',DB::raw('SUM(report.price) as Totalprice'),DB::raw('SUM(report.partial) as partial'),DB::raw('SUM(report.discount) as discount'),
+                'cable_client.clientFirstName','cable_client.clientLastName',
                 'cable_client.email','cable_client.phone','cable_client.price','cable_client.address')
                 ->leftJoin('cable_bill','cable_bill.billId','report.tabelId')
                 ->leftJoin('cable_client','cable_client.clientId','cable_bill.fkclientId')
-                ->findOrFail($reportId);
+                ->groupBy("report.tableName",'report.tabelId')
+                ->where('report.tabelId',$report->tabelId)
+                ->first();
+
         }
         elseif ($report->tableName=='internet_bill'){
 
-            $report=$report->select('report.*','internet_client.clientFirstName','internet_client.clientLastName',
+            $report=Report::select('report.*',DB::raw('SUM(report.price) as Totalprice'),DB::raw('SUM(report.partial) as partial'),DB::raw('SUM(report.discount) as discount'),'internet_client.clientFirstName','internet_client.clientLastName',
                 'internet_client.email','internet_client.phone','internet_client.price','internet_client.address')
                 ->leftJoin('internet_bill','internet_bill.billId','report.tabelId')
                 ->leftJoin('internet_client','internet_client.clientId','internet_bill.fkclientId')
-                ->findOrFail($reportId);
+                ->groupBy("report.tableName",'report.tabelId')
+                ->where('report.tabelId',$report->tabelId)
+                ->first();
         }
 
         elseif ($report->tableName=='employee'){
+
             $report=$report->select('report.*','employee.employeeName','employee.degisnation',
                 'employee.phone','employee.email','employee.price')
                 ->leftJoin('employee','employee.employeeId','report.tabelId')
@@ -170,5 +197,13 @@ class ReportController extends Controller
 
 
     }
+    /* summary */
+
+    public function showSummary(){
+
+
+        return view('report.showSummary');
+    }
+
 
 }

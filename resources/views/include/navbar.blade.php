@@ -122,7 +122,7 @@
                     <ul class="list-unstyled">
                         <li><a href="{{route('report.showDebit')}}" class="waves-effect">Debit</a></li>
                         <li><a href="{{route('report.showCredit')}}" class="waves-effect">Credit</a></li>
-                        {{--<li><a href="{{route('report.showSummary')}}" class="waves-effect">Summary</a></li>--}}
+                        <li><a href="{{route('report.showSummary')}}" class="waves-effect">Summary</a></li>
                     </ul>
                 </li>
 
@@ -131,6 +131,12 @@
                         <i class="fa fa-user"></i> <span>Expense Person</span>
                     </a>
                 </li>
+
+                    <li>
+                        <a href="{{route('other')}}" class="waves-effect">
+                            <i class="fa fa-plus"></i> <span>Other</span>
+                        </a>
+                    </li>
 
                 <li>
                     <a href="{{route('company')}}" class="waves-effect">

@@ -289,7 +289,8 @@ class BillController extends Controller
 
         $bill = CableBill::select('cable_bill.fkclientId','cable_client.clientFirstName','cable_client.clientSerial','cable_client.clientLastName','cable_client.phone',
             'cable_bill.price as billprice','cable_bill.billId',DB::raw('DATE_FORMAT(cable_bill.billdate,"%M-%Y") as billdate'),
-            'cable_bill.status as billStatus','user.name')
+            'cable_bill.status as billStatus','user.name','cable_bill.partial','cable_bill.billId as cableBillId',
+            'cable_bill.discount')
             ->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')
             ->leftjoin('user','user.userId','cable_bill.receivedBy')
             ->where('cable_client.clientStatus',2);
@@ -303,6 +304,17 @@ class BillController extends Controller
         if ($r->pastRecieved){
             $bill= $bill->where('cable_bill.status','ap');
         }
+        if ($r->pastDueClient){
+
+            $bill= $bill->where('cable_bill.fkclientId',$r->pastDueClient);
+        }
+        if($r->emp){
+            $bill= $bill->where('cable_bill.receivedBy',$r->emp);
+        }
+        if($r->statusId){
+            $bill= $bill->where('cable_bill.status',$r->statusId);
+        }
+
         $datatables = DataTables::of($bill)->with('total', $bill->count('cable_client.clientId'));
         return $datatables->make(true);
 
@@ -409,6 +421,14 @@ class BillController extends Controller
 
 
     }
+    public function cableClientPastDueMonth(Request $r){
+
+         $clientId=$r->clientId;
+
+        return view('bill.cable.showPastDueForClient',compact('clientId'));
+
+
+    }
     public function clientBillPay(Request $r){
 
        // return $r;
@@ -416,9 +436,31 @@ class BillController extends Controller
         for ($i=0;$i<count($r->rowid);$i++){
 
             $bill=InternetBill::findOrFail($r->rowid[$i]);
+
             $bill->status = 'p';
-            $bill->partial = $r->amount[$i];
-            $bill->discount = $r->discount[$i];
+            if ($r->amount[$i] != null){
+                if ($bill->partial != null){
+                    $bill->partial = $bill->partial."+".$r->amount[$i];
+                }else{
+                    $bill->partial = $r->amount[$i];
+                }
+
+            }else{
+//                $num = 0;
+//                $bill->partial = $bill->partial;
+            }
+            if ($r->discount[$i] != null){
+                if ($bill->discount != null){
+                    $bill->discount = $bill->discount."+".$r->discount[$i];
+                }else{
+                    $bill->discount = $r->discount[$i];
+                }
+
+            }else{
+//                $num = 0;
+//                $bill->discount = $bill->discount;
+            }
+
             $bill->receivedBy = Auth::user()->userId;
             $bill->receiveDate=date('Y-m-d');
             $bill->save();
@@ -439,6 +481,67 @@ class BillController extends Controller
         $report->partial = $r->amount[$i];
         $report->discount = $r->discount[$i];
         $report->tableName = 'internet_bill';
+        $report->save();
+
+        }
+
+
+         return back();
+
+
+    }
+    public function cableClientBillPay(Request $r){
+
+       // return $r;
+
+        for ($i=0;$i<count($r->rowid);$i++){
+
+            $bill=CableBill::findOrFail($r->rowid[$i]);
+
+            $bill->status = 'p';
+            if ($r->amount[$i] != null){
+                if ($bill->partial != null){
+                    $bill->partial = $bill->partial."+".$r->amount[$i];
+                }else{
+                    $bill->partial = $r->amount[$i];
+                }
+
+            }else{
+//                $num = 0;
+//                $bill->partial = $bill->partial;
+            }
+            if ($r->discount[$i] != null){
+                if ($bill->discount != null){
+                    $bill->discount = $bill->discount."+".$r->discount[$i];
+                }else{
+                    $bill->discount = $r->discount[$i];
+                }
+
+            }else{
+//                $num = 0;
+//                $bill->discount = $bill->discount;
+            }
+
+            $bill->receivedBy = Auth::user()->userId;
+            $bill->receiveDate=date('Y-m-d');
+            $bill->save();
+
+
+
+            $report=Report::where('date',$bill->billdate)->where('tabelId',$bill->billId)
+                ->where('tableName','cable_bill')->where('status',ACCOUNT_STATUS['Credit'])->first();
+
+            if (!$report) {
+                $report = new Report();
+            }
+
+        $report->status = ACCOUNT_STATUS['Credit'];
+        $report->price = $bill->price;
+        $report->tabelId = $bill->billId;
+        $report->date = $bill->billdate;
+        $report->partial = $r->amount[$i];
+        $report->discount = $r->discount[$i];
+        $report->tableName = 'cable_bill';
         $report->save();
 
         }

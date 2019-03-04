@@ -1,3 +1,5 @@
+
+
 {{--{{$reportId}}--}}
 {{--{{$report}}--}}
 {{--{{$report->tableName}}--}}
@@ -42,7 +44,7 @@
         </div>
 
 
-        {{--</div>--}}
+        </div>
 
         @else
 
@@ -64,11 +66,17 @@
             <div class="col-md-6">
                 <label>phone</label> :{{$report->phone}}
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label>email</label> :{{$report->email}}
             </div>
             <div class="col-md-4">
-                <label>Bill Paid</label> :<span style="color: red">{{$report->price}}</span>
+                <label>Total Bill</label> :<span style="color: red">{{$report->Totalprice}}</span>
+            </div>
+            <div class="col-md-4">
+                <label>Total Discount</label> :<span style="color: red">{{$report->discount}}</span>
+            </div>
+            <div class="col-md-4">
+                <label>Total Paid</label> :<span style="color: red">{{$report->partial}}</span>
             </div>
             <div class="col-md-12">
                 <label>Address</label> :{{$report->address}}
