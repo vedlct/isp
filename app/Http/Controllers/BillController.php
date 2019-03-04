@@ -326,6 +326,8 @@ class BillController extends Controller
             ->where(DB::raw('month(internet_bill.billdate)'),$month)
             ->where('internet_client.clientId',$r->id)->first();
         $bill->status = 'np';
+        $bill->partial = null;
+        $bill->discount = null;
         $bill->save();
         $report = Report::where('tabelId' , $bill->billId)
             ->where('tableName', 'internet_bill')->delete();
@@ -510,6 +512,8 @@ class BillController extends Controller
         $month = Carbon::parse($r->date)->format('m');
         $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
         $bill->status = 'np';
+        $bill->partial = null;
+        $bill->discount = null;
         $bill->save();
 
         $report = Report::where('tabelId' , $bill->billId)
