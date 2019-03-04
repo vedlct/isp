@@ -19,6 +19,7 @@
                                 <th>Month</th>
                                 <th>Total Bill</th>
                                 <th>Total Paid</th>
+                                <th>Total Discount</th>
                                 <th>Due</th>
                                 <th>Discount</th>
                                 <th>Amount(Full/Partial)</th>
@@ -31,7 +32,7 @@
                             <tfoot>
                             <tr>
 
-                                <th colspan="6"><button id="test321"  class="btn btn-sm btn-success pull-right">
+                                <th colspan="7"><button id="test321"  class="btn btn-sm btn-success pull-right">
                                         Submit
                                     </button>
                                 </th>
@@ -97,18 +98,29 @@
                     },
 
                     { "data": function(data){
+                        if (data.discount != null){
+                            return data.discount+"="+totalPaid(data.discount);
+                        }else {
+                            return data.discount;
+                        }
+
+                    },
+                        "orderable": false, "searchable":false
+                    },
+
+                    { "data": function(data){
 
                         if(data.billprice != null) {
 
                             if (data.partial != null) {
-                                return (data.billprice) + "-" + (data.partial) + "=" + totalDue(data.billprice, data.partial);
+                                return (data.billprice) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(data.billprice,data.discount, data.partial);
                             } else {
                                 return data.billprice;
                             }
                         }else {
 
                             if (data.partial != null) {
-                                return (0) + "-" + (data.partial) + "=" + totalDue(0, data.partial);
+                                return (0) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(0,data.discount, data.partial);
                             } else {
                                 return data.billprice;
                             }
@@ -350,9 +362,10 @@
             return sumofnums;
 
         }
-        function totalDue(amountdue,amountpaid) {
+        function totalDue(amountdue,amountdiscount,amountpaid) {
 
             sumofnums = 0;
+            sumoft = 0;
             nums = amountpaid.split("+");
             for (i = 0; i < nums.length; i++) {
                 sumofnums += parseInt(nums[i]);
@@ -362,6 +375,11 @@
             }else {
                 total=parseInt(parseInt(0)-sumofnums);
             }
+            t = amountdiscount.split("+");
+            for (i = 0; i < t.length; i++) {
+                sumoft += parseInt(t[i]);
+            }
+            total=parseInt(total-sumoft);
 
             return total;
 
