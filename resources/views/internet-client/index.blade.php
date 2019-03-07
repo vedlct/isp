@@ -255,6 +255,14 @@
     <script src="{{url('public/plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
     <!-- Buttons examples -->
     <script src="{{url('public/assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
+    {{--<script src="{{url('public/plugins/datatables/titlenumber.js')}}"></script>--}}
+    {{--<script src="//cdn.datatables.net/plug-ins/1.10.19/type-detection/num-html.js"></script>--}}
+    {{--<script src="//cdn.datatables.net/plug-ins/1.10.19/type-detection/formatted-num.js"></script>--}}
+    {{--<script src="//cdn.datatables.net/plug-ins/1.10.19/type-detection/numeric-comma.js"></script>--}}
+    {{--<script src="//cdn.datatables.net/plug-ins/1.10.19/sorting/natural.js"></script>--}}
+    <script src="//cdn.datatables.net/plug-ins/1.10.19/sorting/formatted-numbers.js"></script>
+    {{--<script src="//cdn.datatables.net/plug-ins/1.10.19/sorting/title-numeric.js"></script>--}}
+
     <script>
         counter=0;
         $(document).ready(function() {
@@ -341,11 +349,16 @@
 
         }
 
+
+
         $(document).ready( function () {
 
+
+
             datatable=  $('#datatable').DataTable({
+
                 processing: true,
-                serverSide: true,
+                serverSide: false,
                 Filter: true,
                 stateSave: true,
                 type:"POST",
@@ -375,7 +388,11 @@
                             return '<a class="btn btn-default btn-sm"  data-panel-id="'+data.clientId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>'
                                 ;},
                         "orderable": false, "searchable":false, "name":"selected_rows" },
+                ],
+                columnDefs: [
+                    { type: 'formatted-num', targets: 2 }
                 ]
+
             });
         } );
 

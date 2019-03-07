@@ -213,6 +213,7 @@
     <!-- Buttons examples -->
     <script src="{{url('public/assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.19/sorting/formatted-numbers.js"></script>
 
     <script>
         counter=0;
@@ -274,7 +275,7 @@
 
          datatable=   $('#datatable').DataTable({
                 processing: true,
-                serverSide: true,
+                serverSide: false,
                 Filter: true,
                 stateSave: true,
                 type:"POST",
@@ -301,7 +302,10 @@
                             return '<a class="btn btn-default btn-sm"  data-panel-id="'+data.clientId+'" onclick="editClient(this)"><i class="fa fa-edit"></i></a>'
                                 ;},
                         "orderable": false, "searchable":false, "name":"selected_rows" },
-                ]
+                ],
+             columnDefs: [
+                 { type: 'formatted-num', targets: 1 }
+             ]
             });
         } );
 

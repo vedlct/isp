@@ -23,7 +23,8 @@ class CableClientController extends Controller
     }
 
     public function getData(Request $r){
-        $client=CableClient::get();
+//        $client=CableClient::get();
+        $client=CableClient::select('*');
 
         if($r->status){
             $client=$client->where('clientStatus',$r->status);

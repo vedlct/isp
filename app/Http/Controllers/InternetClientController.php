@@ -34,7 +34,7 @@ class InternetClientController extends Controller
         if($r->status){
             $client=$client->where('internet_client.clientStatus',$r->status);
         }
-
+//        $client=$client->orderBy('internet_client.clientUserId');
         $datatables = Datatables::of($client);
         return $datatables->make(true);
     }
