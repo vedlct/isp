@@ -186,7 +186,7 @@
                 columns: [
                     { data: 'clientFirstName', name: 'cable_client.clientFirstName',"orderable": false, "searchable":true },
                     { data: 'clientLastName', name: 'cable_client.clientLastName',"orderable": false, "searchable":true },
-                    { data: 'clientSerial', name: 'cable_client.clientSerial',"orderable": false, "searchable":true },
+                    { data: 'clientSerial', name: 'cable_client.clientSerial',"orderable": true, "searchable":true },
                     { data: 'phone', name: 'cable_client.phone', "orderable": false, "searchable":true },
                     { data: 'name', name: 'user.name', "orderable": true, "searchable":true },
                     { "data": function(data){

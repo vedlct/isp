@@ -99,7 +99,7 @@
 
                     { data: 'clientFirstName', name: 'internet_client.clientFirstName',"orderable": false, "searchable":true },
                     { data: 'clientLastName', name: 'internet_client.clientLastName',"orderable": false, "searchable":true },
-                    { data: 'clientSerial', name: 'internet_client.clientSerial',"orderable": false, "searchable":true },
+                    { data: 'clientSerial', name: 'internet_client.clientSerial',"orderable": true, "searchable":true },
                     { data: 'phone', name: 'internet_client.phone', "orderable": false, "searchable":true },
                     { data: 'packageName', name: 'package.packageName', "orderable": false, "searchable":true },
                     { data: 'bandWide', name: 'internet_client.bandWide', "orderable": true, "searchable":true },
