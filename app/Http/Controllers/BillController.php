@@ -383,6 +383,7 @@ class BillController extends Controller
             ->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')
             ->leftjoin('user','user.userId','cable_bill.receivedBy')
             ->where('cable_client.clientStatus',2);
+
         if ($r->billMonth){
             $month = Carbon::parse($r->billMonth)->format('m');
             $bill= $bill->where(DB::raw('month(cable_bill.billdate)'),$month);
@@ -396,6 +397,8 @@ class BillController extends Controller
         if ($r->pastDueClient){
 
             $bill= $bill->where('cable_bill.fkclientId',$r->pastDueClient);
+
+
         }
         if($r->emp){
             $bill= $bill->where('cable_bill.receivedBy',$r->emp);
@@ -403,6 +406,8 @@ class BillController extends Controller
         if($r->statusId){
             $bill= $bill->where('cable_bill.status',$r->statusId);
         }
+
+        $bill= $bill->orderBy('cable_bill.billdate','desc');
 
         $datatables = DataTables::of($bill)->with('total', $bill->count('cable_client.clientId'));
         return $datatables->make(true);

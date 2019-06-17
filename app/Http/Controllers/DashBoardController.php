@@ -131,6 +131,7 @@ class DashBoardController extends Controller
                 $bill->fkclientId = $c->clientId ;
                 $bill->save();
             }
+
             $clientcable = CableClient::select('clientId', 'price')->where('clientStatus',2)->get();
             foreach ($clientcable as $cc) {
                 $billcable = new CableBill();
@@ -140,6 +141,7 @@ class DashBoardController extends Controller
                 $billcable->fkclientId = $cc->clientId ;
                 $billcable->save();
             }
+
 //            DB::select(DB::raw("INSERT INTO internet_bill (`billdate`, `price`, `status`, `fkclientId`)
 //              SELECT '".  date('Y-m-d')."',`price`,'np',`clientId` FROM `internet_client` where internet_client.clientStatus=2"));
 
