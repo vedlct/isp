@@ -134,7 +134,7 @@ class DashBoardController extends Controller
             $clientcable = CableClient::select('clientId', 'price')->where('clientStatus',2)->get();
             foreach ($clientcable as $cc) {
                 $billcable = new CableBill();
-                $billcable->billdate = Carbon::now()->subMonth()->format('Y-m-d');
+                $billcable->billdate = Carbon::now()->format('Y-m-d');
                 $billcable->price = $cc->price;
                 $billcable->status = 'np';
                 $billcable->fkclientId = $cc->clientId ;

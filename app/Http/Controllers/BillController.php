@@ -345,7 +345,7 @@ class BillController extends Controller
 
     /*Cable Bill */
     public function cableBillShow(){
-        $date=Carbon::now()->subMonth()->format('F-Y');
+        $date=Carbon::now()->format('F-Y');
         $package = CablePackage::get();
         $cableClient=CableClient::where('cable_client.clientStatus',2)->count('cable_client.clientId');
         $users=User::where('fkusertype','CableEmp')->get();
