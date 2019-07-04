@@ -203,8 +203,10 @@ class BillController extends Controller
 
         $month = Carbon::parse($r->date)->format('m');
         $bill=InternetBill::leftjoin('internet_client','internet_bill.fkclientId','internet_client.clientId')
-            ->where(DB::raw('month(internet_bill.billdate)'),$month)
-            ->where('internet_client.clientId',$r->id)->first();
+//            ->where(DB::raw('month(internet_bill.billdate)'),$month)
+//            ->where('internet_client.clientId',$r->id)
+//            ->first();
+              ->findOrFail($r->id);
         $bill->status = 'p';
         $bill->receivedBy = Auth::user()->userId;
         $bill->receiveDate=date('Y-m-d');
@@ -323,8 +325,10 @@ class BillController extends Controller
     public function internetBillDue(Request $r){
         $month = Carbon::parse($r->date)->format('m');
         $bill=InternetBill::leftjoin('internet_client','internet_bill.fkclientId','internet_client.clientId')
-            ->where(DB::raw('month(internet_bill.billdate)'),$month)
-            ->where('internet_client.clientId',$r->id)->first();
+//            ->where(DB::raw('month(internet_bill.billdate)'),$month)
+//            ->where('internet_client.clientId',$r->id)
+//            ->first();
+                ->findOrFail($r->id);
         $bill->status = 'np';
         $bill->partial = null;
         $bill->discount = null;
@@ -416,7 +420,12 @@ class BillController extends Controller
     public function cableBillPaid(Request $r){
 
         $month = Carbon::parse($r->date)->format('m');
-        $bill=CableBill::select('cable_bill.*','cable_client.clientId','cable_client.phone','cable_client.clientFirstName','cable_client.clientLastName')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
+        $bill=CableBill::select('cable_bill.*','cable_client.clientId','cable_client.phone','cable_client.clientFirstName','cable_client.clientLastName')
+            ->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')
+//            ->where(DB::raw('month(cable_bill.billdate)'),$month)
+//            ->where('cable_client.clientId',$r->id)
+//            ->first();
+              ->findOrFail($r->id);
         $bill->status = 'p';
         $bill->receivedBy = Auth::user()->userId;
         $bill->receiveDate=date('Y-m-d');
@@ -515,7 +524,11 @@ class BillController extends Controller
     public function cableBillDue(Request $r){
 
         $month = Carbon::parse($r->date)->format('m');
-        $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')->where(DB::raw('month(cable_bill.billdate)'),$month)->where('cable_client.clientId',$r->id)->first();
+        $bill=CableBill::select('cable_bill.*','cable_client.clientId')->leftjoin('cable_client','cable_bill.fkclientId','cable_client.clientId')
+//            ->where(DB::raw('month(cable_bill.billdate)'),$month)
+//            ->where('cable_client.clientId',$r->id)
+//            ->first();
+              ->findOrFail($r->id);
         $bill->status = 'np';
         $bill->partial = null;
         $bill->discount = null;
@@ -550,6 +563,7 @@ class BillController extends Controller
     }
 
     public function approvedCable(Request $r){
+
         $bill=CableBill::findOrFail($r->primaryId);
         $bill->status="ap";
         $bill->save();

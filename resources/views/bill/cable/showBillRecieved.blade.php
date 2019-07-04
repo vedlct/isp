@@ -122,7 +122,7 @@
                     { "data": function(data){
 
                         if (data.billStatus=='np'){
-                            return '<select style="background-color:red;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
+                            return '<select style="background-color:red;color:white"class="form-control" id="billtype'+data.billId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
                                 '<option  value="paid"  >Paid</option>'+
                                 '<option value="due" selected  >Due</option>'+
                                     @if(Auth::user()->fkusertype=='Admin')
@@ -130,7 +130,7 @@
                                     @endif
                                         '</select>';
                         }else if (data.billStatus=='p'){
-                            return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
+                            return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.billId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
                                 '<option  value="paid" selected  >Paid</option>'+
                                 '<option value="due"   >Due</option>'+
                                     @if(Auth::user()->fkusertype=='Admin')
@@ -197,7 +197,7 @@
 
                             $.ajax({
                                 type: 'POST',
-                                url: "{!! route('bill.Internet.paid') !!}",
+                                url: "{!! route('bill.Cable.paid') !!}",
                                 cache: false,
                                 data: {_token: "{{csrf_token()}}", 'id': id,date:date},
                                 success: function (data) {
@@ -232,7 +232,7 @@
                         else if (billtype == 'due') {
                             $.ajax({
                                 type: 'POST',
-                                url: "{!! route('bill.Internet.due') !!}",
+                                url: "{!! route('bill.Cable.due') !!}",
                                 cache: false,
                                 data: {_token: "{{csrf_token()}}", 'id': id,date:date},
                                 success: function (data) {
@@ -270,7 +270,7 @@
                         else if(billtype == 'approved'){
                             $.ajax({
                                 type: 'POST',
-                                url: "{!! route('bill.internet.approved') !!}",
+                                url: "{!! route('bill.Cable.approved') !!}",
                                 cache: false,
                                 data: {_token: "{{csrf_token()}}", 'id': id,date:date,primaryId:primaryId},
                                 success: function (data) {

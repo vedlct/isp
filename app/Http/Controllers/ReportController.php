@@ -120,11 +120,12 @@ class ReportController extends Controller
     }
     public function getCreditData(Request $r){
 
-        $credit=Report::select('report.reportId',DB::raw('SUM(report.price) as price'),DB::raw('SUM(report.partial) as partial'),DB::raw('SUM(report.discount) as discount'),'report.date','report.status')
+        $credit=Report::select('report.reportId',
+            DB::raw('SUM(report.price) as price'),DB::raw('SUM(report.partial) as partial'),
+            DB::raw('SUM(report.discount) as discount'),'report.date','report.status')
             ->where('report.status',ACCOUNT_STATUS['Credit'])
 
-            ->groupBy("report.tableName",'report.tabelId')
-        ;
+            ->groupBy("report.tableName","report.tabelId");
 
         if ($r->currentMonth){
             $credit=$credit->whereMonth('report.date', Carbon::now()->month);

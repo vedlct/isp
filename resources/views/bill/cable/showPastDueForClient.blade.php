@@ -101,14 +101,24 @@
                     if(data.billprice != null) {
 
                         if (data.partial != null) {
-                            return (data.billprice) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(data.billprice,data.discount, data.partial);
+                            if (data.discount != null){
+                                return (data.billprice) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(data.billprice,data.discount, data.partial);
+                            }else {
+                                return (data.billprice) + "-" + (data.partial) +"-" + (0) + "=" + totalDue(data.billprice,null, data.partial);
+                            }
+
                         } else {
                             return data.billprice;
                         }
                     }else {
 
                         if (data.partial != null) {
-                            return (0) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(0,data.discount, data.partial);
+                            if (data.discount != null) {
+                                return (0) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(0,data.discount, data.partial);
+                            }else {
+                                return (0) + "-" + (data.partial) +"-" + (0) + "=" + totalDue(0,null, data.partial);
+                            }
+
                         } else {
                             return data.billprice;
                         }
@@ -363,9 +373,13 @@
         }else {
             total=parseInt(parseInt(0)-sumofnums);
         }
-        t = amountdiscount.split("+");
-        for (i = 0; i < t.length; i++) {
-            sumoft += parseInt(t[i]);
+        if (amountdiscount != null){
+            t = amountdiscount.split("+");
+            for (i = 0; i < t.length; i++) {
+                sumoft += parseInt(t[i]);
+            }
+        }else {
+            sumoft=parseInt(0);
         }
         total=parseInt(total-sumoft);
 

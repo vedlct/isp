@@ -112,7 +112,7 @@
 
                         if (data.billStatus=='np'){
 
-                            return '<select style="background-color:red;color:white" class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="'+data.billdate+'" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
+                            return '<select style="background-color:red;color:white" class="form-control"  id="billtype'+data.cableBillId+'" data-panel-date="'+data.billdate+'" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.cableBillId+'" onchange="changebillstatus(this)">'+
                                 '<option  value="paid"  >Paid</option>'+
                                 '<option value="due" selected  >Due</option>'+
                                     @if(Auth::user()->fkusertype=='Admin')
@@ -121,9 +121,9 @@
                                 '</select>';
                         }else if (data.billStatus=='p'){
 
-                            return '<select style="background-color:green;color:white" class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="'+data.billdate+'" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
+                            return '<select style="background-color:green;color:white" class="form-control" id="billtype'+data.cableBillId+'" data-panel-date="'+data.billdate+'" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.cableBillId+'" onchange="changebillstatus(this)">'+
                                 '<option  value="paid" selected  >Paid</option>'+
-                                '<option value="due"   >Due</option>'+
+                                '<option value="due" >Due</option>'+
                                     @if(Auth::user()->fkusertype=='Admin')
                                         '<option value="approved"  >Approved</option>'+
                                     @endif
@@ -172,15 +172,22 @@
 
         function changebillstatus(x) {
 
+
+            var id = $(x).data('primary-id');
+
+
             $.confirm({
                 title: 'Confirm!',
                 content: 'Are You Sure!',
                 buttons: {
                     confirm: function () {
-                        var id = $(x).data('panel-id');
+                        var id = $(x).data('primary-id');
+                        var primaryId = $(x).data('primary-id');
+
                         var date = $(x).data('panel-date');
 
                         var billtype = document.getElementById('billtype'+id).value;
+
 
                         if (billtype == 'paid') {
 

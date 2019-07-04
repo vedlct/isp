@@ -201,13 +201,25 @@
                     { "data": function(data){
                             if(data.billprice != null) {
                                 if (data.partial != null) {
-                                    return (data.billprice) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(data.billprice,data.discount, data.partial);
+                                    if (data.discount != null){
+
+                                        return (data.billprice) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(data.billprice,data.discount, data.partial);
+
+                                    }else {
+                                        return (data.billprice) + "-" + (data.partial) +"-" + (0) + "=" + totalDue(data.billprice,null, data.partial);
+                                    }
+
                                 } else {
                                     return data.billprice;
                                 }
                             }else {
                                 if (data.partial != null) {
-                                    return (0) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(0,data.discount, data.partial);
+                                    if (data.discount != null){
+                                        return (0) + "-" + (data.partial) +"-" + (data.discount) + "=" + totalDue(0,data.discount, data.partial);
+                                    }else {
+                                        return (0) + "-" + (data.partial) +"-" + (0) + "=" + totalDue(0,null, data.partial);
+                                    }
+
                                 } else {
                                     return data.billprice;
                                 }
@@ -227,7 +239,7 @@
                     { data: 'billprice', name: 'cable_bill.price', "orderable": true, "searchable":true },
                     { "data": function(data){
                             if (data.billStatus=='np'){
-                                return '<select style="background-color:red;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
+                                return '<select style="background-color:red;color:white"class="form-control" id="billtype'+data.billId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
                                     '<option  value="paid"  >Paid</option>'+
                                     '<option value="due" selected  >Due</option>'+
                                         @if(Auth::user()->fkusertype=='Admin')
@@ -237,7 +249,7 @@
                                     '<button class="btn btn-smbtn-info" onclick="payBill('+data.fkclientId+')"><i class="fa fa-money"></i></button>'
                                     ;
                             }else if (data.billStatus=='p'){
-                                return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.fkclientId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
+                                return '<select  style="background-color:green;color:white"class="form-control" id="billtype'+data.billId+'" data-panel-date="{{$date}}" data-panel-id="'+data.fkclientId+'" data-primary-id="'+data.billId+'" onchange="changebillstatus(this)">'+
                                     '<option  value="paid" selected  >Paid</option>'+
                                     '<option value="due"   >Due</option>'+
                                         @if(Auth::user()->fkusertype=='Admin')
@@ -295,12 +307,13 @@
             });
         }
         function changebillstatus(x) {
+           // console.log(x);
             $.confirm({
                 title: 'Confirm!',
                 content: 'Are You Sure!',
                 buttons: {
                     confirm: function () {
-                        var id = $(x).data('panel-id');
+                        var id = $(x).data('primary-id');
                         var primaryId = $(x).data('primary-id');
                         var date = $(x).data('panel-date');
                         var billtype = document.getElementById('billtype'+id).value;
@@ -618,10 +631,16 @@
             }else {
                 total=parseInt(parseInt(0)-sumofnums);
             }
-            t = amountdiscount.split("+");
-            for (i = 0; i < t.length; i++) {
-                sumoft += parseInt(t[i]);
+            if (amountdiscount != null){
+                t = amountdiscount.split("+");
+                for (i = 0; i < t.length; i++) {
+                    sumoft += parseInt(t[i]);
+                }
+            }else {
+                sumoft=parseInt(0);
             }
+
+
             total=parseInt(total-sumoft);
             return total;
         }
