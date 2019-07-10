@@ -75,7 +75,7 @@
                     <tr>
 
                         <th style="text-align:right">Total:</th>
-                        <th colspan="2"><span id="pageTotal"></span></th>
+                        <th colspan="2"><span id="pageTotal1"></span></th>
 
                     </tr>
                     </tfoot>
@@ -150,7 +150,7 @@
 
                 drawCallback: function () {
                     var api = this.api();
-                    $('#pageTotal').html(api.column( 1, {page:'current'}).data().sum());
+                    $('#pageTotal1').html(api.column( 1, {page:'current'}).data().sum());
 
                 },
 
