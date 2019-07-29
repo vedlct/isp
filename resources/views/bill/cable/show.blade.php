@@ -308,12 +308,15 @@
         }
         function changebillstatus(x) {
            // console.log(x);
+            var id = $(x).data('primary-id');
+            alert(id);
             $.confirm({
                 title: 'Confirm!',
                 content: 'Are You Sure!',
                 buttons: {
                     confirm: function () {
                         var id = $(x).data('primary-id');
+                        alert(id);
                         var primaryId = $(x).data('primary-id');
                         var date = $(x).data('panel-date');
                         var billtype = document.getElementById('billtype'+id).value;

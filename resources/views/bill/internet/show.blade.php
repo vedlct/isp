@@ -69,7 +69,7 @@
             <div class="card m-b-30">
                 <div class="card-body">
 
-                    <h4 class="mt-0 header-title">All Bill</h4>
+                    <h4 class="mt-0 header-title">All Bill </h4>
                     <div class="row">
                     <div class="col-md-3">
                         <label>Select Month</label>
@@ -382,17 +382,20 @@
         }
 
         function changebillstatus(x) {
-
+           // var id = $(x).data('primary-id');
+           // alert(id);
+           // var billtype = document.getElementById('billtype'+id).value;
+           // alert(billtype);
             $.confirm({
                 title: 'Confirm!',
                 content: 'Are You Sure!',
                 buttons: {
                     confirm: function () {
-                        var id = $(x).data('data.billId');
+                        var id = $(x).data('primary-id');
                         var date = $(x).data('panel-date');
                         var primaryId = $(x).data('primary-id');
-
                         var billtype = document.getElementById('billtype'+id).value;
+
 
                         if (billtype == 'paid') {
 
@@ -517,7 +520,6 @@
 
                 }
             });
-
 
         }
 
