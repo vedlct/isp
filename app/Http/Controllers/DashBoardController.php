@@ -42,7 +42,7 @@ class DashBoardController extends Controller
         $this_month = $date->format('m');
         $totalbilllastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totalbillinternet'))->where('status', 'ap')->where(DB::raw('MONTH(billdate)'), $this_month)->first();
         $totalduelastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totaldueinternet'))->where('status', 'np')->where(DB::raw('MONTH(billdate)'), $this_month)->first();
-        $totalpastduelastmonthinternet =InternetBill::select(DB::raw('SUM(price) as totalpastdueinternet'))->where('status', 'np')->first();
+        $totalpastduelastmonthinternet =InternetBill::select(DB::raw('SUM(internet_bill.price) as totalpastdueinternet'))->leftjoin('internet_client','clientId','fkclientId')->where('internet_client.clientStatus',2)->where('status', 'np')->first();
 
         $totalOFLastMonthDebits=Report::leftjoin('expense' , 'tabelId', 'expenseId')
             ->leftjoin('employee' , 'tabelId', 'employeeId')
@@ -59,9 +59,12 @@ class DashBoardController extends Controller
 
         $totalOFLastMonthCredits=Report::where('report.status',ACCOUNT_STATUS['Credit'])
             ->where('tableName','internet_bill')
-            ->whereMonth('report.date', ((Carbon::now())->month))
+           // ->whereMonth('report.date', ((Carbon::now())->month))
+            ->whereMonth('report.date', '8')
             ->sum('report.price');
         $totalOFLastMonthCredit=number_format($totalOFLastMonthCredits,2);
+
+
 
         $summary = $totalOFLastMonthCredits - $totalOFLastMonthDebits;
         $summary = number_format($summary,2);

@@ -83,7 +83,7 @@
 
                 </div>
                 @endif
-@if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="CableEmp")
+                @if(Auth::user()->fkusertype=="Admin" || Auth::user()->fkusertype=="CableEmp")
 
                 <div class="table-responsive col-md-6">
                     <table class="table table-striped table-bordered ">
@@ -109,7 +109,7 @@
                         </tr>
                         <tr>
                             <td><a href="#">Total Earning</a></td>
-                            <td>{{$totalOFLastMonthCredit}}</td>
+                            <td>{{$totalOFLastMonthCreditcable}}</td>
                         </tr>
                         <tr>
                             <td><a href="#">Total(Summary)</a></td>
