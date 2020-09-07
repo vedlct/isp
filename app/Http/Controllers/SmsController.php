@@ -55,9 +55,7 @@ class SmsController extends Controller
 
 
 
-//            $userName="techcloud";
-//            $password="tcl@it404$";
-//            $brand="TECH CLOUD";
+
 
             $smsConfig=SmsConfig::select('userName','password','brandName','sms_rate')->first();
                         $userName=$smsConfig->userName;
